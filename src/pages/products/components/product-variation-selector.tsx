@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SelectedVariation } from '../hooks/useProductVariations';
 
 export type ProductVariationSelectorProps = {

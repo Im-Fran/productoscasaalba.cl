@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams, useNavigate } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const ResetPasswordPage = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const { resetPassword } = useAuth();
 
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''
   });
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tokenValid, setTokenValid] = useState<boolean | null>(null);
@@ -34,7 +33,7 @@ export const ResetPasswordPage = () => {
         // Simular verificación
         await new Promise(resolve => setTimeout(resolve, 500));
         setTokenValid(true);
-      } catch (error) {
+      } catch (_) {
         setTokenValid(false);
       }
     };

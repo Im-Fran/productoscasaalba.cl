@@ -1,10 +1,10 @@
 import type {Product} from "@/types/product";
 
-export type ProductPrice = {
+export type ProductPriceProps = {
   product: Product
 }
 
-export const ProductPrice = ({product}) => {
+export const ProductPrice = ({product}: ProductPriceProps) => {
   const hasDiscount = product.prices.sale_price && product.prices.sale_price !== product.prices.regular_price;
 
   const formatPrice = (price: string) => {

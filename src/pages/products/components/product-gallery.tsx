@@ -1,8 +1,8 @@
 import {useState, useMemo, useRef, useCallback, type MouseEvent} from 'react';
-import type {ProductImage} from "@/types/product";
+import type {Image} from "@/types/wordpress";
 
 interface ProductGalleryProps {
-  images: ProductImage[];
+  images: Image[];
   productName: string;
 }
 

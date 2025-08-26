@@ -5,7 +5,7 @@ export type ProductRatingProps = {
 }
 
 export const ProductRating = ({ product }: ProductRatingProps) => {
-  if(product.rating_count || 0 <= 0) return null;
+  if(product.review_count || 0 <= 0) return null;
 
   const renderStars = (rating: string) => {
     const numRating = parseFloat(rating);
@@ -32,7 +32,7 @@ export const ProductRating = ({ product }: ProductRatingProps) => {
       {renderStars(product.average_rating || '0')}
     </div>
     <span className="text-sm text-gray-600">
-      ({product.rating_count} valoracion{product.rating_count !== 1 ? 'es' : ''})
+      ({product.review_count} valoracion{product.review_count !== 1 ? 'es' : ''})
     </span>
   </div>
 }

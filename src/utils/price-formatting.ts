@@ -1,4 +1,4 @@
-import type { Prices, WooCommerceCartTotals } from '@/types/woo-commerce';
+import type {Prices, WooCommerceCartTotals} from '@/types/woo-commerce';
 
 export interface FormatPriceOptions {
   currency_code?: string;
@@ -38,7 +38,6 @@ export const formatPrice = (
     currency_thousand_separator = defaults.currency_thousand_separator,
     currency_prefix = defaults.currency_prefix,
     currency_suffix = defaults.currency_suffix,
-    showDecimals = currency_minor_unit > 0
   } = { ...defaults, ...options };
 
   // Convert price to number
@@ -58,18 +57,15 @@ export const formatPrice = (
   }
 
   // Format the number with appropriate decimal places
-  const decimalPlaces = showDecimals ? currency_minor_unit : 0;
-  const fixedPrice = numericPrice.toFixed(decimalPlaces);
+  const fixedPrice = numericPrice.toFixed(currency_minor_unit);
 
   // Split into integer and decimal parts
   const [integerPart, decimalPart] = fixedPrice.split('.');
 
   // Add thousand separators to integer part
-  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, currency_thousand_separator);
-
   // Combine parts
-  let formattedPrice = formattedInteger;
-  if (decimalPart && showDecimals) {
+  let formattedPrice = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, currency_thousand_separator);
+  if (decimalPart) {
     formattedPrice += currency_decimal_separator + decimalPart;
   }
 

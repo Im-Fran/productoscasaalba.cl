@@ -56,7 +56,7 @@ export type Prices = {
   price: string;
   regular_price: string;
   sale_price: string;
-  price_range: any;
+  price_range: never | null;
   currency_code: string;
   currency_symbol: string;
   currency_minor_unit: number;
@@ -96,8 +96,8 @@ export type CartItem = {
   sold_individually: boolean;
   permalink: string;
   images: Image[];
-  variation: any[];
-  item_data: any[];
+  variation: never | null[];
+  item_data: never | null[];
   prices: Prices;
   totals: CartItemTotals;
   catalog_visibility: string;
@@ -151,18 +151,18 @@ export type TaxLine = {
 export type WooCommerceCart = {
   items: CartItem[];
   coupons: WooCommerceCoupon[];
-  fees: any[];
+  fees: never | null[];
   totals: WooCommerceCartTotals;
-  shipping_address: any;
-  billing_address: any;
+  shipping_address: never | null;
+  billing_address: never | null;
   needs_payment: boolean;
   needs_shipping: boolean;
   payment_requirements: string[];
   has_calculated_shipping: boolean;
-  shipping_rates: any[];
+  shipping_rates: never | null[];
   items_count: number;
   items_weight: number;
-  cross_sells: any[];
-  errors: any[];
+  cross_sells: never | null[];
+  errors: never | null[];
   payment_methods: string[];
 }
