@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Handelson Four';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('@/assets/fonts/handelson-four.otf') format('opentype');
+}
+
+
+@theme {
+
+    /* Color Mint */
+    --color-mint-50: oklch(0.9975 0.0224 159.19);
+    --color-mint-100: oklch(0.9734 0.0306 159.19);
+    --color-mint-200: oklch(0.9411 0.0379 159.19);
+    --color-mint-300: oklch(0.9088 0.0452 159.19);
+    --color-mint-400: oklch(0.8902 0.0495 159.19);
+    --color-mint-500: oklch(0.9136 0.0487 159.19);
+    --color-mint-600: oklch(0.8425 0.0564 159.19);
+    --color-mint-700: oklch(0.7722 0.0616 159.19);
+    --color-mint-800: oklch(0.7019 0.0668 159.19);
+    --color-mint-900: oklch(0.6316 0.0720 159.19);
+    --color-mint-950: oklch(0.5311 0.0796 159.19);
+
+
+    /* Font 'Pacifico' */
+    --font-pacifico: 'Pacifico';
+    --font-handelson: 'Handelson Four', sans-serif;
+}
