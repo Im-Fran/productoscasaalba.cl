@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import type { Product, Variation } from '@/types/product';
 
 export type SelectedVariation = {

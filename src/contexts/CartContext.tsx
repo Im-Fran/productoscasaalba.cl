@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import type {ReactNode} from 'react';
-import axios, {type AxiosResponse} from 'axios';
+import axios, {type AxiosTypes} from '@/utils/axios';
 import type {WooCommerceCart} from '@/types/woo-commerce';
 import {defaultCart} from '@/types/woo-commerce';
 import toast from "react-hot-toast";
@@ -54,7 +54,7 @@ const getAxiosConfig = () => {
 };
 
 // Helper function to extract and save cart token from response
-const handleCartTokenResponse = (response: AxiosResponse) => {
+const handleCartTokenResponse = (response: AxiosTypes.AxiosResponse) => {
   const cartToken = response.headers?.['cart-token'] || response.headers?.['Cart-Token'];
   if (cartToken) {
     setCartToken(cartToken);
@@ -266,7 +266,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   // Load cart on mount
   useEffect(() => {
-    refreshCart();
+    refreshCart().then();
   }, []);
 
   const value: CartContextType = {

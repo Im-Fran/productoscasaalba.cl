@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '@/utils/axios';
 import type {Product, Category} from "@/types/product";
 import {LoadingRelatedProducts} from "@/pages/products/components/related-products/loading-related-products.tsx";
 import {RelatedProductCard} from "@/pages/products/components/related-products/related-product-card.tsx";

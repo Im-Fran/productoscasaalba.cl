@@ -1,10 +1,10 @@
 import {useState, useEffect, useCallback} from 'react';
-import { Hero } from './components/hero';
-import { SearchBox } from './components/search-box';
-import { CategoryList } from './components/category-list';
-import { ProductGrid } from '../../components/product-grid/product-grid.tsx';
+import { Hero } from '@/pages/home/components/hero.tsx';
+import { SearchBox } from '@/pages/home/components/search-box.tsx';
+import { CategoryList } from '@/pages/home/components/category-list.tsx';
+import { ProductGrid } from '@/components/product-grid/product-grid.tsx';
 import type {Product} from "@/types/product";
-import axios from 'axios';
+import axios from '@/utils/axios';
 
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[] | null | undefined>(undefined);
