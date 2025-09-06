@@ -28,4 +28,5 @@ dist-ssr
 !.env.example
 
 # Workers
+.wrangler/
 !wrangler.jsonc
