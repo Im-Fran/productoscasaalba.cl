@@ -5,6 +5,7 @@ import { CategoryList } from '@/pages/home/components/category-list.tsx';
 import { ProductGrid } from '@/components/product-grid/product-grid.tsx';
 import type {Product} from "@/types/product";
 import axios from '@/utils/axios';
+import {Banner} from '@/components/banner';
 
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[] | null | undefined>(undefined);
@@ -40,7 +41,6 @@ export const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Hero />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Sección de búsqueda */}
         <div className="text-center mb-12">
@@ -54,7 +54,6 @@ export const HomePage = () => {
             onSearch={fetchProducts}
           />
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar con categorías */}
           <div className="lg:col-span-1">
@@ -65,9 +64,9 @@ export const HomePage = () => {
               />
             </div>
           </div>
-
           {/* Grid de productos */}
           <div className="lg:col-span-3">
+            <Banner />
             <ProductGrid
               products={products}
               refetchProducts={fetchProducts}

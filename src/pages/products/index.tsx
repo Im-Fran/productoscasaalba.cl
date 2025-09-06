@@ -4,6 +4,7 @@ import { SearchBox } from '../home/components/search-box';
 import { ProductGrid } from '../../components/product-grid/product-grid.tsx';
 import axios from "axios";
 import type {Product} from "@/types/product";
+import {Banner} from '@/components/banner';
 
 export const ProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
@@ -115,6 +116,8 @@ export const ProductsPage = () => {
 
           {/* Contenido principal - Grid de productos */}
           <div className="col-span-8">
+            <Banner />
+
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="mb-6">
                 <div className="flex justify-between items-center">
