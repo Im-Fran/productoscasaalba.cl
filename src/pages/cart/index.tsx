@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
 import toast from "react-hot-toast";
 import {LoadingCart} from "@/pages/cart/loading-cart.tsx";
 import {EmptyCart} from "@/pages/cart/empty-cart.tsx";
+import {useCart} from "@/contexts/UseCart.tsx";
 
 export default function CartPage() {
   const navigate = useNavigate();

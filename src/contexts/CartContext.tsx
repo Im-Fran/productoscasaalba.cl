@@ -1,11 +1,12 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
 import type {ReactNode} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios, {type AxiosTypes} from '@/utils/axios';
 import type {WooCommerceCart} from '@/types/woo-commerce';
 import {defaultCart} from '@/types/woo-commerce';
 import toast from "react-hot-toast";
+import { CartContext } from "@/contexts/UseCart";
 
-interface CartContextType {
+export interface CartContextType {
   cart: WooCommerceCart | null;
   loading: boolean;
   refreshCart: () => Promise<void>;
@@ -28,8 +29,6 @@ interface FormatPriceOptions {
   currency_suffix?: string;
   showDecimals?: boolean;
 }
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Constants for localStorage
 const CART_TOKEN_KEY = 'woo_cart_token';
@@ -59,14 +58,6 @@ const handleCartTokenResponse = (response: AxiosTypes.AxiosResponse) => {
   if (cartToken) {
     setCartToken(cartToken);
   }
-};
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
 };
 
 interface CartProviderProps {

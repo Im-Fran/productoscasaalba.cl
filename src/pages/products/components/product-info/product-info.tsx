@@ -4,8 +4,8 @@ import {ProductPrice} from "@/pages/products/components/product-info/product-pri
 import {ProductRating} from "@/pages/products/components/product-info/product-rating.tsx";
 import { ProductVariationSelector } from "@/pages/products/components/product-variation-selector.tsx";
 import { useProductVariations } from "@/pages/products/hooks/useProductVariations";
-import {useCart} from "@/contexts/CartContext.tsx";
 import toast from "react-hot-toast";
+import {useCart} from "@/contexts/UseCart.tsx";
 
 export type ProductInfoProps = {
   product: Product

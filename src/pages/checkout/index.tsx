@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useCart } from '@/contexts/CartContext';
 import toast from "react-hot-toast";
+import {useCart} from "@/contexts/UseCart.tsx";
 
 interface CheckoutForm {
   // Información de contacto

@@ -2,8 +2,8 @@ import {Link} from "react-router";
 import CasaAlbaLogo from "@/assets/casaalba.webp";
 import {ShoppingBag, User, LogOut, ChevronDown} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCart } from "@/contexts/CartContext";
 import { useState } from "react";
+import {useCart} from "@/contexts/UseCart.tsx";
 
 interface HeaderProps {
   onCartClick: () => void;

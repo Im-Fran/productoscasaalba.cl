@@ -1,7 +1,7 @@
-import { useCart } from '@/contexts/CartContext';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { useEffect, useState } from 'react';
+import {useCart} from "@/contexts/UseCart.tsx";
 
 interface CartSidebarProps {
   isOpen: boolean;
