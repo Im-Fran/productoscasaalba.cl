@@ -31,7 +31,7 @@ export const Footer = () => {
   return <footer id={"footer"} className={"mt-auto p-4 text-center bg-mint-500 text"}>
     <div className={"grid grid-cols-3 gap-10 container mx-auto w-full"}>
       <div className={"col-span-1 flex flex-col items-start gap-5"}>
-        <h3 className={"text-xl text-fuchsia-600"}>¿Alguien dijo Limpieza?</h3>
+        <h3 className={"text-xl text-red-800"}>¿Alguien dijo Limpieza?</h3>
         <Txtrvl
           className={"text-gray-500"}
           text={rollingTxt[rollingTxtIdx] || 'Contáctanos'}

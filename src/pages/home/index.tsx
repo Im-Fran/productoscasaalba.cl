@@ -5,7 +5,6 @@ import { CategoryList } from '@/pages/home/components/category-list.tsx';
 import { ProductGrid } from '@/components/product-grid/product-grid.tsx';
 import type {Product} from "@/types/product";
 import axios from '@/utils/axios';
-import {Banner} from '@/components/banner';
 
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[] | null | undefined>(undefined);
@@ -44,12 +43,9 @@ export const HomePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Sección de búsqueda */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-5xl font-bold text-mint-1150 mb-6">
             Encuentra el producto perfecto
           </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Busca entre nuestra amplia variedad de productos de agua purificada
-          </p>
           <SearchBox
             onSearch={fetchProducts}
           />
@@ -66,7 +62,6 @@ export const HomePage = () => {
           </div>
           {/* Grid de productos */}
           <div className="lg:col-span-3">
-            <Banner />
             <ProductGrid
               products={products}
               refetchProducts={fetchProducts}

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useState, useEffect, type ReactNode } from 'react';
+import { AuthService } from '@/services/auth';
 
 export type User = {
   id: number;
@@ -7,6 +8,8 @@ export type User = {
   email: string;
   avatar?: string;
   role: string;
+  nicename?: string;
+  displayName?: string;
 };
 
 export type AuthContextType = {
@@ -27,15 +30,7 @@ export type RegisterData = {
   password: string;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -45,26 +40,63 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Configurar interceptors al montar el componente
+  useEffect(() => {
+    AuthService.setupInterceptors();
+  }, []);
+
   // Verificar si hay un usuario autenticado al cargar la app
   useEffect(() => {
     const checkAuth = async () => {
+      console.log('🔍 Checking authentication...');
+
       try {
         const token = localStorage.getItem('authToken');
-        if (token) {
-          // Simulación de verificación de token
-          const mockUser: User = {
-            id: 1,
-            firstName: 'Juan',
-            lastName: 'Pérez',
-            email: 'juan@example.com',
-            role: 'customer'
-          };
-          setUser(mockUser);
+        const userData = localStorage.getItem('userData');
+
+        console.log('📋 Auth data found:', {
+          hasToken: !!token,
+          hasUserData: !!userData,
+          tokenLength: token?.length || 0
+        });
+
+        if (token && userData) {
+          console.log('🔑 Validating token...');
+          const isValid = await AuthService.validateToken(token);
+
+          console.log('✅ Token validation result:', isValid);
+
+          if (isValid) {
+            // Si el token es válido, restaurar datos del usuario
+            try {
+              const parsedUserData = JSON.parse(userData);
+              console.log('👤 Restoring user session:', parsedUserData.email);
+              setUser(parsedUserData);
+            } catch (parseError) {
+              console.error('❌ Error parsing user data:', parseError);
+              // Si hay error al parsear, limpiar todo
+              localStorage.removeItem('authToken');
+              localStorage.removeItem('refreshToken');
+              localStorage.removeItem('userData');
+            }
+          } else {
+            console.log('🗑️ Token invalid, clearing storage');
+            // Token inválido, limpiar storage
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('userData');
+          }
+        } else {
+          console.log('ℹ️ No authentication data found');
         }
-      } catch {
+      } catch (error) {
+        console.error('❌ Error during auth check:', error);
+        // En caso de error, limpiar todo por seguridad
         localStorage.removeItem('authToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userData');
       } finally {
+        console.log('✅ Auth check completed, setting loading to false');
         setLoading(false);
       }
     };
@@ -72,61 +104,51 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, _password: string, rememberMe = false) => {
+  const login = async (email: string, password: string, rememberMe = false) => {
     setLoading(true);
     try {
-      // Simulación de respuesta de API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await AuthService.login({
+        username: email,
+        password: password
+      });
 
-      const mockResponse = {
-        user: {
-          id: 1,
-          firstName: 'Juan',
-          lastName: 'Pérez',
-          email: email,
-          role: 'customer'
-        },
-        token: 'mock-jwt-token',
-        refreshToken: 'mock-refresh-token'
+      // Crear objeto usuario basado en la nueva estructura de respuesta JWT
+      const userData: User = {
+        id: response.data.id,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        email: response.data.email,
+        role: 'customer', // WordPress JWT no retorna role, usar default
+        nicename: response.data.nicename,
+        displayName: response.data.displayName
       };
 
-      localStorage.setItem('authToken', mockResponse.token);
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('userData', JSON.stringify(userData));
+
       if (rememberMe) {
-        localStorage.setItem('refreshToken', mockResponse.refreshToken);
+        localStorage.setItem('refreshToken', response.data.token);
       }
 
-      setUser(mockResponse.user);
-    } catch {
-      throw new Error('Credenciales inválidas');
+      setUser(userData);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Credenciales inválidas';
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const register = async (userData: RegisterData) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const register = async (_userData: RegisterData) => {
     setLoading(true);
     try {
-      // Simulación de respuesta de API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const mockResponse = {
-        user: {
-          id: 2,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          email: userData.email,
-          role: 'customer'
-        },
-        token: 'mock-jwt-token',
-        refreshToken: 'mock-refresh-token'
-      };
-
-      localStorage.setItem('authToken', mockResponse.token);
-      localStorage.setItem('refreshToken', mockResponse.refreshToken);
-
-      setUser(mockResponse.user);
-    } catch {
-      throw new Error('Error al crear la cuenta');
+      // WordPress JWT no incluye registro por defecto
+      // Esto necesitaría un endpoint personalizado o plugin adicional
+      throw new Error('El registro de usuarios no está implementado en este sistema');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al crear la cuenta';
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -135,24 +157,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userData');
     setUser(null);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const forgotPassword = async (_email: string) => {
     try {
-      // Simulación
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    } catch {
-      throw new Error('Error al enviar el correo de recuperación');
+      // WordPress JWT no incluye reset de password por defecto
+      // Esto necesitaría funcionalidad adicional
+      throw new Error('La recuperación de contraseña no está implementada en este sistema');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al enviar el correo de recuperación';
+      throw new Error(errorMessage);
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const resetPassword = async (_token: string, _email: string, _password: string) => {
     try {
-      // Simulación
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    } catch {
-      throw new Error('Error al restablecer la contraseña');
+      // WordPress JWT no incluye reset de password por defecto
+      throw new Error('El restablecimiento de contraseña no está implementada en este sistema');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Error al restablecer la contraseña';
+      throw new Error(errorMessage);
     }
   };
 

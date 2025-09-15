@@ -1,9 +1,9 @@
 import {Link} from "react-router";
 import CasaAlbaLogo from "@/assets/casaalba.webp";
 import {ShoppingBag, User, LogOut, ChevronDown} from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import {useCart} from "@/contexts/UseCart.tsx";
+import {useAuth} from "@/hooks/useAuth";
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -71,7 +71,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
                         </div>
 
                         <Link
-                          to="/profile"
+                          to="/cuenta"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setUserMenuOpen(false)}
                         >

@@ -12,6 +12,7 @@ import { ForgotPasswordPage } from "@/pages/auth/forgot-password";
 import { ResetPasswordPage } from "@/pages/auth/reset-password";
 import CheckoutPage from "@/pages/checkout";
 import ErrorPage from "@/pages/error";
+import AccountPage from "@/pages/account";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "/productos/:slug", Component: ProductPage },
       { path: "/carrito", Component: CartPage },
       { path: "/pagar", Component: CheckoutPage },
+      { path: "/cuenta", Component: AccountPage },
       { path: "/reviews", Component: ReviewsPage },
       { path: "/contacto", Component: ContactPage },
     ]

@@ -133,6 +133,7 @@ export default function ContactPage() {
           </div>
 
           {/* Información de contacto */}
+          {/* Scroll de logos casa alba o animacion de bidones */}
           <div className="space-y-8">
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">¡Comunícate!</h2>
@@ -177,9 +178,10 @@ export default function ContactPage() {
               </div>
             </div>
 
+            {/* TODO: Centrar botón */}
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">¿Necesitas ayuda inmediata?</h2>
-              <p className="text-gray-600 mb-4">
+              <p className="text-gray-600 mb-10">
                 Para consultas urgentes, puedes contactarnos directamente por WhatsApp, y haremos lo posible por responder rápidamente.
               </p>
               <a href={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} target={"_blank"} className="bg-mint-950 text-mint-50 py-2 px-4 rounded-lg hover:bg-mint-900 transition-colors">

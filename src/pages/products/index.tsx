@@ -116,8 +116,6 @@ export const ProductsPage = () => {
 
           {/* Contenido principal - Grid de productos */}
           <div className="col-span-8">
-            <Banner />
-
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="mb-6">
                 <div className="flex justify-between items-center">

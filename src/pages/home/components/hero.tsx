@@ -61,19 +61,19 @@ export const CallToActionComprar = () => {
       <div className="relative h-full flex items-center justify-end">
         <div className="max-w-md md:max-w-xl mx-8 lg:mx-16 text-right">
           {/* Título */}
-          <h1 className="text-4xl lg:text-6xl text-mint-950 mb-6 pacifico-regular">
+          <h1 className="text-4xl lg:text-6xl text-mint-1450 mb-6 pacifico-regular">
             Productos Casa Alba
           </h1>
 
           {/* Descripción */}
-          <p className="text-lg lg:text-xl xl:text-2xl text-neutral-800 mb-8 leading-relaxed font-handelson">
+          <p className="text-lg lg:text-xl xl:text-2xl text-red-800 mb-8 leading-relaxed font-handelson">
             Venta online de productos para el hogar, limpieza y aseo. Somos una marca propia con artículos de excelente calidad.
           </p>
 
           {/* Botón */}
           <button
             onClick={handleComprarAhora}
-            className="bg-mint-950 hover:bg-mint-900 text-mint-50 py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
+            className="bg-mint-1150 hover:bg-mint-900 text-mint-50 py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
           >
             Comprar Ahora
           </button>

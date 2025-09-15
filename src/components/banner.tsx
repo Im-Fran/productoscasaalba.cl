@@ -11,7 +11,7 @@ export const Banner = () => (
         className="absolute inset-0 w-full h-full object-cover object-center opacity-80 blur-[1px]"
       />
       <div className="relative z-10 text-center">
-          <span className="text-base md:text-xl font-semibold text-white drop-shadow bg-mint-600/80 px-3 py-1 rounded">
+          <span className="text-base md:text-2xl font-light text-mint-950 drop-shadow bg-mint-600/80 px-3 py-1 rounded">
             Nueva Tienda, Nueva Imagen, Misma Calidad
           </span>
       </div>
