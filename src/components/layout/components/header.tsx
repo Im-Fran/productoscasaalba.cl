@@ -2,7 +2,7 @@ import {Link} from "react-router";
 import CasaAlbaLogo from "@/assets/casaalba.webp";
 import {ShoppingBag, User, LogOut, ChevronDown} from "lucide-react";
 import { useState } from "react";
-import {useCart} from "@/contexts/UseCart.tsx";
+import {useCart} from "@/hooks/useCart";
 import {useAuth} from "@/hooks/useAuth";
 
 interface HeaderProps {

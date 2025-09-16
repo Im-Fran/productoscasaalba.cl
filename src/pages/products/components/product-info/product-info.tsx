@@ -5,7 +5,7 @@ import {ProductRating} from "@/pages/products/components/product-info/product-ra
 import { ProductVariationSelector } from "@/pages/products/components/product-variation-selector.tsx";
 import { useProductVariations } from "@/pages/products/hooks/useProductVariations";
 import toast from "react-hot-toast";
-import {useCart} from "@/contexts/UseCart.tsx";
+import {useCart} from "@/hooks/useCart";
 
 export type ProductInfoProps = {
   product: Product
@@ -64,6 +64,12 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     })
   }
 
+  const removeQtyFromCart = () => setQuantity(Math.max(currentProduct.add_to_cart.minimum || 1, quantity - 1))
+  const addQtyToCart = () => {
+    const maxQuantity = currentProduct.add_to_cart.maximum || 9999;
+    setQuantity(Math.min(maxQuantity, quantity + 1));
+  }
+
   return (
     <div className="space-y-6">
       {/* Title */}
@@ -73,11 +79,9 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </h1>
 
         {/* Variation info */}
-        {variationData && (
-          <p className="text-sm text-gray-600 mb-2">
-            {variationData.variation}
-          </p>
-        )}
+        {variationData && <p className="text-sm text-gray-600 mb-2">
+          {variationData.variation}
+        </p>}
 
         {/* Rating */}
         <ProductRating product={product}/>
@@ -87,12 +91,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
       <ProductPrice product={currentProduct}/>
 
       {/* Short description */}
-      {product.short_description && (
-        <div
-          className="text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: product.short_description }}
-        />
-      )}
+      {product.short_description && <div className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: product.short_description }}/>}
 
       {/* Product Variations */}
       <ProductVariationSelector
@@ -104,20 +103,14 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
       />
 
       {/* Variation Error */}
-      {variationError && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600">{variationError}</p>
-        </div>
-      )}
+      {variationError && <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+        <p className="text-sm text-red-600">{variationError}</p>
+      </div>}
 
       {/* Stock Status */}
       {currentProduct.stock_availability && (
         <div className="text-sm">
-          <span className={`font-medium ${
-            currentProduct.stock_availability.class === 'in-stock' 
-              ? 'text-green-600' 
-              : 'text-red-600'
-          }`}>
+          <span className={`font-medium ${currentProduct.stock_availability.class === 'in-stock' ? 'text-green-600' : 'text-red-600'}`}>
             {currentProduct.stock_availability.text ||
              (currentProduct.is_in_stock ? 'En stock' : 'Sin stock')}
           </span>
@@ -137,7 +130,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
           <label className="text-sm font-medium text-gray-700">Cantidad:</label>
           <div className="flex items-center border border-gray-300 rounded-lg">
             <button
-              onClick={() => setQuantity(Math.max(currentProduct.add_to_cart.minimum || 1, quantity - 1))}
+              onClick={removeQtyFromCart}
               className="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50"
               disabled={!canAddToCart}
             >
@@ -147,10 +140,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
               {quantity}
             </span>
             <button
-              onClick={() => {
-                const maxQuantity = currentProduct.add_to_cart.maximum || 9999;
-                setQuantity(Math.min(maxQuantity, quantity + 1));
-              }}
+              onClick={addQtyToCart}
               className="px-3 py-2 text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50"
               disabled={!canAddToCart}
             >
@@ -175,21 +165,10 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         </button>
 
         {/* Clear Selection Button */}
-        {hasVariations && Object.keys(selectedVariation).length > 0 && (
-          <button
-            onClick={clearSelection}
-            className="w-full py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-mint-500 focus:ring-offset-2"
-          >
-            Limpiar selección
-          </button>
-        )}
+        {hasVariations && Object.keys(selectedVariation).length > 0 && <button onClick={clearSelection} className="w-full py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-mint-500 focus:ring-offset-2">Limpiar selección</button>}
 
         {/* Quantity limits info */}
-        {currentProduct.add_to_cart.minimum > 1 && (
-          <p className="text-xs text-gray-500">
-            Cantidad mínima: {currentProduct.add_to_cart.minimum}
-          </p>
-        )}
+        {currentProduct.add_to_cart.minimum > 1 && <p className="text-xs text-gray-500">Cantidad mínima: {currentProduct.add_to_cart.minimum}</p>}
       </div>
     </div>
   );

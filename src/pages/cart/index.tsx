@@ -4,7 +4,7 @@ import { Trash2, Minus, Plus } from 'lucide-react';
 import toast from "react-hot-toast";
 import {LoadingCart} from "@/pages/cart/loading-cart.tsx";
 import {EmptyCart} from "@/pages/cart/empty-cart.tsx";
-import {useCart} from "@/contexts/UseCart.tsx";
+import {useCart} from "@/hooks/useCart";
 
 export default function CartPage() {
   const navigate = useNavigate();

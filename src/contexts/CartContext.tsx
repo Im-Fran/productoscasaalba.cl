@@ -4,7 +4,7 @@ import axios, {type AxiosTypes} from '@/utils/axios';
 import type {WooCommerceCart} from '@/types/woo-commerce';
 import {defaultCart} from '@/types/woo-commerce';
 import toast from "react-hot-toast";
-import { CartContext } from "@/contexts/UseCart";
+import { CartContext } from "@/hooks/useCart";
 
 export interface CartContextType {
   cart: WooCommerceCart | null;

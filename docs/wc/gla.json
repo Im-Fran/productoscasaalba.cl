@@ -1,0 +1,3070 @@
+{
+  "namespace": "wc\/gla",
+  "routes": {
+    "\/wc\/gla": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "namespace": {
+              "default": "wc\/gla",
+              "required": false
+            },
+            "context": {
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/settings": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/settings"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/connect": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/connect"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/accounts": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "ID de la cuenta de Google Ads",
+              "required": false
+            },
+            "billing_url": {
+              "type": "string",
+              "description": "URL del flujo de facturaci\u00f3n.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/accounts"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/connection": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/connection"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/billing-status": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/billing-status"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/account-status": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/account-status"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/campaigns": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "exclude_removed": {
+              "description": "Excluye las campa\u00f1as eliminadas.",
+              "type": "boolean",
+              "default": true,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "integer",
+              "description": "N\u00famero de ID.",
+              "required": false
+            },
+            "name": {
+              "type": "string",
+              "description": "Nombre descriptivo de la campa\u00f1a.",
+              "required": false
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "enabled",
+                "paused",
+                "removed"
+              ],
+              "description": "Estado de la campa\u00f1a.",
+              "required": false
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "unspecified",
+                "unknown",
+                "search",
+                "display",
+                "shopping",
+                "hotel",
+                "video",
+                "multi_channel",
+                "local",
+                "smart",
+                "performance_max"
+              ],
+              "description": "Tipo de campa\u00f1a.",
+              "required": false
+            },
+            "amount": {
+              "type": "number",
+              "description": "Importe del presupuesto diario en la moneda local.",
+              "required": true
+            },
+            "country": {
+              "type": "string",
+              "description": "C\u00f3digo del pa\u00eds de venta en formato ISO 3166-1 alfa-2.",
+              "required": false
+            },
+            "targeted_locations": {
+              "type": "array",
+              "description": "Las ubicaciones a las que se dirige una campa\u00f1a de Ads en formato ISO 3166-1 alfa-2.",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "required": true
+            },
+            "label": {
+              "type": "string",
+              "description": "El nombre de la etiqueta para asignar a la campa\u00f1a.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/campaigns"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/campaigns\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "name": {
+              "type": "string",
+              "description": "Nombre descriptivo de la campa\u00f1a.",
+              "required": false
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "enabled",
+                "paused",
+                "removed"
+              ],
+              "description": "Estado de la campa\u00f1a.",
+              "required": false
+            },
+            "amount": {
+              "type": "number",
+              "description": "Importe del presupuesto diario en la moneda local.",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ]
+    },
+    "\/wc\/gla\/ads\/campaigns\/asset-groups\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "id": {
+              "description": "ID de grupo de activos.",
+              "type": "integer",
+              "required": true
+            },
+            "assets": {
+              "type": "array",
+              "description": "Lista de activos a editar.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "description": "ID de activo"
+                  },
+                  "content": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Contenido del activo"
+                  },
+                  "field_type": {
+                    "type": "string",
+                    "description": "Tipo de campo de activo",
+                    "required": true,
+                    "context": [
+                      "edit"
+                    ],
+                    "enum": [
+                      "headline",
+                      "long_headline",
+                      "description",
+                      "business_name",
+                      "marketing_image",
+                      "square_marketing_image",
+                      "logo",
+                      "call_to_action_selection",
+                      "portrait_marketing_image",
+                      "youtube_video"
+                    ]
+                  }
+                }
+              },
+              "default": [],
+              "required": false
+            },
+            "final_url": {
+              "type": "string",
+              "description": "URL final",
+              "required": false
+            },
+            "path1": {
+              "type": "string",
+              "description": "Ruta del grupo de activos 1.",
+              "required": false
+            },
+            "path2": {
+              "type": "string",
+              "description": "Ruta del grupo de activos 2.",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/gla\/ads\/campaigns\/asset-groups": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "campaign_id": {
+              "description": "ID de campa\u00f1a.",
+              "type": "integer",
+              "required": true
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "campaign_id": {
+              "description": "ID de campa\u00f1a.",
+              "type": "integer",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/campaigns\/asset-groups"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/reports\/programs": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "after": {
+              "description": "Limita la respuesta a los datos posteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "-7 days",
+              "required": false
+            },
+            "before": {
+              "description": "Limita la respuesta a los datos anteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "now",
+              "required": false
+            },
+            "ids": {
+              "description": "Limita el resultado a art\u00edculos con IDs espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "fields": {
+              "description": "Limita los totales a un conjunto de campos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "order": {
+              "description": "Orden de clasificaci\u00f3n de atributos ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar la colecci\u00f3n por atributo.",
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "default": 200,
+              "minimum": 1,
+              "maximum": 1000,
+              "required": false
+            },
+            "next_page": {
+              "description": "Token para recuperar la p\u00e1gina siguiente.",
+              "type": "string",
+              "required": false
+            },
+            "interval": {
+              "description": "Intervalo de tiempo para utilizar para los segmentos en los datos devueltos.",
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month",
+                "quarter",
+                "year"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/reports\/programs"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/reports\/products": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "after": {
+              "description": "Limita la respuesta a los datos posteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "-7 days",
+              "required": false
+            },
+            "before": {
+              "description": "Limita la respuesta a los datos anteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "now",
+              "required": false
+            },
+            "ids": {
+              "description": "Limita el resultado a art\u00edculos con IDs espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "fields": {
+              "description": "Limita los totales a un conjunto de campos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "order": {
+              "description": "Orden de clasificaci\u00f3n de atributos ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar la colecci\u00f3n por atributo.",
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "default": 200,
+              "minimum": 1,
+              "maximum": 1000,
+              "required": false
+            },
+            "next_page": {
+              "description": "Token para recuperar la p\u00e1gina siguiente.",
+              "type": "string",
+              "required": false
+            },
+            "interval": {
+              "description": "Intervalo de tiempo para utilizar para los segmentos en los datos devueltos.",
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month",
+                "quarter",
+                "year"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/reports\/products"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/campaigns\/budget-metrics": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "budget": {
+              "description": "Budget to fetch metrics for.",
+              "type": "number",
+              "minimum": 0,
+              "required": false
+            },
+            "country_codes": {
+              "description": "List of country codes to fetch metrics for.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/campaigns\/budget-metrics"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/campaigns\/budget-recommendation": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "country_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/campaigns\/budget-recommendation"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/google\/connect": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "next_page_name": {
+              "description": "Indica el nombre de la p\u00e1gina siguiente asignada a la URL de redireccionamiento cuando se vuelve de la autorizaci\u00f3n de Google.",
+              "type": "string",
+              "default": "setup-mc",
+              "enum": [
+                "setup-mc",
+                "setup-ads",
+                "reconnect"
+              ],
+              "required": false
+            },
+            "login_hint": {
+              "description": "Indica a la cuenta de Google que sugiera una autorizaci\u00f3n.",
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/google\/connect"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/google\/connected": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/google\/connected"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/google\/reconnected": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/google\/reconnected"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/incentive-credits": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/incentive-credits"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/jetpack\/connect": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "next_page_name": {
+              "description": "Indica el nombre de la siguiente p\u00e1gina a la que asignar la URL de redirecci\u00f3n cuando vuelvas de la autorizaci\u00f3n de Jetpack.",
+              "type": "string",
+              "default": "setup-mc",
+              "enum": [
+                "setup-mc",
+                "reconnect"
+              ],
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/jetpack\/connect"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/jetpack\/connected": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/jetpack\/connected"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/product-statistics": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/product-statistics"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/product-statistics\/refresh": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/product-statistics\/refresh"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/issues(\/(?P<type_filter>[a-z]+))?": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina de datos a recuperar.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/gla\/mc\/product-feed": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/product-feed"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/product-visibility": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "ids": {
+              "description": "ID de los productos a actualizar.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "required": false
+            },
+            "visible": {
+              "description": "Nuevo estado de visibilidad para los productos especificados.",
+              "type": "boolean",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/product-visibility"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/contact-information": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/contact-information"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/phone-verification\/request": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "phone_region_code": {
+              "description": "C\u00f3digo de dos letras del pa\u00eds (ISO 3166-1 alpha-2) para el n\u00famero de tel\u00e9fono.",
+              "type": "string",
+              "required": true
+            },
+            "phone_number": {
+              "description": "El n\u00famero de tel\u00e9fono a verificar.",
+              "type": "string",
+              "required": true
+            },
+            "verification_method": {
+              "description": "M\u00e9todo usado para verificar el n\u00famero de tel\u00e9fono.",
+              "enum": [
+                "SMS",
+                "PHONE_CALL"
+              ],
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/phone-verification\/request"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/phone-verification\/verify": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "verification_id": {
+              "description": "El ID de verificaci\u00f3n devuelto por la solicitud de llamada.",
+              "type": "string",
+              "required": true
+            },
+            "verification_code": {
+              "description": "El c\u00f3digo de verificaci\u00f3n que se ha enviado al n\u00famero de tel\u00e9fono para la validaci\u00f3n.",
+              "type": "string",
+              "required": true
+            },
+            "verification_method": {
+              "description": "M\u00e9todo usado para verificar el n\u00famero de tel\u00e9fono.",
+              "enum": [
+                "SMS",
+                "PHONE_CALL"
+              ],
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/phone-verification\/verify"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/accounts": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "ID de cuenta de Merchant Center",
+              "required": false
+            },
+            "subaccount": {
+              "type": "boolean",
+              "description": "Es una subcuenta de MCA (Merchant Center multicliente)",
+              "required": false
+            },
+            "name": {
+              "type": "string",
+              "description": "El nombre de la cuenta de Merchant Center.",
+              "required": false
+            },
+            "domain": {
+              "type": "string",
+              "description": "El dominio registrado con la cuenta de Merchan Center.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/accounts"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/accounts\/claim-overwrite": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "ID de cuenta de Merchant Center",
+              "required": false
+            },
+            "subaccount": {
+              "type": "boolean",
+              "description": "Es una subcuenta de MCA (Merchant Center multicliente)",
+              "required": false
+            },
+            "name": {
+              "type": "string",
+              "description": "El nombre de la cuenta de Merchant Center.",
+              "required": false
+            },
+            "domain": {
+              "type": "string",
+              "description": "El dominio registrado con la cuenta de Merchan Center.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/accounts\/claim-overwrite"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/accounts\/switch-url": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "ID de cuenta de Merchant Center",
+              "required": false
+            },
+            "subaccount": {
+              "type": "boolean",
+              "description": "Es una subcuenta de MCA (Merchant Center multicliente)",
+              "required": false
+            },
+            "name": {
+              "type": "string",
+              "description": "El nombre de la cuenta de Merchant Center.",
+              "required": false
+            },
+            "domain": {
+              "type": "string",
+              "description": "El dominio registrado con la cuenta de Merchan Center.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/accounts\/switch-url"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/connection": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/connection"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/setup": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/setup"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/review": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/review"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/reports\/programs": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "after": {
+              "description": "Limita la respuesta a los datos posteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "-7 days",
+              "required": false
+            },
+            "before": {
+              "description": "Limita la respuesta a los datos anteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "now",
+              "required": false
+            },
+            "ids": {
+              "description": "Limita el resultado a art\u00edculos con IDs espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "fields": {
+              "description": "Limita los totales a un conjunto de campos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "order": {
+              "description": "Orden de clasificaci\u00f3n de atributos ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar la colecci\u00f3n por atributo.",
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "default": 200,
+              "minimum": 1,
+              "maximum": 1000,
+              "required": false
+            },
+            "next_page": {
+              "description": "Token para recuperar la p\u00e1gina siguiente.",
+              "type": "string",
+              "required": false
+            },
+            "interval": {
+              "description": "Intervalo de tiempo para utilizar para los segmentos en los datos devueltos.",
+              "type": "string",
+              "enum": [
+                "day"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/reports\/programs"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/reports\/products": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "after": {
+              "description": "Limita la respuesta a los datos posteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "-7 days",
+              "required": false
+            },
+            "before": {
+              "description": "Limita la respuesta a los datos anteriores a una fecha determinada que cumpla con ISO8601.",
+              "type": "string",
+              "format": "date",
+              "default": "now",
+              "required": false
+            },
+            "ids": {
+              "description": "Limita el resultado a art\u00edculos con IDs espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "fields": {
+              "description": "Limita los totales a un conjunto de campos.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false
+            },
+            "order": {
+              "description": "Orden de clasificaci\u00f3n de atributos ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar la colecci\u00f3n por atributo.",
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de filas que se devolver\u00e1n en los datos de resultados.",
+              "type": "integer",
+              "default": 200,
+              "minimum": 1,
+              "maximum": 1000,
+              "required": false
+            },
+            "next_page": {
+              "description": "Token para recuperar la p\u00e1gina siguiente.",
+              "type": "string",
+              "required": false
+            },
+            "interval": {
+              "description": "Intervalo de tiempo para utilizar para los segmentos en los datos devueltos.",
+              "type": "string",
+              "enum": [
+                "day"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/reports\/products"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/rates\/batch": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "rates": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "description": "Array de tarifas de env\u00edo para crear.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "description": "El n\u00famero de identificaci\u00f3n \u00fanico de la tarifa de env\u00edo.",
+                    "context": [
+                      "view"
+                    ],
+                    "readonly": true
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "C\u00f3digo del pa\u00eds en formato ISO 3166-1 alpha-2.",
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "sanitize_callback": {},
+                    "validate_callback": {},
+                    "required": true
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Moneda a usar para la tarifa de env\u00edo.",
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "validate_callback": "rest_validate_request_arg",
+                    "default": "USD"
+                  },
+                  "rate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "La tarifa de env\u00edo.",
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "validate_callback": "rest_validate_request_arg",
+                    "required": true
+                  },
+                  "options": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "Conjunto de opciones para el m\u00e9todo de env\u00edo.",
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "validate_callback": "rest_validate_request_arg",
+                    "default": [],
+                    "properties": {
+                      "free_shipping_threshold": {
+                        "type": "number",
+                        "minimum": 0,
+                        "description": "Precio m\u00ednimo necesario para env\u00edo gratuito.",
+                        "context": [
+                          "view",
+                          "edit"
+                        ],
+                        "validate_callback": "rest_validate_request_arg"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "ids": {
+              "type": "array",
+              "description": "Array de n\u00fameros \u00fanicos de identificaci\u00f3n de la tarifa de env\u00edo.",
+              "minItems": 1,
+              "uniqueItems": true,
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/shipping\/rates\/batch"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/rates": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "El n\u00famero de identificaci\u00f3n \u00fanico de la tarifa de env\u00edo.",
+              "required": false
+            },
+            "country": {
+              "type": "string",
+              "description": "C\u00f3digo del pa\u00eds en formato ISO 3166-1 alpha-2.",
+              "required": true
+            },
+            "currency": {
+              "type": "string",
+              "description": "Moneda a usar para la tarifa de env\u00edo.",
+              "default": "USD",
+              "required": false
+            },
+            "rate": {
+              "type": "number",
+              "minimum": 0,
+              "description": "La tarifa de env\u00edo.",
+              "required": true
+            },
+            "options": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Conjunto de opciones para el m\u00e9todo de env\u00edo.",
+              "default": [],
+              "properties": {
+                "free_shipping_threshold": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Precio m\u00ednimo necesario para env\u00edo gratuito.",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "validate_callback": "rest_validate_request_arg"
+                }
+              },
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/shipping\/rates"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/rates\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "El n\u00famero de identificaci\u00f3n \u00fanico de la tarifa de env\u00edo.",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "El n\u00famero de identificaci\u00f3n \u00fanico de la tarifa de env\u00edo.",
+              "required": false
+            },
+            "country": {
+              "type": "string",
+              "description": "C\u00f3digo del pa\u00eds en formato ISO 3166-1 alpha-2.",
+              "required": true
+            },
+            "currency": {
+              "type": "string",
+              "description": "Moneda a usar para la tarifa de env\u00edo.",
+              "default": "USD",
+              "required": false
+            },
+            "rate": {
+              "type": "number",
+              "minimum": 0,
+              "description": "La tarifa de env\u00edo.",
+              "required": true
+            },
+            "options": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Conjunto de opciones para el m\u00e9todo de env\u00edo.",
+              "default": [],
+              "properties": {
+                "free_shipping_threshold": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Precio m\u00ednimo necesario para env\u00edo gratuito.",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "validate_callback": "rest_validate_request_arg"
+                }
+              },
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "id": {
+              "type": "number",
+              "description": "El n\u00famero de identificaci\u00f3n \u00fanico de la tarifa de env\u00edo.",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/gla\/mc\/shipping\/rates\/suggestions": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "country_codes": {
+              "type": "array",
+              "description": "Array de c\u00f3digos de pa\u00eds en formato ISO 3166-1 alfa-2.",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/shipping\/rates\/suggestions"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/times\/batch": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "time": {
+              "type": "integer",
+              "description": "El tiempo m\u00ednimo de env\u00edo en d\u00edas.",
+              "required": false
+            },
+            "max_time": {
+              "type": "integer",
+              "description": "El tiempo m\u00e1ximo de env\u00edo en d\u00edas.",
+              "required": false
+            },
+            "country_codes": {
+              "type": "array",
+              "description": "Array de c\u00f3digos de pa\u00eds en formato ISO 3166-1 alfa-2.",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "required": true
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "time": {
+              "type": "integer",
+              "description": "El tiempo m\u00ednimo de env\u00edo en d\u00edas.",
+              "required": false
+            },
+            "max_time": {
+              "type": "integer",
+              "description": "El tiempo m\u00e1ximo de env\u00edo en d\u00edas.",
+              "required": false
+            },
+            "country_codes": {
+              "type": "array",
+              "description": "Array de c\u00f3digos de pa\u00eds en formato ISO 3166-1 alfa-2.",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              },
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/shipping\/times\/batch"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/times": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "country_code": {
+              "type": "string",
+              "description": "C\u00f3digo del pa\u00eds en formato ISO 3166-1 alpha-2.",
+              "required": true
+            },
+            "time": {
+              "type": "integer",
+              "description": "El tiempo m\u00ednimo de env\u00edo en d\u00edas.",
+              "required": true
+            },
+            "max_time": {
+              "type": "integer",
+              "description": "El tiempo m\u00e1ximo de env\u00edo en d\u00edas.",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/shipping\/times"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/shipping\/times\/(?P<country_code>\\w{2})": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "country_code": {
+              "type": "string",
+              "description": "C\u00f3digo del pa\u00eds en formato ISO 3166-1 alpha-2.",
+              "required": true
+            },
+            "time": {
+              "type": "integer",
+              "description": "El tiempo m\u00ednimo de env\u00edo en d\u00edas.",
+              "required": false
+            },
+            "max_time": {
+              "type": "integer",
+              "description": "El tiempo m\u00e1ximo de env\u00edo en d\u00edas.",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ]
+    },
+    "\/wc\/gla\/mc\/target_audience": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "location": {
+              "type": "string",
+              "description": "Ubicaciones donde se mostrar\u00e1n los productos.",
+              "enum": [
+                "all",
+                "selected"
+              ],
+              "required": true
+            },
+            "countries": {
+              "type": "array",
+              "description": "Array de c\u00f3digos de pa\u00eds en formato ISO 3166-1 alfa-2.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/target_audience"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/target_audience\/suggestions": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/target_audience\/suggestions"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/countries": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "continents": {
+              "description": "Incluye los datos de los continentes si se establece como true.",
+              "type": "boolean",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/countries"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/settings\/sync": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/settings\/sync"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/connections": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/connections"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/setup\/complete": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/setup\/complete"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/assets\/suggestions": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "id": {
+              "description": "ID de entrada o de t\u00e9rmino.",
+              "type": "number",
+              "required": true
+            },
+            "type": {
+              "description": "Tipo vinculado al id.",
+              "type": "string",
+              "enum": [
+                "post",
+                "term",
+                "homepage"
+              ],
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/assets\/suggestions"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/assets\/final-url\/suggestions": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "search": {
+              "description": "Buscar el t\u00edtulo de la entrada o el nombre del t\u00e9rmino",
+              "type": "string",
+              "default": "",
+              "required": false
+            },
+            "per_page": {
+              "description": "El n\u00famero de elementos a devolver",
+              "type": "number",
+              "default": 30,
+              "minimum": 1,
+              "required": false
+            },
+            "order_by": {
+              "description": "Ordenar los elementos recuperados por par\u00e1metro",
+              "type": "string",
+              "default": "title",
+              "enum": [
+                "type",
+                "title",
+                "url"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/assets\/final-url\/suggestions"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/syncable-products-count": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/syncable-products-count"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/policy_check": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/policy_check"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/mapping\/attributes": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/mapping\/attributes"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/mapping\/sources": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "attribute": {
+              "description": "La clave de atributo para obtener las fuentes.",
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/mapping\/sources"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/mapping\/rules": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "Alcance bajo la cual es hecha la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de elementos a mostrar en los resultados.",
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "description": "El Id de la norma.",
+              "type": "integer",
+              "required": false
+            },
+            "attribute": {
+              "description": "El valor del atributo de la regla.",
+              "type": "string",
+              "enum": [
+                "adult",
+                "ageGroup",
+                "brand",
+                "color",
+                "condition",
+                "gender",
+                "gtin",
+                "isBundle",
+                "material",
+                "mpn",
+                "multipack",
+                "pattern",
+                "size",
+                "sizeSystem",
+                "sizeType"
+              ],
+              "required": true
+            },
+            "source": {
+              "description": "El valor de origen de la regla.",
+              "type": "string",
+              "required": true
+            },
+            "category_condition_type": {
+              "description": "La clase de condici\u00f3n de categor\u00eda que se aplicar\u00e1 a esta regla.",
+              "type": "string",
+              "enum": [
+                "ALL",
+                "EXCEPT",
+                "ONLY"
+              ],
+              "required": true
+            },
+            "categories": {
+              "description": "Lista de IDs de categor\u00eda, separados por comas.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/mapping\/rules"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/mapping\/rules\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "id": {
+              "description": "El Id de la norma.",
+              "type": "integer",
+              "required": false
+            },
+            "attribute": {
+              "description": "El valor del atributo de la regla.",
+              "type": "string",
+              "enum": [
+                "adult",
+                "ageGroup",
+                "brand",
+                "color",
+                "condition",
+                "gender",
+                "gtin",
+                "isBundle",
+                "material",
+                "mpn",
+                "multipack",
+                "pattern",
+                "size",
+                "sizeSystem",
+                "sizeType"
+              ],
+              "required": true
+            },
+            "source": {
+              "description": "El valor de origen de la regla.",
+              "type": "string",
+              "required": true
+            },
+            "category_condition_type": {
+              "description": "La clase de condici\u00f3n de categor\u00eda que se aplicar\u00e1 a esta regla.",
+              "type": "string",
+              "enum": [
+                "ALL",
+                "EXCEPT",
+                "ONLY"
+              ],
+              "required": true
+            },
+            "categories": {
+              "description": "Lista de IDs de categor\u00eda, separados por comas.",
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ]
+    },
+    "\/wc\/gla\/mc\/mapping\/categories": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/mapping\/categories"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/mapping\/sync": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/mapping\/sync"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/tours\/(?P<id>[a-zA-z0-9-_]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ]
+    },
+    "\/wc\/gla\/tours": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "id": {
+              "description": "El Id del recorrido.",
+              "type": "string",
+              "pattern": "^[a-zA-z0-9-_]+$",
+              "required": true
+            },
+            "checked": {
+              "description": "Si se comprob\u00f3 el recorrido.",
+              "type": "boolean",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/tours"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/rest-api\/authorize": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "DELETE",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "next_page_name": {
+              "description": "Indica el nombre de la p\u00e1gina siguiente asignada a la URL de redirecci\u00f3n cuando se redirige de vuelta desde la autorizaci\u00f3n de la aplicaci\u00f3n Google WPCOM.",
+              "type": "string",
+              "default": "setup-mc",
+              "enum": [
+                "setup-mc",
+                "settings"
+              ],
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "status": {
+              "description": "El estado del comerciante que concede acceso a la aplicaci\u00f3n WPCOM de Google",
+              "type": "string",
+              "enum": [
+                "approved",
+                "disapproved",
+                "error"
+              ],
+              "required": true
+            },
+            "nonce": {
+              "description": "El nonce proporcionado por Google en el par\u00e1metro de consulta URL cuando Google redirige de vuelta al sitio del comerciante",
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/rest-api\/authorize"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/gtin-migration": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/gtin-migration"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/price-benchmarks": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "Maximum number of items returned in the results.",
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limitar resultados a aquellos que coinciden con una cadena.",
+              "type": "string",
+              "required": false
+            },
+            "order": {
+              "description": "Orden de clasificaci\u00f3n de atributos ascendente o descendente.",
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc",
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar la colecci\u00f3n por atributo.",
+              "type": "string",
+              "enum": [
+                "effectiveness",
+                "id",
+                "benchmark_price",
+                "product_price",
+                "suggested_price"
+              ],
+              "default": "effectiveness",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/price-benchmarks"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/mc\/price-benchmarks\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "id": {
+              "description": "The Id of the product.",
+              "type": "integer",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/gla\/mc\/price-benchmarks\/summary": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/mc\/price-benchmarks\/summary"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/sync": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "products": {
+              "type": "object",
+              "description": "Set pull and push sync method for Products.",
+              "items": {
+                "push": {
+                  "description": "Enable or disable Push method.",
+                  "type": "boolean"
+                },
+                "pull": {
+                  "description": "Enable or disable Pull method.",
+                  "type": "boolean"
+                }
+              },
+              "required": false
+            },
+            "coupons": {
+              "type": "object",
+              "description": "Set the config for Push and Pull methods for Coupons.",
+              "items": {
+                "push": {
+                  "description": "Enable or disable Push method.",
+                  "type": "boolean"
+                },
+                "pull": {
+                  "description": "Enable or disable Pull method.",
+                  "type": "boolean"
+                }
+              },
+              "required": false
+            },
+            "shipping": {
+              "type": "object",
+              "description": "Set the config for Push and Pull methods for Shipping.",
+              "items": {
+                "push": {
+                  "description": "Enable or disable Push method.",
+                  "type": "boolean"
+                },
+                "pull": {
+                  "description": "Enable or disable Pull method.",
+                  "type": "boolean"
+                }
+              },
+              "required": false
+            },
+            "settings": {
+              "type": "object",
+              "description": "Set the config for Push and Pull methods for Settings.",
+              "items": {
+                "push": {
+                  "description": "Enable or disable Push method.",
+                  "type": "boolean"
+                },
+                "pull": {
+                  "description": "Enable or disable Pull method.",
+                  "type": "boolean"
+                }
+              },
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/sync"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/recommendations": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "type": {
+              "type": "string",
+              "description": "Filter recommendations by type",
+              "enum": [
+                "IMPROVE_PERFORMANCE_MAX_AD_STRENGTH"
+              ],
+              "required": false
+            },
+            "id": {
+              "type": "integer",
+              "description": "Filter recommendations by unique id",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/recommendations"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/ads\/settings": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "enhanced_conversions_enabled": {
+              "type": "boolean",
+              "description": "Whether enhanced conversions are enabled.",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/ads\/settings"
+          }
+        ]
+      }
+    },
+    "\/wc\/gla\/connect": {
+      "namespace": "wc\/gla",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/gla\/connect"
+          }
+        ]
+      }
+    }
+  },
+  "_links": {
+    "up": [
+      {
+        "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/"
+      }
+    ]
+  }
+}
