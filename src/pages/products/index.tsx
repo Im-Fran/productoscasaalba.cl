@@ -4,7 +4,6 @@ import { SearchBox } from '../home/components/search-box';
 import { ProductGrid } from '../../components/product-grid/product-grid.tsx';
 import axios from "axios";
 import type {Product} from "@/types/product";
-import {Banner} from '@/components/banner';
 
 export const ProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);

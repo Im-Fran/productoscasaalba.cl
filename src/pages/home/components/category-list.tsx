@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axiosInstance from '@/utils/axios';
 
 interface Category {
   id: number;
@@ -31,15 +32,9 @@ export const CategoryList = ({ selectedCategories, onCategoryChange }: CategoryL
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('/api/wp-json/wc/store/v1/products/categories?order=asc&orderby=name');
+        const response = await axiosInstance.get('/api/wp-json/wc/store/v1/products/categories?order=asc&orderby=name');
 
-        if (!response.ok) {
-          const errorMessage = `Error ${response.status}: ${response.statusText}`;
-          setError(errorMessage);
-          return;
-        }
-
-        const data: WooCommerceCategory[] = await response.json();
+        const data: WooCommerceCategory[] = response.data;
 
         const transformedCategories: Category[] = data.map((category: WooCommerceCategory) => ({
           id: category.id,

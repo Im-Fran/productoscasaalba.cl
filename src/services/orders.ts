@@ -183,7 +183,6 @@ export class OrderService {
 
       // Log más detalles del error
       if (apiError.response) {
-        console.error('🔴 Response status:', apiError.response.status);
         console.error('🔴 Response data:', apiError.response.data);
       }
 
