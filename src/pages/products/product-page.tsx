@@ -5,7 +5,7 @@ import { ProductInfo } from '@/pages/products/components/product-info/product-in
 import { ProductTabs } from '@/pages/products/components/product-tabs.tsx';
 import { RelatedProducts } from '@/pages/products/components/related-products/related-products.tsx';
 import type {Product} from "@/types/product";
-import axios from "axios";
+import axios from "@/utils/axios";
 import {LoadingProductPage} from "@/pages/products/loading-product-page.tsx";
 
 export const ProductPage = () => {

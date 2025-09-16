@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useState} from 'react';
-import { CategoryList } from '../home/components/category-list';
-import { SearchBox } from '../home/components/search-box';
-import { ProductGrid } from '../../components/product-grid/product-grid.tsx';
-import axios from "axios";
+import { CategoryList } from '@/pages/home/components/category-list.tsx';
+import { SearchBox } from '@/pages/home/components/search-box.tsx';
+import axios from "@/utils/axios";
 import type {Product} from "@/types/product";
+import {ProductGrid} from "@/components/product-grid/product-grid.tsx";
 
 export const ProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState<string | null>(null);
