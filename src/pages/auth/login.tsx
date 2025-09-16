@@ -157,7 +157,7 @@ export const LoginPage = () => {
   );
 };
 
-const SocialLogin = () => {
+export const SocialLogin = () => {
   return <div className="mt-6">
     <div className="relative">
       <div className="absolute inset-0 flex items-center">
