@@ -16,16 +16,25 @@ export const useProductVariations = (product: Product) => {
   const availableAttributes = useMemo(() => {
     const variationAttributes: { [key: string]: string[] } = {};
 
+    // Verificar si el producto tiene variaciones antes de procesarlas
+    if (!product.variations || !Array.isArray(product.variations) || product.variations.length === 0) {
+      return variationAttributes;
+    }
+
     // Extraer atributos únicos de todas las variaciones disponibles
     product.variations.forEach(variation => {
-      variation.attributes.forEach(attr => {
-        if (!variationAttributes[attr.name]) {
-          variationAttributes[attr.name] = [];
-        }
-        if (!variationAttributes[attr.name].includes(attr.value)) {
-          variationAttributes[attr.name].push(attr.value);
-        }
-      });
+      if (variation.attributes && Array.isArray(variation.attributes)) {
+        variation.attributes.forEach(attr => {
+          if (attr.name && attr.value) {
+            if (!variationAttributes[attr.name]) {
+              variationAttributes[attr.name] = [];
+            }
+            if (!variationAttributes[attr.name].includes(attr.value)) {
+              variationAttributes[attr.name].push(attr.value);
+            }
+          }
+        });
+      }
     });
 
     return variationAttributes;
@@ -34,14 +43,21 @@ export const useProductVariations = (product: Product) => {
   // Verificar si todas las opciones requeridas están seleccionadas
   const isSelectionComplete = useMemo(() => {
     const requiredAttributes = Object.keys(availableAttributes);
+    // Si no hay atributos requeridos, la selección está "completa"
+    if (requiredAttributes.length === 0) return true;
     return requiredAttributes.every(attrName => selectedVariation[attrName]);
   }, [selectedVariation, availableAttributes]);
 
   // Encontrar la variación que coincide con la selección actual
   const findMatchingVariation = useCallback((selection: SelectedVariation): Variation | null => {
-    if (!product.variations || product.variations.length === 0) return null;
+    if (!product.variations || !Array.isArray(product.variations) || product.variations.length === 0) {
+      return null;
+    }
 
     return product.variations.find(variation => {
+      if (!variation.attributes || !Array.isArray(variation.attributes)) {
+        return false;
+      }
       return variation.attributes.every(attr =>
         selection[attr.name] === attr.value
       );
@@ -78,7 +94,7 @@ export const useProductVariations = (product: Product) => {
     const requiredAttributes = Object.keys(availableAttributes);
     const isComplete = requiredAttributes.every(attrName => newSelection[attrName]);
 
-    if (isComplete) {
+    if (isComplete && requiredAttributes.length > 0) {
       const matchingVariation = findMatchingVariation(newSelection);
       if (matchingVariation) {
         fetchVariationData(matchingVariation.id);
@@ -104,9 +120,11 @@ export const useProductVariations = (product: Product) => {
   const hasVariations = useMemo(() => {
     return product.type === 'variable' &&
            product.has_options &&
+           product.variations &&
+           Array.isArray(product.variations) &&
            product.variations.length > 0 &&
            Object.keys(availableAttributes).length > 0;
-  }, [product.type, product.has_options, product.variations.length, availableAttributes]);
+  }, [product.type, product.has_options, product.variations, availableAttributes]);
 
   // Obtener variación seleccionada actualmente
   const selectedVariationId = useMemo(() => {
