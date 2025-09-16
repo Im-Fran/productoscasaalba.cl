@@ -1,0 +1,3599 @@
+{
+  "namespace": "wc\/store",
+  "routes": {
+    "\/wc\/store": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "namespace": {
+              "default": "wc\/store",
+              "required": false
+            },
+            "context": {
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/batch": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "validation": {
+              "type": "string",
+              "enum": [
+                "require-all-validate",
+                "normal"
+              ],
+              "default": "normal",
+              "required": false
+            },
+            "requests": {
+              "type": "array",
+              "maxItems": 25,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "POST",
+                      "PUT",
+                      "PATCH",
+                      "DELETE"
+                    ],
+                    "default": "POST"
+                  },
+                  "path": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "body": {
+                    "type": "object",
+                    "properties": [],
+                    "additionalProperties": true
+                  },
+                  "headers": {
+                    "type": "object",
+                    "properties": [],
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "array"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/batch"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/add-item": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "id": {
+              "description": "El ID del producto o la variaci\u00f3n en el carrito.",
+              "type": "integer",
+              "required": false
+            },
+            "quantity": {
+              "description": "Cantidad de este art\u00edculo para agregar en el carrito.",
+              "type": "number",
+              "required": false
+            },
+            "variation": {
+              "description": "Atributos elegidos (para variaciones).",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "attribute": {
+                    "description": "Nombre del atributo de la variaci\u00f3n.",
+                    "type": "string",
+                    "context": [
+                      "view",
+                      "edit"
+                    ]
+                  },
+                  "value": {
+                    "description": "Valor del atributo de la variaci\u00f3n.",
+                    "type": "string",
+                    "context": [
+                      "view",
+                      "edit"
+                    ]
+                  }
+                }
+              },
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/add-item"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/apply-coupon": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "code": {
+              "description": "Identificador \u00fanico para el cup\u00f3n en el carrito.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/apply-coupon"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/coupons": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "code": {
+              "description": "El c\u00f3digo \u00fanico del cup\u00f3n.",
+              "type": "string",
+              "required": false
+            },
+            "discount_type": {
+              "description": "El tipo de descuento del cup\u00f3n (p. ej.: porcentaje o cantidad fija)",
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/coupons"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/coupons\/(?P<code>[\\w-]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "code": {
+              "description": "Identificador \u00fanico para el cup\u00f3n en el carrito.",
+              "type": "string",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "code": {
+              "description": "Identificador \u00fanico para el cup\u00f3n en el carrito.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/cart\/extensions": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "namespace": {
+              "description": "Nombre de la extensi\u00f3n - ser\u00e1 usado para garantizar que los datos de la solicitud se dirijan adecuadamente.",
+              "type": "string",
+              "required": false
+            },
+            "data": {
+              "description": "Datos adicionales para pasar a la extensi\u00f3n",
+              "type": "object",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/extensions"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/items": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "extensions": {
+              "type": "object",
+              "properties": [],
+              "default": [],
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/items"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/items\/(?P<key>[\\w-]{32})": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "key": {
+              "description": "Identificador \u00fanico para el art\u00edculo en el carrito.",
+              "type": "string",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "key": {
+              "description": "Identificador \u00fanico para el art\u00edculo en el carrito.",
+              "type": "string",
+              "required": false
+            },
+            "extensions": {
+              "type": "object",
+              "properties": [],
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "key": {
+              "description": "Identificador \u00fanico para el art\u00edculo en el carrito.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/cart\/remove-coupon": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "code": {
+              "description": "Identificador \u00fanico para el cup\u00f3n en el carrito.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/remove-coupon"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/remove-item": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "key": {
+              "description": "Identificador \u00fanico (clave) del producto del carrito.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/remove-item"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/select-shipping-rate": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "package_id": {
+              "description": "El ID del paquete a enviar. D\u00e9jalo en blanco para aplicarlo a todos los paquetes.",
+              "type": [
+                "integer",
+                "string",
+                "null"
+              ],
+              "required": false
+            },
+            "rate_id": {
+              "description": "El ID de la tarifa elegida para el paquete.",
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/select-shipping-rate"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/update-item": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "key": {
+              "description": "Identificador \u00fanico (clave) del producto del carrito a actualizar.",
+              "type": "string",
+              "required": false
+            },
+            "quantity": {
+              "description": "Nueva cantidad del producto en el carrito.",
+              "type": "number",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/update-item"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/cart\/update-customer": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "billing_address": {
+              "description": "Direcci\u00f3n de facturaci\u00f3n.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "email": {
+                  "description": "Correo electr\u00f3nico",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            },
+            "shipping_address": {
+              "description": "Direcci\u00f3n de env\u00edo.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/cart\/update-customer"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/checkout": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET",
+        "POST",
+        "POST",
+        "PUT",
+        "PATCH"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "payment_data": {
+              "description": "Datos a pasar con el medio de pago al procesar el pago.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "boolean"
+                    ]
+                  }
+                }
+              },
+              "required": false
+            },
+            "customer_password": {
+              "description": "Contrase\u00f1a del cliente para cuentas nuevas, si procede.",
+              "type": "string",
+              "required": false
+            },
+            "customer_note": {
+              "description": "Nota agregada al pedido por el cliente durante el pago.",
+              "type": "string",
+              "required": false
+            },
+            "billing_address": {
+              "description": "Direcci\u00f3n de facturaci\u00f3n.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "email": {
+                  "description": "Correo electr\u00f3nico",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": true
+            },
+            "shipping_address": {
+              "description": "Direcci\u00f3n de env\u00edo.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            },
+            "payment_method": {
+              "description": "El ID del medio de pago que se est\u00e1 usando para procesar el pago.",
+              "type": "string",
+              "enum": [
+                "",
+                "woo-mercado-pago-ticket",
+                "woo-mercado-pago-basic",
+                "woo-mercado-pago-custom",
+                "bacs",
+                "cheque",
+                "cod"
+              ],
+              "required": false
+            },
+            "create_account": {
+              "description": "Crear una nueva cuenta de usuario como parte del proceso del pedido.",
+              "type": "boolean",
+              "required": false
+            },
+            "additional_fields": {
+              "description": "Campos adicionales que deben permanecer en el pedido.",
+              "type": "object",
+              "properties": [],
+              "required": false
+            },
+            "extensions": {
+              "type": "object",
+              "properties": {
+                "woocommerce\/order-attribution": {
+                  "description": "Datos de extensi\u00f3n registrados por woocommerce\/order-attribution",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "properties": {
+                    "source_type": {
+                      "description": "Campo de atribuci\u00f3n del pedido: source_type",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "referrer": {
+                      "description": "Campo de atribuci\u00f3n del pedido: referrer",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_campaign": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_campaign",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_medium": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_medium",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_content": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_content",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_id": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_id",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_term": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_term",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source_platform": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source_platform",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_creative_format": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_creative_format",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_marketing_tactic": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_marketing_tactic",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_entry": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_entry",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_start_time": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_start_time",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_pages": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_pages",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_count": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_count",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "user_agent": {
+                      "description": "Campo de atribuci\u00f3n del pedido: user_agent",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    }
+                  }
+                }
+              },
+              "default": {
+                "woocommerce\/order-attribution": []
+              },
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "additional_fields": {
+              "description": "Campos adicionales que deben permanecer en el pedido.",
+              "type": "object",
+              "properties": [],
+              "required": false
+            },
+            "payment_method": {
+              "description": "El ID del medio de pago que se est\u00e1 usando para procesar el pago.",
+              "type": "string",
+              "enum": [
+                "",
+                "woo-mercado-pago-ticket",
+                "woo-mercado-pago-basic",
+                "woo-mercado-pago-custom",
+                "bacs",
+                "cheque",
+                "cod"
+              ],
+              "required": false
+            },
+            "order_notes": {
+              "description": "Notas del pedido.",
+              "type": "string",
+              "required": false
+            },
+            "customer_note": {
+              "description": "Nota agregada al pedido por el cliente durante el pago.",
+              "type": "string",
+              "required": false
+            },
+            "billing_address": {
+              "description": "Direcci\u00f3n de facturaci\u00f3n.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "email": {
+                  "description": "Correo electr\u00f3nico",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            },
+            "shipping_address": {
+              "description": "Direcci\u00f3n de env\u00edo.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            },
+            "create_account": {
+              "description": "Crear una nueva cuenta de usuario como parte del proceso del pedido.",
+              "type": "boolean",
+              "required": false
+            },
+            "extensions": {
+              "type": "object",
+              "properties": {
+                "woocommerce\/order-attribution": {
+                  "description": "Datos de extensi\u00f3n registrados por woocommerce\/order-attribution",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "properties": {
+                    "source_type": {
+                      "description": "Campo de atribuci\u00f3n del pedido: source_type",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "referrer": {
+                      "description": "Campo de atribuci\u00f3n del pedido: referrer",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_campaign": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_campaign",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_medium": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_medium",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_content": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_content",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_id": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_id",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_term": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_term",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source_platform": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source_platform",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_creative_format": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_creative_format",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_marketing_tactic": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_marketing_tactic",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_entry": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_entry",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_start_time": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_start_time",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_pages": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_pages",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_count": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_count",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "user_agent": {
+                      "description": "Campo de atribuci\u00f3n del pedido: user_agent",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    }
+                  }
+                }
+              },
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/checkout"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/checkout\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "payment_data": {
+              "description": "Datos a pasar con el medio de pago al procesar el pago.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "boolean"
+                    ]
+                  }
+                }
+              },
+              "required": false
+            },
+            "customer_note": {
+              "description": "Nota agregada al pedido por el cliente durante el pago.",
+              "type": "string",
+              "required": false
+            },
+            "billing_address": {
+              "description": "Direcci\u00f3n de facturaci\u00f3n.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "email": {
+                  "description": "Correo electr\u00f3nico",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": true
+            },
+            "shipping_address": {
+              "description": "Direcci\u00f3n de env\u00edo.",
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "description": "Nombre",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "last_name": {
+                  "description": "Apellidos",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "company": {
+                  "description": "Empresa",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_1": {
+                  "description": "Direcci\u00f3n",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "address_2": {
+                  "description": "Departamento, habitaci\u00f3n, etc.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "city": {
+                  "description": "Ciudad",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "state": {
+                  "description": "C\u00f3digo de regi\u00f3n\/comuna, o nombre de la regi\u00f3n, provincia o comuna.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "postcode": {
+                  "description": "C\u00f3digo postal",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "country": {
+                  "description": "C\u00f3digo de pa\u00eds\/regi\u00f3n en formato ISO 3166-1 alpha-2.",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                },
+                "phone": {
+                  "description": "Tel\u00e9fono",
+                  "type": "string",
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "required": true
+                }
+              },
+              "required": false
+            },
+            "payment_method": {
+              "description": "El ID del medio de pago que se est\u00e1 usando para procesar el pago.",
+              "type": "string",
+              "enum": [
+                "",
+                "woo-mercado-pago-ticket",
+                "woo-mercado-pago-basic",
+                "woo-mercado-pago-custom",
+                "bacs",
+                "cheque",
+                "cod"
+              ],
+              "required": false
+            },
+            "additional_fields": {
+              "description": "Campos adicionales que deben permanecer en el pedido.",
+              "type": "object",
+              "properties": [],
+              "required": false
+            },
+            "extensions": {
+              "type": "object",
+              "properties": {
+                "woocommerce\/order-attribution": {
+                  "description": "Datos de extensi\u00f3n registrados por woocommerce\/order-attribution",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "context": [
+                    "view",
+                    "edit"
+                  ],
+                  "properties": {
+                    "source_type": {
+                      "description": "Campo de atribuci\u00f3n del pedido: source_type",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "referrer": {
+                      "description": "Campo de atribuci\u00f3n del pedido: referrer",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_campaign": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_campaign",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_medium": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_medium",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_content": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_content",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_id": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_id",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_term": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_term",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_source_platform": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_source_platform",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_creative_format": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_creative_format",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "utm_marketing_tactic": {
+                      "description": "Campo de atribuci\u00f3n del pedido: utm_marketing_tactic",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_entry": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_entry",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_start_time": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_start_time",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_pages": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_pages",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "session_count": {
+                      "description": "Campo de atribuci\u00f3n del pedido: session_count",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    },
+                    "user_agent": {
+                      "description": "Campo de atribuci\u00f3n del pedido: user_agent",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "context": []
+                    }
+                  }
+                }
+              },
+              "default": {
+                "woocommerce\/order-attribution": []
+              },
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/order\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/attributes": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/attributes"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/attributes\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "id": {
+              "description": "Identificador \u00fanico para el recurso.",
+              "type": "integer",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/attributes\/(?P<attribute_id>[\\d]+)\/terms": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "attribute_id": {
+              "description": "Identificador \u00fanico del atributo.",
+              "type": "integer",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar en ascendente o descendente.",
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar por propiedad del t\u00e9rmino.",
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "name",
+                "slug",
+                "count",
+                "menu_order",
+                "name_num",
+                "id"
+              ],
+              "required": false
+            },
+            "hide_empty": {
+              "description": "Si es true, no se mostrar\u00e1n los t\u00e9rminos vac\u00edos.",
+              "type": "boolean",
+              "default": true,
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/categories": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "embed",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar en ascendente o descendente.",
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar por propiedad del t\u00e9rmino.",
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "name",
+                "slug",
+                "count"
+              ],
+              "required": false
+            },
+            "hide_empty": {
+              "description": "Si es true, no se mostrar\u00e1n los t\u00e9rminos vac\u00edos.",
+              "type": "boolean",
+              "default": true,
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/categories"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/categories\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "id": {
+              "description": "Identificador \u00fanico para el recurso.",
+              "type": "integer",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "embed",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/brands": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "embed",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar en ascendente o descendente.",
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar por propiedad del t\u00e9rmino.",
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "name",
+                "slug",
+                "count"
+              ],
+              "required": false
+            },
+            "hide_empty": {
+              "description": "Si es true, no se mostrar\u00e1n los t\u00e9rminos vac\u00edos.",
+              "type": "boolean",
+              "default": true,
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/brands"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/brands\/(?P<identifier>[\\w-]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "identifier": {
+              "description": "Identificador \u00fanico para el recurso.",
+              "type": "string",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "embed",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/collection-data": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "default": 10,
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "slug": {
+              "description": "Limita el resultado a productos con slug(s) espec\u00edfico(s). Usa comas para separarlos.",
+              "type": "string",
+              "required": false
+            },
+            "after": {
+              "description": "Limitar la respuesta a recursos creados despu\u00e9s de una fecha dada compatible con ISO8601.",
+              "type": "string",
+              "format": "date-time",
+              "required": false
+            },
+            "before": {
+              "description": "Limitar la respuesta a recursos creados antes de una fecha compatible con ISO8601 dada.",
+              "type": "string",
+              "format": "date-time",
+              "required": false
+            },
+            "date_column": {
+              "description": "Al limitar la respuesta usando antes\/despu\u00e9s, contra qu\u00e9 columnas de fecha comparar.",
+              "type": "string",
+              "default": "date",
+              "enum": [
+                "date",
+                "date_gmt",
+                "modified",
+                "modified_gmt"
+              ],
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "offset": {
+              "description": "Saltar un n\u00famero espec\u00edfico de art\u00edculos en los resultados.",
+              "type": "integer",
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar atributo de manera ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar el conjunto por el atributo del objeto.",
+              "type": "string",
+              "default": "date",
+              "enum": [
+                "date",
+                "modified",
+                "id",
+                "include",
+                "title",
+                "slug",
+                "price",
+                "popularity",
+                "rating",
+                "menu_order",
+                "comment_count"
+              ],
+              "required": false
+            },
+            "parent": {
+              "description": "Limitar resultados a los que tengan IDs principales espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "parent_exclude": {
+              "description": "Limitar los resultados a todos los art\u00edculos excepto aquellos con un ID principal espec\u00edfico.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "type": {
+              "description": "Limitar resultados a productos de un tipo determinado.",
+              "type": "string",
+              "enum": [
+                "simple",
+                "grouped",
+                "external",
+                "variable",
+                "variation"
+              ],
+              "required": false
+            },
+            "sku": {
+              "description": "Limita el resultado a productos con SKU(s) espec\u00edfico(s). Utiliza comas para separarlos.",
+              "type": "string",
+              "required": false
+            },
+            "featured": {
+              "description": "Limitar el resultado a productos destacados.",
+              "type": "boolean",
+              "required": false
+            },
+            "category": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs o slugs de categor\u00edas, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "category_operator": {
+              "description": "Operador para comparar t\u00e9rminos de categor\u00eda de producto.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "brand": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs o slugs de marca, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "brand_operator": {
+              "description": "Operador para comparar los t\u00e9rminos de la marca del producto.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "tag": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs de etiquetas o slugs, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "tag_operator": {
+              "description": "Operador para comparar etiquetas de productos.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "on_sale": {
+              "description": "Limitar el resultado a productos en oferta.",
+              "type": "boolean",
+              "required": false
+            },
+            "min_price": {
+              "description": "Limita el conjunto de resultados a productos basados en un precio m\u00ednimo, facilitado usando la unidad m\u00e1s peque\u00f1a de la moneda.",
+              "type": "string",
+              "required": false
+            },
+            "max_price": {
+              "description": "Limita el conjunto de resultados a productos basados en un precio m\u00e1ximo, facilitado usando la unidad m\u00e1s peque\u00f1a de la moneda.",
+              "type": "string",
+              "required": false
+            },
+            "stock_status": {
+              "description": "Limitar el resultado a productos con un estado de inventario espec\u00edfico.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "instock",
+                  "outofstock",
+                  "onbackorder"
+                ],
+                "sanitize_callback": "sanitize_text_field",
+                "validate_callback": "rest_validate_request_arg"
+              },
+              "default": [],
+              "required": false
+            },
+            "attributes": {
+              "description": "Limitar el resultado a productos con los atributos globales seleccionados.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "attribute": {
+                    "description": "Nombre del atributo de la taxonom\u00eda.",
+                    "type": "string",
+                    "sanitize_callback": "wc_sanitize_taxonomy_name"
+                  },
+                  "term_id": {
+                    "description": "Lista de IDs del t\u00e9rmino del atributo.",
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "sanitize_callback": "wp_parse_id_list"
+                  },
+                  "slug": {
+                    "description": "Lista de slug(s) del\/los atributo(s). Si se facilita un ID del t\u00e9rmino esto se ignorar\u00e1.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "sanitize_callback": "wp_parse_slug_list"
+                  },
+                  "operator": {
+                    "description": "Operador para comparar t\u00e9rminos de atributos de producto.",
+                    "type": "string",
+                    "enum": [
+                      "in",
+                      "not_in",
+                      "and"
+                    ]
+                  }
+                }
+              },
+              "default": [],
+              "required": false
+            },
+            "attribute_relation": {
+              "description": "La relaci\u00f3n l\u00f3gica entre atributos al filtrar entre varios a la vez.",
+              "type": "string",
+              "enum": [
+                "in",
+                "and"
+              ],
+              "default": "and",
+              "required": false
+            },
+            "catalog_visibility": {
+              "description": "Determina si se muestran productos de cat\u00e1logo ocultos o visibles.",
+              "type": "string",
+              "enum": [
+                "any",
+                "visible",
+                "catalog",
+                "search",
+                "hidden"
+              ],
+              "required": false
+            },
+            "rating": {
+              "description": "Limitar el resultado establecido a productos con una cierta valoraci\u00f3n media.",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              },
+              "default": [],
+              "required": false
+            },
+            "calculate_price_range": {
+              "description": "Si es true, calcula los precios m\u00ednimo y m\u00e1ximo de los productos de la colecci\u00f3n.",
+              "type": "boolean",
+              "default": false,
+              "required": false
+            },
+            "calculate_stock_status_counts": {
+              "description": "Si es true, calcula el contador de inventario de los productos de la colecci\u00f3n.",
+              "type": "boolean",
+              "default": false,
+              "required": false
+            },
+            "calculate_attribute_counts": {
+              "description": "Si se solicita, calcula la cantidad del t\u00e9rmino del atributo de los productos de la colecci\u00f3n.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "taxonomy": {
+                    "description": "Nombre de la taxonom\u00eda.",
+                    "type": "string",
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "readonly": true
+                  },
+                  "query_type": {
+                    "description": "Condici\u00f3n de filtro \t en marcha que podr\u00eda afectar al contador. Los valores v\u00e1lidos incluyen \"and\" y \"or\".",
+                    "type": "string",
+                    "enum": [
+                      "and",
+                      "or"
+                    ],
+                    "context": [
+                      "view",
+                      "edit"
+                    ],
+                    "readonly": true
+                  }
+                }
+              },
+              "default": [],
+              "required": false
+            },
+            "calculate_rating_counts": {
+              "description": "Si es true, calcula el contador de valoraciones de los productos de la colecci\u00f3n.",
+              "type": "boolean",
+              "default": false,
+              "required": false
+            },
+            "calculate_taxonomy_counts": {
+              "description": "Si se solicita, calcula los recuentos de t\u00e9rminos de taxonom\u00eda en los productos de la colecci\u00f3n.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Nombre de la taxonom\u00eda."
+              },
+              "default": [],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/collection-data"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/reviews": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "default": 10,
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "offset": {
+              "description": "Saltar un n\u00famero espec\u00edfico de art\u00edculos en los resultados.",
+              "type": "integer",
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar atributo de manera ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar el conjunto por el atributo del objeto.",
+              "type": "string",
+              "default": "date",
+              "enum": [
+                "date",
+                "date_gmt",
+                "id",
+                "rating",
+                "product"
+              ],
+              "required": false
+            },
+            "category_id": {
+              "description": "Limita el conjunto de resultados a las valoraciones de IDs de categor\u00edas espec\u00edficas.",
+              "type": "string",
+              "required": false
+            },
+            "product_id": {
+              "description": "Limita el conjunto de resultados a las valoraciones de IDs de productos espec\u00edficos.",
+              "type": "string",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/reviews"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/tags": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar en ascendente o descendente.",
+              "type": "string",
+              "default": "asc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar por propiedad del t\u00e9rmino.",
+              "type": "string",
+              "default": "name",
+              "enum": [
+                "name",
+                "slug",
+                "count"
+              ],
+              "required": false
+            },
+            "hide_empty": {
+              "description": "Si es true, no se mostrar\u00e1n los t\u00e9rminos vac\u00edos.",
+              "type": "boolean",
+              "default": true,
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products\/tags"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            },
+            "page": {
+              "description": "P\u00e1gina actual de la colecci\u00f3n.",
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "required": false
+            },
+            "per_page": {
+              "description": "N\u00famero m\u00e1ximo de productos a mostrar en el conjunto de resultados. De forma predeterminada, no hay l\u00edmite si se deja en blanco.",
+              "type": "integer",
+              "default": 10,
+              "minimum": 0,
+              "maximum": 100,
+              "required": false
+            },
+            "search": {
+              "description": "Limita los resultados a lo indicado en la cadena.",
+              "type": "string",
+              "required": false
+            },
+            "slug": {
+              "description": "Limita el resultado a productos con slug(s) espec\u00edfico(s). Usa comas para separarlos.",
+              "type": "string",
+              "required": false
+            },
+            "after": {
+              "description": "Limitar la respuesta a recursos creados despu\u00e9s de una fecha dada compatible con ISO8601.",
+              "type": "string",
+              "format": "date-time",
+              "required": false
+            },
+            "before": {
+              "description": "Limitar la respuesta a recursos creados antes de una fecha compatible con ISO8601 dada.",
+              "type": "string",
+              "format": "date-time",
+              "required": false
+            },
+            "date_column": {
+              "description": "Al limitar la respuesta usando antes\/despu\u00e9s, contra qu\u00e9 columnas de fecha comparar.",
+              "type": "string",
+              "default": "date",
+              "enum": [
+                "date",
+                "date_gmt",
+                "modified",
+                "modified_gmt"
+              ],
+              "required": false
+            },
+            "exclude": {
+              "description": "Asegurar que los resultados excluyan IDs espec\u00edficas.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "include": {
+              "description": "Limitar los resultados a ids espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "offset": {
+              "description": "Saltar un n\u00famero espec\u00edfico de art\u00edculos en los resultados.",
+              "type": "integer",
+              "required": false
+            },
+            "order": {
+              "description": "Ordenar atributo de manera ascendente o descendente.",
+              "type": "string",
+              "default": "desc",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "required": false
+            },
+            "orderby": {
+              "description": "Ordenar el conjunto por el atributo del objeto.",
+              "type": "string",
+              "default": "date",
+              "enum": [
+                "date",
+                "modified",
+                "id",
+                "include",
+                "title",
+                "slug",
+                "price",
+                "popularity",
+                "rating",
+                "menu_order",
+                "comment_count"
+              ],
+              "required": false
+            },
+            "parent": {
+              "description": "Limitar resultados a los que tengan IDs principales espec\u00edficos.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "parent_exclude": {
+              "description": "Limitar los resultados a todos los art\u00edculos excepto aquellos con un ID principal espec\u00edfico.",
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "default": [],
+              "required": false
+            },
+            "type": {
+              "description": "Limitar resultados a productos de un tipo determinado.",
+              "type": "string",
+              "enum": [
+                "simple",
+                "grouped",
+                "external",
+                "variable",
+                "variation"
+              ],
+              "required": false
+            },
+            "sku": {
+              "description": "Limita el resultado a productos con SKU(s) espec\u00edfico(s). Utiliza comas para separarlos.",
+              "type": "string",
+              "required": false
+            },
+            "featured": {
+              "description": "Limitar el resultado a productos destacados.",
+              "type": "boolean",
+              "required": false
+            },
+            "category": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs o slugs de categor\u00edas, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "category_operator": {
+              "description": "Operador para comparar t\u00e9rminos de categor\u00eda de producto.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "brand": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs o slugs de marca, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "brand_operator": {
+              "description": "Operador para comparar los t\u00e9rminos de la marca del producto.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "tag": {
+              "description": "Limitar el conjunto de resultados a productos asignados a un conjunto de IDs de etiquetas o slugs, separados por comas.",
+              "type": "string",
+              "required": false
+            },
+            "tag_operator": {
+              "description": "Operador para comparar etiquetas de productos.",
+              "type": "string",
+              "enum": [
+                "in",
+                "not_in",
+                "and"
+              ],
+              "default": "in",
+              "required": false
+            },
+            "on_sale": {
+              "description": "Limitar el resultado a productos en oferta.",
+              "type": "boolean",
+              "required": false
+            },
+            "min_price": {
+              "description": "Limita el conjunto de resultados a productos basados en un precio m\u00ednimo, facilitado usando la unidad m\u00e1s peque\u00f1a de la moneda.",
+              "type": "string",
+              "required": false
+            },
+            "max_price": {
+              "description": "Limita el conjunto de resultados a productos basados en un precio m\u00e1ximo, facilitado usando la unidad m\u00e1s peque\u00f1a de la moneda.",
+              "type": "string",
+              "required": false
+            },
+            "stock_status": {
+              "description": "Limitar el resultado a productos con un estado de inventario espec\u00edfico.",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "instock",
+                  "outofstock",
+                  "onbackorder"
+                ],
+                "sanitize_callback": "sanitize_text_field",
+                "validate_callback": "rest_validate_request_arg"
+              },
+              "default": [],
+              "required": false
+            },
+            "attributes": {
+              "description": "Limitar el resultado a productos con los atributos globales seleccionados.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "attribute": {
+                    "description": "Nombre del atributo de la taxonom\u00eda.",
+                    "type": "string",
+                    "sanitize_callback": "wc_sanitize_taxonomy_name"
+                  },
+                  "term_id": {
+                    "description": "Lista de IDs del t\u00e9rmino del atributo.",
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "sanitize_callback": "wp_parse_id_list"
+                  },
+                  "slug": {
+                    "description": "Lista de slug(s) del\/los atributo(s). Si se facilita un ID del t\u00e9rmino esto se ignorar\u00e1.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "sanitize_callback": "wp_parse_slug_list"
+                  },
+                  "operator": {
+                    "description": "Operador para comparar t\u00e9rminos de atributos de producto.",
+                    "type": "string",
+                    "enum": [
+                      "in",
+                      "not_in",
+                      "and"
+                    ]
+                  }
+                }
+              },
+              "default": [],
+              "required": false
+            },
+            "attribute_relation": {
+              "description": "La relaci\u00f3n l\u00f3gica entre atributos al filtrar entre varios a la vez.",
+              "type": "string",
+              "enum": [
+                "in",
+                "and"
+              ],
+              "default": "and",
+              "required": false
+            },
+            "catalog_visibility": {
+              "description": "Determina si se muestran productos de cat\u00e1logo ocultos o visibles.",
+              "type": "string",
+              "enum": [
+                "any",
+                "visible",
+                "catalog",
+                "search",
+                "hidden"
+              ],
+              "required": false
+            },
+            "rating": {
+              "description": "Limitar el resultado establecido a productos con una cierta valoraci\u00f3n media.",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              },
+              "default": [],
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/wc\/store\/products"
+          }
+        ]
+      }
+    },
+    "\/wc\/store\/products\/(?P<id>[\\d]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "id": {
+              "description": "Identificador \u00fanico para el recurso.",
+              "type": "integer",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    },
+    "\/wc\/store\/products\/(?P<slug>[\\S]+)": {
+      "namespace": "wc\/store",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "allow_batch": {
+            "v1": true
+          },
+          "args": {
+            "slug": {
+              "description": "Slug del recurso.",
+              "type": "string",
+              "required": false
+            },
+            "context": {
+              "description": "\u00c1mbito bajo la cual se realiza la solicitud; determina los campos presentes en la respuesta.",
+              "type": "string",
+              "enum": [
+                "view",
+                "edit"
+              ],
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_links": {
+    "up": [
+      {
+        "href": "https:\/\/cms.productoscasaalba.cl\/wp-json\/"
+      }
+    ]
+  }
+}

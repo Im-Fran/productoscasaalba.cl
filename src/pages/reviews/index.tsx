@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { reviewsService, type WooCommerceReview } from '@/services/reviews';
 
 interface Review {
   id: number;
@@ -29,118 +30,80 @@ interface ReviewStats {
 export default function ReviewsPage() {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 1 | 2 | 3 | 4 | 5>('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest' | 'lowest' | 'helpful'>('newest');
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [stats, setStats] = useState<ReviewStats>({
+    totalReviews: 0,
+    averageRating: 0,
+    ratingDistribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 }
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Datos de ejemplo de reseñas
-  const reviews: Review[] = [
-    {
-      id: 1,
-      customerName: "María González",
-      customerAvatar: "/avatars/maria.jpg",
-      rating: 5,
-      title: "Excelente calidad del agua",
-      comment: "Llevo 6 meses comprando bidones de 5L y la calidad es excepcional. El agua tiene un sabor puro y fresco. El servicio de entrega es muy puntual y el personal es muy amable. Definitivamente recomiendo Casa Alba a todos mis conocidos.",
-      date: "2024-03-15",
-      productName: "Bidón de Agua 5L",
-      productImage: "/images/bidon-5l.jpg",
-      verified: true,
-      helpful: 24
-    },
-    {
-      id: 2,
-      customerName: "Carlos Mendoza",
-      customerAvatar: "/avatars/carlos.jpg",
-      rating: 5,
-      title: "Servicio impecable",
-      comment: "La atención al cliente es fantástica. Siempre entregan a tiempo y el agua mantiene su calidad constante. Los precios son muy competitivos comparado con otras marcas del mercado.",
-      date: "2024-03-10",
-      productName: "Pack Botellas 500ml x12",
-      productImage: "/images/pack-botellas.jpg",
-      verified: true,
-      helpful: 18
-    },
-    {
-      id: 3,
-      customerName: "Ana Patricia Rivera",
-      customerAvatar: "/avatars/ana.jpg",
-      rating: 4,
-      title: "Muy buena experiencia",
-      comment: "El agua es de muy buena calidad y el servicio es confiable. Solo tuve un pequeño retraso en una entrega, pero el equipo se disculpó y compensó el inconveniente. En general, muy satisfecha con el servicio.",
-      date: "2024-03-08",
-      productName: "Bidón de Agua 10L",
-      productImage: "/images/bidon-10l.jpg",
-      verified: true,
-      helpful: 12
-    },
-    {
-      id: 4,
-      customerName: "Roberto Silva",
-      customerAvatar: "/avatars/roberto.jpg",
-      rating: 5,
-      title: "La mejor agua de la ciudad",
-      comment: "Después de probar varias marcas, puedo decir que Casa Alba tiene la mejor agua purificada de la ciudad. Sin sabor a cloro ni químicos, perfecta para beber y cocinar. El proceso de purificación que usan realmente se nota en la calidad.",
-      date: "2024-03-05",
-      verified: true,
-      helpful: 31
-    },
-    {
-      id: 5,
-      customerName: "Laura Jiménez",
-      customerAvatar: "/avatars/laura.jpg",
-      rating: 5,
-      title: "Perfecto para la oficina",
-      comment: "Compramos bidones para nuestra oficina de 20 personas y el servicio ha sido excelente. La entrega es puntual, el agua siempre fresca y el precio muy conveniente para el volumen que manejamos.",
-      date: "2024-03-01",
-      productName: "Bidón de Agua 20L",
-      productImage: "/images/bidon-20l.jpg",
-      verified: true,
-      helpful: 15
-    },
-    {
-      id: 6,
-      customerName: "Diego Morales",
-      customerAvatar: "/avatars/diego.jpg",
-      rating: 4,
-      title: "Buena relación calidad-precio",
-      comment: "El agua tiene muy buen sabor y los precios son justos. El único detalle es que a veces tardan un poco más en contestar el teléfono, pero una vez que hacen contacto, todo funciona perfecto.",
-      date: "2024-02-28",
-      verified: true,
-      helpful: 9
-    },
-    {
-      id: 7,
-      customerName: "Carmen Vásquez",
-      customerAvatar: "/avatars/carmen.jpg",
-      rating: 5,
-      title: "Recomendado 100%",
-      comment: "Soy clienta desde hace más de un año y nunca me han fallado. El agua es pura, el servicio es profesional y los precios son accesibles. Mi familia y yo estamos muy contentos con Casa Alba.",
-      date: "2024-02-25",
-      verified: true,
-      helpful: 22
-    },
-    {
-      id: 8,
-      customerName: "Andrés Herrera",
-      customerAvatar: "/avatars/andres.jpg",
-      rating: 3,
-      title: "Buena pero mejorable",
-      comment: "La calidad del agua está bien, aunque he probado mejores. El servicio de entrega es regular, a veces llegan tarde. Los precios son competitivos pero creo que podrían mejorar la comunicación con los clientes.",
-      date: "2024-02-20",
-      verified: true,
-      helpful: 7
-    }
-  ];
+  // Función para transformar las reviews de WooCommerce al formato local
+  const transformWooCommerceReview = (wooReview: WooCommerceReview): Review => ({
+    id: wooReview.id,
+    customerName: wooReview.reviewer,
+    customerAvatar: wooReview.reviewer_avatar_urls?.['96'],
+    rating: wooReview.rating,
+    title: '', // WooCommerce no tiene título separado, podríamos extraer la primera línea
+    comment: wooReview.review.replace(/<[^>]*>/g, ''), // Remover HTML tags
+    date: wooReview.date_created,
+    productName: wooReview.product_name,
+    verified: wooReview.verified,
+    helpful: 0 // WooCommerce no tiene sistema de "helpful" por defecto
+  });
 
-  const stats: ReviewStats = {
-    totalReviews: reviews.length,
-    averageRating: 4.6,
-    ratingDistribution: {
-      5: 6,
-      4: 2,
-      3: 1,
-      2: 0,
-      1: 0
-    }
+  // Función para calcular estadísticas
+  const calculateStats = (reviewsData: Review[]): ReviewStats => {
+    const totalReviews = reviewsData.length;
+    const averageRating = totalReviews > 0
+      ? reviewsData.reduce((sum, review) => sum + review.rating, 0) / totalReviews
+      : 0;
+
+    const ratingDistribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+    reviewsData.forEach(review => {
+      const rating = review.rating as keyof typeof ratingDistribution;
+      if (ratingDistribution[rating] !== undefined) {
+        ratingDistribution[rating]++;
+      }
+    });
+
+    return {
+      totalReviews,
+      averageRating: Math.round(averageRating * 10) / 10,
+      ratingDistribution
+    };
   };
+
+  // Cargar reviews desde WooCommerce
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const orderParam = sortBy === 'newest' ? 'desc' : sortBy === 'oldest' ? 'asc' : 'desc';
+        const orderbyParam = (sortBy === 'highest' || sortBy === 'lowest') ? 'rating' : 'date';
+
+        const response = await reviewsService.getAllReviews({
+          per_page: 100,
+          order: orderParam as 'asc' | 'desc',
+          orderby: orderbyParam as 'date' | 'rating'
+        });
+
+        const transformedReviews = response.reviews.map(transformWooCommerceReview);
+        setReviews(transformedReviews);
+        setStats(calculateStats(transformedReviews));
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        setError('Error al cargar las reseñas. Por favor, intenta nuevamente.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [sortBy]);
 
   const filteredReviews = reviews.filter(review => {
     if (selectedFilter === 'all') return true;
@@ -201,6 +164,63 @@ export default function ReviewsPage() {
   const getPercentage = (count: number) => {
     return ((count / stats.totalReviews) * 100).toFixed(0);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <svg
+              className="animate-spin h-10 w-10 mx-auto mb-4 text-mint-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4.293 12.293a1 1 0 011.414 0L12 18.586l6.293-6.293a1 1 0 111.414 1.414l-7 7a1 1 0 01-1.414 0l-7-7a1 1 0 010-1.414z"
+              ></path>
+            </svg>
+            <p className="text-lg text-gray-600">
+              Cargando reseñas, por favor espera...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Ocurrió un error
+            </h2>
+            <p className="text-lg text-gray-600 mb-8">
+              {error}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-mint-600 text-white px-6 py-3 rounded-lg hover:bg-mint-700 transition-colors font-medium"
+            >
+              Intentar nuevamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">

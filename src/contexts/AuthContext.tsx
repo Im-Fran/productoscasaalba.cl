@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useState, useEffect, useRef, type ReactNode } from 'react';
 import { AuthService } from '@/services/auth';
 
 export type User = {
@@ -39,15 +39,21 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const hasInitialized = useRef(false);
 
   // Configurar interceptors al montar el componente
   useEffect(() => {
-    AuthService.setupInterceptors();
+    if (!hasInitialized.current) {
+      AuthService.setupInterceptors();
+      hasInitialized.current = true;
+    }
   }, []);
 
   // Verificar si hay un usuario autenticado al cargar la app
   useEffect(() => {
     const checkAuth = async () => {
+      if (hasInitialized.current) return; // Evitar múltiples ejecuciones
+
       console.log('🔍 Checking authentication...');
 
       try {
@@ -98,6 +104,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } finally {
         console.log('✅ Auth check completed, setting loading to false');
         setLoading(false);
+        hasInitialized.current = true;
       }
     };
 
