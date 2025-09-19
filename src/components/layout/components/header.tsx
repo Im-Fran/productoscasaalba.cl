@@ -14,9 +14,15 @@ export const Header = ({ onCartClick }: HeaderProps) => {
   const { cart } = useCart();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    setUserMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUserMenuOpen(false);
+    } catch (error) {
+      console.error('Error durante logout:', error);
+      // En caso de error, cerrar el menú de todas formas
+      setUserMenuOpen(false);
+    }
   };
 
   return (

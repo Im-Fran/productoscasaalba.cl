@@ -23,9 +23,33 @@ export default ({ mode }: { mode: string }) => {
       allowedHosts: true,
       proxy: {
         '/api': {
-          target: process.env.VITE_CMS_URL, // Cambia esto por la URL de tu API
+          target: process.env.VITE_CMS_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq, req) => {
+              // Asegurar que las cookies se envíen en el proxy request
+              if (req.headers.cookie) {
+                proxyReq.setHeader('cookie', req.headers.cookie);
+              }
+            });
+            proxy.on('proxyRes', (proxyRes, _req, res) => {
+              // Manejar las cookies de respuesta, especialmente refresh_token
+              const setCookieHeaders = proxyRes.headers['set-cookie'];
+              if (setCookieHeaders) {
+                // Modificar las cookies para que funcionen correctamente en desarrollo
+                const modifiedCookies = setCookieHeaders.map(cookie => {
+                  // Para desarrollo local, remover Secure flag si está presente
+                  if (process.env.NODE_ENV === 'development') {
+                    return cookie.replace(/;\s*Secure/gi, '');
+                  }
+                  return cookie;
+                });
+                res.setHeader('set-cookie', modifiedCookies);
+              }
+            });
+          }
         }
       }
     }

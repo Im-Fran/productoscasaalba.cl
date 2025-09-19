@@ -1,9 +1,14 @@
 import axios from 'axios';
 import type * as AxiosTypes from 'axios';
 
-const axiosInstance: AxiosTypes.AxiosInstance = axios.create()
-
-axiosInstance.defaults.withCredentials = true;
+const axiosInstance: AxiosTypes.AxiosInstance = axios.create({
+  // Configuración por defecto para cookies
+  withCredentials: true,
+  // Headers adicionales para CORS
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
 
 // Variable global para almacenar el callback de mantenimiento
 let maintenanceCallback: ((isActive: boolean) => void) | null = null;
@@ -15,10 +20,14 @@ export const setMaintenanceCallback = (callback: (isActive: boolean) => void) =>
 
 // Interceptor to modify request URLs in production
 axiosInstance.interceptors.request.use((config) => {
+  // Asegurar que withCredentials esté siempre habilitado
+  config.withCredentials = true;
+
   if (config.url && config.url.startsWith('/api/') && ['production', 'prod'].includes(import.meta.env.VITE_ENV || 'local')) {
     const baseURL = import.meta.env.VITE_CMS_URL || '';
     config.url = baseURL + config.url.replace('/api', '');
   }
+
   return config;
 });
 

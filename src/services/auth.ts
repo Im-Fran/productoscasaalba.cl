@@ -41,7 +41,14 @@ export class AuthService {
    */
   static async login(credentials: LoginCredentials): Promise<JWTResponse> {
     try {
-      const response = await axiosInstance.post(`${this.JWT_BASE_URL}/token`, credentials);
+      const response = await axiosInstance.post(`${this.JWT_BASE_URL}/token`, credentials, {
+        withCredentials: true, // Permitir cookies
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
       return response.data;
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {
@@ -59,20 +66,22 @@ export class AuthService {
    */
   static async validateToken(token: string): Promise<boolean> {
     try {
+      const headers: Record<string, string> = {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+
       const response = await axiosInstance.post(
         `${this.JWT_BASE_URL}/token/validate`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
+          headers,
         }
       );
 
-      // La validación puede tener diferentes estructuras de respuesta
       const data = response.data;
 
-      // Verificar diferentes posibles estructuras de respuesta
       if (data.code) {
         return data.code === 'jwt_auth_valid_token';
       }
@@ -81,7 +90,6 @@ export class AuthService {
         return data.success === true;
       }
 
-      // Si no hay estructura específica, considerar que response 200 = válido
       return response.status === 200;
     } catch (error) {
       console.error('Error validating token:', error);
@@ -90,24 +98,27 @@ export class AuthService {
   }
 
   /**
-   * Refrescar token JWT
+   * Refrescar token JWT usando la refresh_token guardada
    */
-  static async refreshToken(token: string): Promise<string> {
+  static async refreshToken(): Promise<string> {
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      };
+
       const response = await axiosInstance.post(
         `${this.JWT_BASE_URL}/token/refresh`,
-        `refresh_token=${encodeURIComponent(token)}`,
+        {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
+          headers,
         }
       );
 
       const data: RefreshResponse = response.data;
       return data.token;
     } catch (error: unknown) {
-      console.log({ method: 'refreshToken', error })
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response?: { data?: { message?: string } } };
         if (axiosError.response?.data?.message) {
@@ -115,6 +126,23 @@ export class AuthService {
         }
       }
       throw new Error('Error al refrescar el token');
+    }
+  }
+
+  /**
+   * Cerrar sesión y limpiar cookies
+   */
+  static async logout(): Promise<void> {
+    try {
+      await axiosInstance.post(`${this.JWT_BASE_URL}/token/revoke`, {}, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.warn('Endpoint de revoke no disponible:', error);
+    } finally {
+      // Limpiar datos locales
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
     }
   }
 
@@ -134,6 +162,12 @@ export class AuthService {
         if (token && !config.headers.Authorization) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+
+        // Asegurar que las cookies se envíen en requests de auth
+        if (config.url?.includes('/jwt-auth/')) {
+          config.withCredentials = true;
+        }
+
         return config;
       },
       (error) => {
@@ -153,17 +187,15 @@ export class AuthService {
           originalRequest._retry = true;
 
           try {
-            const currentToken = localStorage.getItem('authToken');
-            if (currentToken) {
-              const newToken = await this.refreshToken(currentToken);
-              localStorage.setItem('authToken', newToken);
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
-              return axiosInstance(originalRequest);
-            }
-          } catch {
+            // Intentar refrescar el token usando la cookie refresh_token
+            const newToken = await this.refreshToken();
+            localStorage.setItem('authToken', newToken);
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return axiosInstance(originalRequest);
+          } catch (refreshError) {
             // Si el refresh falla, eliminar tokens y redirigir al login
+            console.error('Error al refrescar token:', refreshError);
             localStorage.removeItem('authToken');
-            localStorage.removeItem('refreshToken');
             localStorage.removeItem('userData');
 
             // Solo redirigir si no estamos ya en una página de auth

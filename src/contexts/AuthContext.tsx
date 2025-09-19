@@ -17,7 +17,7 @@ export type AuthContextType = {
   loading: boolean;
   login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (token: string, email: string, password: string) => Promise<void>;
   isAuthenticated: boolean;
@@ -80,14 +80,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               console.error('❌ Error parsing user data:', parseError);
               // Si hay error al parsear, limpiar todo
               localStorage.removeItem('authToken');
-              localStorage.removeItem('refreshToken');
               localStorage.removeItem('userData');
             }
           } else {
             console.log('🗑️ Token invalid, clearing storage');
             // Token inválido, limpiar storage
             localStorage.removeItem('authToken');
-            localStorage.removeItem('refreshToken');
             localStorage.removeItem('userData');
           }
         } else {
@@ -97,7 +95,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.error('❌ Error during auth check:', error);
         // En caso de error, limpiar todo por seguridad
         localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
         localStorage.removeItem('userData');
       } finally {
         console.log('✅ Auth check completed, setting loading to false');
@@ -109,7 +106,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string, rememberMe = false) => {
+  const login = async (email: string, password: string, _rememberMe = false) => {
     setLoading(true);
     try {
       const response = await AuthService.login({
@@ -131,9 +128,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('userData', JSON.stringify(userData));
 
-      if (rememberMe) {
-        localStorage.setItem('refreshToken', response.data.token);
-      }
+      // No guardamos refresh_token en localStorage ya que se maneja automáticamente via cookies
+      // El parámetro rememberMe se puede usar para otras funcionalidades si es necesario
 
       setUser(userData);
     } catch (error: unknown) {
@@ -159,11 +155,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('userData');
-    setUser(null);
+  const logout = async () => {
+    setLoading(true);
+    try {
+      // Usar el método logout del AuthService que maneja la limpieza completa
+      await AuthService.logout();
+      setUser(null);
+    } catch (error) {
+      console.error('Error durante logout:', error);
+      // En caso de error, al menos limpiar localmente
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
