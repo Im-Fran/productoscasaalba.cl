@@ -35,6 +35,8 @@ export interface RefreshResponse {
 export class AuthService {
   private static readonly JWT_BASE_URL = '/api/wp-json/jwt-auth/v1';
   private static interceptorsSetup = false;
+  private static isRefreshing = false; // Flag para evitar múltiples intentos simultáneos
+  private static refreshFailed = false; // Flag para marcar cuando ya falló el refresh
 
   /**
    * Manejar errores específicos de JWT AUTH
@@ -97,6 +99,8 @@ export class AuthService {
   private static clearAuthData(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
+    this.refreshFailed = false; // Resetear el flag al limpiar datos
+    this.isRefreshing = false; // Resetear el flag de refreshing
     // Limpiar cookie manualmente si existe
     document.cookie = 'refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
   }
@@ -172,6 +176,18 @@ export class AuthService {
    * Refrescar token JWT usando la refresh_token guardada
    */
   static async refreshToken(): Promise<string> {
+    // Si ya falló previamente, no intentar de nuevo
+    if (this.refreshFailed) {
+      throw new Error('El refresh token ya falló anteriormente. Inicia sesión nuevamente.');
+    }
+
+    // Si ya hay un refresh en progreso, esperar
+    if (this.isRefreshing) {
+      throw new Error('Ya hay un refresh en progreso.');
+    }
+
+    this.isRefreshing = true;
+
     try {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -188,9 +204,12 @@ export class AuthService {
       );
 
       const data: RefreshResponse = response.data;
+      this.isRefreshing = false;
       return data.token;
     } catch (error: unknown) {
       console.error('Error al refrescar token:', error);
+      this.isRefreshing = false;
+      this.refreshFailed = true; // Marcar como fallido para evitar futuros intentos
 
       // Manejar errores específicos de refresh token
       if (error && typeof error === 'object' && 'response' in error) {
@@ -261,25 +280,36 @@ export class AuthService {
       async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // Solo intentar refresh si:
+        // 1. Es un error 401
+        // 2. No es un retry (evitar bucles)
+        // 3. No es una request de auth (evitar refresh en login/refresh)
+        // 4. No ha fallado previamente el refresh
+        if (error.response?.status === 401 &&
+            !originalRequest._retry &&
+            !originalRequest.url?.includes('/jwt-auth/') &&
+            !this.refreshFailed) {
+
           originalRequest._retry = true;
 
           try {
-            // Intentar refrescar el token usando la cookie refresh_token
+            console.log('Intentando refrescar token...');
             const newToken = await this.refreshToken();
             localStorage.setItem('authToken', newToken);
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            console.log('Token refrescado exitosamente, reintentando petición original');
             return axiosInstance(originalRequest);
           } catch (refreshError) {
             // Si el refresh falla, eliminar tokens y redirigir al login
-            console.error('Error al refrescar token:', refreshError);
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('userData');
+            console.error('Error al refrescar token, redirigiendo al login:', refreshError);
+            this.clearAuthData();
 
             // Solo redirigir si no estamos ya en una página de auth
             if (!window.location.pathname.startsWith('/auth/')) {
               window.location.href = '/auth/login';
             }
+
+            return Promise.reject(refreshError);
           }
         }
 
