@@ -52,8 +52,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Verificar si hay un usuario autenticado al cargar la app
   useEffect(() => {
     const checkAuth = async () => {
-      if (hasInitialized.current) return; // Evitar múltiples ejecuciones
-
       console.log('🔍 Checking authentication...');
 
       try {

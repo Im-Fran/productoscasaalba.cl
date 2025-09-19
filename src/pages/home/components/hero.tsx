@@ -1,4 +1,3 @@
-import WeCanCleanIt from '@/assets/images/we-can-clean-it.webp'
 import { useNavigate } from 'react-router'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
@@ -51,7 +50,7 @@ export const CallToActionComprar = () => {
       {/* Imagen de fondo */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${WeCanCleanIt})` }}
+        style={{ backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` }}
       />
 
       {/* Overlay para mejorar legibilidad */}

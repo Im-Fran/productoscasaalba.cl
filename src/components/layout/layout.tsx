@@ -5,6 +5,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import {Toaster} from "react-hot-toast";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { useState } from "react";
+import { MaintenanceWrapper } from "@/components/MaintenanceWrapper";
 
 export const Layout = () => {
   const [isCartSidebarOpen, setIsCartSidebarOpen] = useState(false);
@@ -13,22 +14,24 @@ export const Layout = () => {
   const closeCartSidebar = () => setIsCartSidebarOpen(false);
 
   return (
-    <div className={"w-full min-h-screen bg-neutral-50 font-pacifico"}>
-      <CartProvider>
-        <Header onCartClick={openCartSidebar} />
-        <Toaster/>
+    <MaintenanceWrapper>
+      <div className={"w-full min-h-screen bg-neutral-50 font-pacifico"}>
+        <CartProvider>
+          <Header onCartClick={openCartSidebar} />
+          <Toaster/>
 
-        <main className={"min-h-screen my-5"}>
-          <Outlet/>
-        </main>
+          <main className={"min-h-screen my-5"}>
+            <Outlet/>
+          </main>
 
-        <Footer/>
+          <Footer/>
 
-        <CartSidebar
-          isOpen={isCartSidebarOpen}
-          onClose={closeCartSidebar}
-        />
-      </CartProvider>
-    </div>
+          <CartSidebar
+            isOpen={isCartSidebarOpen}
+            onClose={closeCartSidebar}
+          />
+        </CartProvider>
+      </div>
+    </MaintenanceWrapper>
   );
 };
