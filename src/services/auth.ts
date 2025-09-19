@@ -37,12 +37,77 @@ export class AuthService {
   private static interceptorsSetup = false;
 
   /**
+   * Manejar errores específicos de JWT AUTH
+   */
+  private static handleJWTError(error: any): never {
+    if (error?.response?.data) {
+      const { code, message } = error.response.data;
+
+      switch (code) {
+        case 'jwt_auth_invalid_token':
+          throw new Error('Token inválido. Por favor, inicia sesión nuevamente.');
+        case 'jwt_auth_expired_token':
+          throw new Error('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+        case 'jwt_auth_obsolete_refresh_token':
+          // Limpiar datos y forzar nuevo login
+          this.clearAuthData();
+          throw new Error('Tu sesión ha caducado. Por favor, inicia sesión nuevamente.');
+        case 'jwt_auth_no_auth_header':
+          throw new Error('Falta el header de autorización.');
+        case 'jwt_auth_bad_auth_header':
+          throw new Error('Header de autorización mal formado.');
+        case 'jwt_auth_bad_config':
+          throw new Error('Error de configuración del servidor. Contacta al administrador.');
+        case 'jwt_auth_bad_iss':
+          throw new Error('Token inválido: emisor incorrecto.');
+        case 'jwt_auth_bad_aud':
+          throw new Error('Token inválido: audiencia incorrecta.');
+        case 'jwt_auth_user_not_found':
+          throw new Error('Usuario no encontrado.');
+        case 'jwt_auth_invalid_username':
+          throw new Error('Nombre de usuario o contraseña incorrectos.');
+        case 'jwt_auth_invalid_password':
+          throw new Error('Nombre de usuario o contraseña incorrectos.');
+        case 'jwt_auth_account_not_activated':
+          throw new Error('Tu cuenta no está activada. Revisa tu email para activarla.');
+        case 'jwt_auth_invalid_email':
+          throw new Error('Email inválido.');
+        case 'jwt_auth_no_refresh_token':
+          throw new Error('No se encontró el token de actualización.');
+        case 'jwt_auth_invalid_refresh_token':
+          // Limpiar datos y forzar nuevo login
+          this.clearAuthData();
+          throw new Error('Token de actualización inválido. Por favor, inicia sesión nuevamente.');
+        default:
+          // Si hay un mensaje personalizado, usarlo
+          if (message) {
+            throw new Error(message);
+          }
+          throw new Error('Error de autenticación desconocido.');
+      }
+    }
+
+    // Error sin estructura específica
+    throw new Error('Error de conexión. Verifica tu conexión a internet.');
+  }
+
+  /**
+   * Limpiar todos los datos de autenticación
+   */
+  private static clearAuthData(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    // Limpiar cookie manualmente si existe
+    document.cookie = 'refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
+  }
+
+  /**
    * Obtener token JWT
    */
   static async login(credentials: LoginCredentials): Promise<JWTResponse> {
     try {
       const response = await axiosInstance.post(`${this.JWT_BASE_URL}/token`, credentials, {
-        withCredentials: true, // Permitir cookies
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -51,13 +116,7 @@ export class AuthService {
 
       return response.data;
     } catch (error: unknown) {
-      if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { data?: { message?: string } } };
-        if (axiosError.response?.data?.message) {
-          throw new Error(axiosError.response.data.message);
-        }
-      }
-      throw new Error('Error al iniciar sesión');
+      this.handleJWTError(error);
     }
   }
 
@@ -93,6 +152,18 @@ export class AuthService {
       return response.status === 200;
     } catch (error) {
       console.error('Error validating token:', error);
+
+      // Si es un error específico de JWT, manejarlo apropiadamente
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { data?: { code?: string } } };
+        if (axiosError.response?.data?.code?.startsWith('jwt_auth_')) {
+          // Para validación, solo retornar false en lugar de lanzar error
+          if (['jwt_auth_invalid_token', 'jwt_auth_expired_token', 'jwt_auth_obsolete_refresh_token'].includes(axiosError.response.data.code)) {
+            return false;
+          }
+        }
+      }
+
       return false;
     }
   }
@@ -119,13 +190,22 @@ export class AuthService {
       const data: RefreshResponse = response.data;
       return data.token;
     } catch (error: unknown) {
+      console.error('Error al refrescar token:', error);
+
+      // Manejar errores específicos de refresh token
       if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { data?: { message?: string } } };
-        if (axiosError.response?.data?.message) {
-          throw new Error(axiosError.response.data.message);
+        const axiosError = error as { response?: { data?: { code?: string } } };
+        const errorCode = axiosError.response?.data?.code;
+
+        // Si el refresh token está obsoleto o es inválido, limpiar datos
+        if (errorCode === 'jwt_auth_obsolete_refresh_token' ||
+            errorCode === 'jwt_auth_invalid_refresh_token' ||
+            errorCode === 'jwt_auth_no_refresh_token') {
+          this.clearAuthData();
         }
       }
-      throw new Error('Error al refrescar el token');
+
+      this.handleJWTError(error);
     }
   }
 
@@ -140,9 +220,7 @@ export class AuthService {
     } catch (error) {
       console.warn('Endpoint de revoke no disponible:', error);
     } finally {
-      // Limpiar datos locales
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userData');
+      this.clearAuthData();
     }
   }
 
