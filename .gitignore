@@ -27,6 +27,9 @@ dist-ssr
 .env*
 !.env.example
 
+# SSL
+.certs
+
 # Workers
 .wrangler/
 !wrangler.jsonc

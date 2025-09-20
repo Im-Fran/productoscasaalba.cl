@@ -3,6 +3,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from "@tailwindcss/vite";
 import {cloudflare} from "@cloudflare/vite-plugin";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 
 // https://vite.dev/config/
 export default ({ mode }: { mode: string }) => {
@@ -10,6 +11,10 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [
+      basicSsl({
+        name: 'localhost',
+        certDir: '.certs'
+      }),
       react(),
       tailwindcss(),
       cloudflare(),
@@ -21,35 +26,16 @@ export default ({ mode }: { mode: string }) => {
     },
     server: {
       allowedHosts: true,
+      host: true,
+      https: {
+        cert: './.certs/_cert.pem',
+      },
       proxy: {
         '/api': {
           target: process.env.VITE_CMS_URL,
           changeOrigin: true,
           secure: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
-          configure: (proxy) => {
-            proxy.on('proxyReq', (proxyReq, req) => {
-              // Asegurar que las cookies se envíen en el proxy request
-              if (req.headers.cookie) {
-                proxyReq.setHeader('cookie', req.headers.cookie);
-              }
-            });
-            proxy.on('proxyRes', (proxyRes, _req, res) => {
-              // Manejar las cookies de respuesta, especialmente refresh_token
-              const setCookieHeaders = proxyRes.headers['set-cookie'];
-              if (setCookieHeaders) {
-                // Modificar las cookies para que funcionen correctamente en desarrollo
-                const modifiedCookies = setCookieHeaders.map(cookie => {
-                  // Para desarrollo local, remover Secure flag si está presente
-                  if (process.env.NODE_ENV === 'development') {
-                    return cookie.replace(/;\s*Secure/gi, '');
-                  }
-                  return cookie;
-                });
-                res.setHeader('set-cookie', modifiedCookies);
-              }
-            });
-          }
         }
       }
     }
