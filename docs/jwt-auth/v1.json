@@ -1,0 +1,259 @@
+{
+  "namespace": "jwt-auth/v1",
+  "routes": {
+    "/jwt-auth/v1": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "namespace": {
+              "default": "jwt-auth/v1",
+              "required": false
+            },
+            "context": {
+              "default": "view",
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/autologin": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/autologin"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/register": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/register"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/users": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/users"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/auth": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/auth"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/auth/refresh": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/auth/refresh"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/auth/validate": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/auth/validate"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/auth/revoke": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/auth/revoke"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/user/reset_password": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "PUT",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "PUT"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/user/reset_password"
+          }
+        ]
+      }
+    },
+    "/jwt-auth/v1/oauth/token": {
+      "namespace": "jwt-auth/v1",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        }
+      ],
+      "_links": {
+        "self": [
+          {
+            "href": "https://cms.productoscasaalba.cl/wp-json/jwt-auth/v1/oauth/token"
+          }
+        ]
+      }
+    }
+  },
+  "_links": {
+    "up": [
+      {
+        "href": "https://cms.productoscasaalba.cl/wp-json/"
+      }
+    ]
+  }
+}

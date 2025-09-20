@@ -62,7 +62,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
                     className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
                   >
                     <User size={24} />
-                    <span className="text-sm font-medium">{user?.firstName}</span>
+                    <span className="text-sm font-medium">{user?.first_name}</span>
                     <ChevronDown size={16} />
                   </button>
 
@@ -71,7 +71,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
                       <div className="py-1">
                         <div className="px-4 py-2 border-b border-gray-100">
                           <p className="text-sm font-medium text-gray-900">
-                            {user?.firstName} {user?.lastName}
+                            {user?.first_name} {user?.last_name}
                           </p>
                           <p className="text-xs text-gray-500">{user?.email}</p>
                         </div>

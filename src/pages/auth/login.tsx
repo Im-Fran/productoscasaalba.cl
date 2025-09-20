@@ -11,7 +11,6 @@ export const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    rememberMe: false
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +19,7 @@ export const LoginPage = () => {
     setError(null);
 
     try {
-      await login(formData.email, formData.password, formData.rememberMe);
+      await login(formData.email, formData.password);
       navigate('/'); // Redirigir al home después del login exitoso
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Error al iniciar sesión');
@@ -107,21 +106,7 @@ export const LoginPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="rememberMe"
-                    name="rememberMe"
-                    type="checkbox"
-                    checked={formData.rememberMe}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-mint-600 focus:ring-mint-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
-                    Recordarme
-                  </label>
-                </div>
-
+              <div className="flex items-center justify-end">
                 <div className="text-sm">
                   <Link
                     to="/auth/forgot-password"

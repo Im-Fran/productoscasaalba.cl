@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CustomerService, type CustomerData, type CustomerResponse } from '@/services/customer';
-import type { User } from '@/contexts/AuthContext';
+import type {User} from "@/types/user";
 
 interface ProfileSectionProps {
   user: User;
@@ -20,12 +20,12 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
   const [loading, setLoading] = useState(false);
   const [customerData, setCustomerData] = useState<CustomerResponse | null>(null);
   const [formData, setFormData] = useState({
-    first_name: user.firstName,
-    last_name: user.lastName,
+    first_name: user.first_name,
+    last_name: user.last_name,
     email: user.email,
     billing: {
-      first_name: user.firstName,
-      last_name: user.lastName,
+      first_name: user.first_name,
+      last_name: user.last_name,
       email: user.email,
       company: '',
       address_1: '',
@@ -37,8 +37,8 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
       phone: '',
     },
     shipping: {
-      first_name: user.firstName,
-      last_name: user.lastName,
+      first_name: user.first_name,
+      last_name: user.last_name,
       company: '',
       address_1: '',
       address_2: '',
@@ -65,12 +65,12 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
 
         // Actualizar formData con los datos del cliente
         setFormData({
-          first_name: customer.first_name || user.firstName,
-          last_name: customer.last_name || user.lastName,
+          first_name: customer.first_name || user.first_name,
+          last_name: customer.last_name || user.last_name,
           email: customer.email || user.email,
           billing: {
-            first_name: customer.billing?.first_name || user.firstName,
-            last_name: customer.billing?.last_name || user.lastName,
+            first_name: customer.billing?.first_name || user.first_name,
+            last_name: customer.billing?.last_name || user.last_name,
             email: customer.billing?.email || user.email,
             company: customer.billing?.company || '',
             address_1: customer.billing?.address_1 || '',
@@ -82,8 +82,8 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
             phone: customer.billing?.phone || '',
           },
           shipping: {
-            first_name: customer.shipping?.first_name || user.firstName,
-            last_name: customer.shipping?.last_name || user.lastName,
+            first_name: customer.shipping?.first_name || user.first_name,
+            last_name: customer.shipping?.last_name || user.last_name,
             company: customer.shipping?.company || '',
             address_1: customer.shipping?.address_1 || '',
             address_2: customer.shipping?.address_2 || '',
@@ -278,12 +278,12 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 // Restaurar datos originales
                 if (customerData) {
                   setFormData({
-                    first_name: customerData.first_name || user.firstName,
-                    last_name: customerData.last_name || user.lastName,
+                    first_name: customerData.first_name || user.first_name,
+                    last_name: customerData.last_name || user.last_name,
                     email: customerData.email || user.email,
                     billing: {
-                      first_name: customerData.billing?.first_name || user.firstName,
-                      last_name: customerData.billing?.last_name || user.lastName,
+                      first_name: customerData.billing?.first_name || user.first_name,
+                      last_name: customerData.billing?.last_name || user.last_name,
                       email: customerData.billing?.email || user.email,
                       company: customerData.billing?.company || '',
                       address_1: customerData.billing?.address_1 || '',
@@ -295,8 +295,8 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                       phone: customerData.billing?.phone || '',
                     },
                     shipping: {
-                      first_name: customerData.shipping?.first_name || user.firstName,
-                      last_name: customerData.shipping?.last_name || user.lastName,
+                      first_name: customerData.shipping?.first_name || user.first_name,
+                      last_name: customerData.shipping?.last_name || user.last_name,
                       company: customerData.shipping?.company || '',
                       address_1: customerData.shipping?.address_1 || '',
                       address_2: customerData.shipping?.address_2 || '',
@@ -323,11 +323,11 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Nombre</label>
-                <p className="text-lg text-gray-900">{customerData?.first_name || user.firstName}</p>
+                <p className="text-lg text-gray-900">{customerData?.first_name || user.first_name}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Apellidos</label>
-                <p className="text-lg text-gray-900">{customerData?.last_name || user.lastName}</p>
+                <p className="text-lg text-gray-900">{customerData?.last_name || user.last_name}</p>
               </div>
             </div>
 

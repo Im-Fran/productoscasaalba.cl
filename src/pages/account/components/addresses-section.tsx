@@ -57,8 +57,8 @@ export default function AddressesSection() {
         // Inicializar formularios con datos existentes
         if (customer.billing) {
           setBillingForm({
-            first_name: customer.billing.first_name || user.firstName,
-            last_name: customer.billing.last_name || user.lastName,
+            first_name: customer.billing.first_name || user.first_name,
+            last_name: customer.billing.last_name || user.last_name,
             company: customer.billing.company || '',
             address_1: customer.billing.address_1 || '',
             address_2: customer.billing.address_2 || '',
@@ -73,8 +73,8 @@ export default function AddressesSection() {
 
         if (customer.shipping) {
           setShippingForm({
-            first_name: customer.shipping.first_name || user.firstName,
-            last_name: customer.shipping.last_name || user.lastName,
+            first_name: customer.shipping.first_name || user.first_name,
+            last_name: customer.shipping.last_name || user.last_name,
             company: customer.shipping.company || '',
             address_1: customer.shipping.address_1 || '',
             address_2: customer.shipping.address_2 || '',
@@ -348,8 +348,8 @@ export default function AddressesSection() {
                     // Restaurar datos originales
                     if (customerData?.billing) {
                       setBillingForm({
-                        first_name: customerData.billing.first_name || user?.firstName || '',
-                        last_name: customerData.billing.last_name || user?.lastName || '',
+                        first_name: customerData.billing.first_name || user?.first_name || '',
+                        last_name: customerData.billing.last_name || user?.last_name || '',
                         company: customerData.billing.company || '',
                         address_1: customerData.billing.address_1 || '',
                         address_2: customerData.billing.address_2 || '',
@@ -565,8 +565,8 @@ export default function AddressesSection() {
                     // Restaurar datos originales
                     if (customerData?.shipping) {
                       setShippingForm({
-                        first_name: customerData.shipping.first_name || user?.firstName || '',
-                        last_name: customerData.shipping.last_name || user?.lastName || '',
+                        first_name: customerData.shipping.first_name || user?.first_name || '',
+                        last_name: customerData.shipping.last_name || user?.last_name || '',
                         company: customerData.shipping.company || '',
                         address_1: customerData.shipping.address_1 || '',
                         address_2: customerData.shipping.address_2 || '',

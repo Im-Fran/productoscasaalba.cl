@@ -52,7 +52,7 @@ export default function AccountPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Mi Cuenta</h1>
         <p className="text-gray-600">
-          Bienvenido/a de vuelta, {user.displayName || user.firstName}
+          Bienvenido/a de vuelta, {user.first_name}
         </p>
       </div>
 
@@ -63,12 +63,12 @@ export default function AccountPage() {
             <div className="flex items-center mb-6">
               <div className="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mr-3">
                 <span className="text-mint-600 font-semibold text-lg">
-                  {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                  {user.first_name.charAt(0)}{user.last_name.charAt(0)}
                 </span>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">
-                  {user.displayName || `${user.firstName} ${user.lastName}`}
+                  {`${user.first_name} ${user.last_name}`}
                 </h3>
                 <p className="text-sm text-gray-500">{user.email}</p>
               </div>

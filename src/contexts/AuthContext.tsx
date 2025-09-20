@@ -1,21 +1,11 @@
 import { createContext, useState, useEffect, useRef, type ReactNode } from 'react';
 import { AuthService } from '@/services/auth';
-
-export type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  avatar?: string;
-  role: string;
-  nicename?: string;
-  displayName?: string;
-};
+import type {AuthenticatedUser} from "@/types/user";
 
 export type AuthContextType = {
-  user: User | null;
+  user: AuthenticatedUser | null;
   loading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
@@ -37,7 +27,7 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const [loading, setLoading] = useState(true);
   const hasInitialized = useRef(false);
 
@@ -52,49 +42,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Verificar si hay un usuario autenticado al cargar la app
   useEffect(() => {
     const checkAuth = async () => {
-      console.log('🔍 Checking authentication...');
-
       try {
-        const token = localStorage.getItem('authToken');
         const userData = localStorage.getItem('userData');
+        const authenticatedUser = userData ? JSON.parse(userData) as AuthenticatedUser : null;
 
-        console.log('📋 Auth data found:', {
-          hasToken: !!token,
-          hasUserData: !!userData,
-          tokenLength: token?.length || 0
-        });
-
-        if (token && userData) {
-          console.log('🔑 Validating token...');
-          const isValid = await AuthService.validateToken(token);
-
-          console.log('✅ Token validation result:', isValid);
-
-          if (isValid) {
-            // Si el token es válido, restaurar datos del usuario
-            try {
-              const parsedUserData = JSON.parse(userData);
-              console.log('👤 Restoring user session:', parsedUserData.email);
-              setUser(parsedUserData);
-            } catch (parseError) {
-              console.error('❌ Error parsing user data:', parseError);
-              // Si hay error al parsear, limpiar todo
-              localStorage.removeItem('authToken');
-              localStorage.removeItem('userData');
-            }
-          } else {
-            console.log('🗑️ Token invalid, clearing storage');
-            // Token inválido, limpiar storage
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('userData');
-          }
-        } else {
-          console.log('ℹ️ No authentication data found');
+        if (!authenticatedUser) {
+          throw new Error('No se ha encontrado usuario autenticado');
         }
+
+        const isValid = await AuthService.validateToken(authenticatedUser.token);
+
+        if (!isValid) {
+          throw new Error('Token inválido o expirado');
+        }
+
+        setUser(authenticatedUser)
+        localStorage.removeItem('userData');
       } catch (error) {
         console.error('❌ Error during auth check:', error);
-        // En caso de error, limpiar todo por seguridad
-        localStorage.removeItem('authToken');
         localStorage.removeItem('userData');
       } finally {
         console.log('✅ Auth check completed, setting loading to false');
@@ -106,31 +71,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string, _rememberMe = false) => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const response = await AuthService.login({
-        username: email,
-        password: password
-      });
-
-      // Crear objeto usuario basado en la nueva estructura de respuesta JWT
-      const userData: User = {
-        id: response.data.id,
-        firstName: response.data.firstName,
-        lastName: response.data.lastName,
-        email: response.data.email,
-        role: 'customer', // WordPress JWT no retorna role, usar default
-        nicename: response.data.nicename,
-        displayName: response.data.displayName
-      };
-
-      localStorage.setItem('authToken', response.data.token);
+      const userData = await AuthService.login({email, password});
       localStorage.setItem('userData', JSON.stringify(userData));
-
-      // No guardamos refresh_token en localStorage ya que se maneja automáticamente via cookies
-      // El parámetro rememberMe se puede usar para otras funcionalidades si es necesario
-
       setUser(userData);
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Credenciales inválidas';
@@ -144,8 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (_userData: RegisterData) => {
     setLoading(true);
     try {
-      // WordPress JWT no incluye registro por defecto
-      // Esto necesitaría un endpoint personalizado o plugin adicional
+      // Registrar mediante JWT-auth
       throw new Error('El registro de usuarios no está implementado en este sistema');
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Error al crear la cuenta';
@@ -163,8 +107,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
     } catch (error) {
       console.error('Error durante logout:', error);
-      // En caso de error, al menos limpiar localmente
-      localStorage.removeItem('authToken');
       localStorage.removeItem('userData');
       setUser(null);
     } finally {
