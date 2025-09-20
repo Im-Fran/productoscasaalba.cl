@@ -69,23 +69,23 @@ export const ProductPage = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Product main section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        <ProductGallery images={product.images} productName={product.name} />
+        {product.images && <ProductGallery images={product.images} productName={product.name}/>}
         <ProductInfo product={product} />
       </div>
 
       {/* Product tabs */}
-      <ProductTabs
+      {product.description && product.attributes && <ProductTabs
         description={product.description}
         attributes={product.attributes}
         ratingCount={product.review_count || 0}
         averageRating={product.average_rating || "0"}
-      />
+      />}
 
       {/* Related products */}
-      <RelatedProducts
+      {product.categories && <RelatedProducts
         categories={product.categories}
         currentProductId={product.id}
-      />
+      />}
     </div>
   );
 };

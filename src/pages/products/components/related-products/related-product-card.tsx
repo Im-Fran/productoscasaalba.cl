@@ -28,9 +28,9 @@ export const RelatedProductCard = ({ product }: { product: Product }) => {
         </h3>
 
         <div className="flex items-center justify-between">
-          <div className="text-lg font-bold text-mint-900">
+          {product.prices && <div className="text-lg font-bold text-mint-900">
             {product.prices.currency_symbol}{parseInt(product.prices.price).toLocaleString('es-CL')}
-          </div>
+          </div>}
 
           <button className="bg-mint-600 text-white px-3 py-1 rounded text-sm hover:bg-mint-700 transition-colors">
             Ver

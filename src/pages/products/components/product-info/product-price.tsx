@@ -5,6 +5,10 @@ export type ProductPriceProps = {
 }
 
 export const ProductPrice = ({product}: ProductPriceProps) => {
+  if(!product.prices) {
+    return <div className="text-red-600">Error al cargar el precio</div>
+  }
+
   const hasDiscount = product.prices.sale_price && product.prices.sale_price !== product.prices.regular_price;
 
   const formatPrice = (price: string) => {

@@ -41,7 +41,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     if (loadingVariation) return 'Cargando...';
     if (hasVariations && !isSelectionComplete) return 'Selecciona las opciones';
     if (!currentProduct.is_in_stock) return 'Sin stock';
-    return currentProduct.add_to_cart.text || 'Agregar al carrito';
+    return currentProduct.add_to_cart?.text || 'Agregar al carrito';
   };
 
   const addToCart = async () => {
@@ -64,9 +64,9 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
     })
   }
 
-  const removeQtyFromCart = () => setQuantity(Math.max(currentProduct.add_to_cart.minimum || 1, quantity - 1))
+  const removeQtyFromCart = () => setQuantity(Math.max(currentProduct.add_to_cart?.minimum || 1, quantity - 1))
   const addQtyToCart = () => {
-    const maxQuantity = currentProduct.add_to_cart.maximum || 9999;
+    const maxQuantity = currentProduct.add_to_cart?.maximum || 9999;
     setQuantity(Math.min(maxQuantity, quantity + 1));
   }
 
@@ -99,7 +99,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         selectedVariation={selectedVariation}
         onUpdateSelection={updateSelection}
         loadingVariation={loadingVariation}
-        hasVariations={hasVariations}
+        hasVariations={hasVariations || false}
       />
 
       {/* Variation Error */}
@@ -168,7 +168,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         {hasVariations && Object.keys(selectedVariation).length > 0 && <button onClick={clearSelection} className="w-full py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors focus:ring-2 focus:ring-mint-500 focus:ring-offset-2">Limpiar selección</button>}
 
         {/* Quantity limits info */}
-        {currentProduct.add_to_cart.minimum > 1 && <p className="text-xs text-gray-500">Cantidad mínima: {currentProduct.add_to_cart.minimum}</p>}
+        {(currentProduct.add_to_cart?.minimum || 0) > 1 && <p className="text-xs text-gray-500">Cantidad mínima: {currentProduct.add_to_cart?.minimum}</p>}
       </div>
     </div>
   );
