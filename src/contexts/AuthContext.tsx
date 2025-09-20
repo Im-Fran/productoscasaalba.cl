@@ -57,7 +57,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
 
         setUser(authenticatedUser)
-        localStorage.removeItem('userData');
       } catch (error) {
         console.error('❌ Error during auth check:', error);
         localStorage.removeItem('userData');

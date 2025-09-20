@@ -18,6 +18,8 @@ export const HomePage = () => {
     setProducts(undefined)
     const params = new URLSearchParams();
 
+    params.append('_fields', 'id,name,slug,images,prices,short_description,on_sale');
+
     if (search !== undefined && search !== null) {
       params.append('search', search);
     }

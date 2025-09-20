@@ -1,14 +1,21 @@
 import axios from 'axios';
 import type * as AxiosTypes from 'axios';
+import {buildWebStorage, setupCache} from "axios-cache-interceptor";
 
-const axiosInstance: AxiosTypes.AxiosInstance = axios.create({
+const instance: AxiosTypes.AxiosInstance = axios.create({
   // Configuración por defecto para cookies
   withCredentials: true,
   // Headers adicionales para CORS
   headers: {
     'Content-Type': 'application/json',
+    'Cache-Control': 'public, max-age=300', // Cache por 5 minutos
   }
 });
+
+const axiosInstance = setupCache(instance, {
+  storage: buildWebStorage(localStorage, 'axios-cache:'),
+  ttl: 5 * 60 * 1000, // Tiempo de vida del cache en milisegundos (5 minutos)
+})
 
 // Variable global para almacenar el callback de mantenimiento
 let maintenanceCallback: ((isActive: boolean) => void) | null = null;

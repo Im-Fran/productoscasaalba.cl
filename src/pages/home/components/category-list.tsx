@@ -1,21 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '@/utils/axios';
-
-interface Category {
-  id: number;
-  name: string;
-  count: number;
-  slug?: string;
-  parent?: number;
-}
-
-interface WooCommerceCategory {
-  id: number;
-  name: string;
-  count: number;
-  slug: string;
-  parent: number;
-}
+import type {Category} from "@/types/product";
 
 interface CategoryListProps {
   selectedCategories: number[];
@@ -32,16 +17,15 @@ export const CategoryList = ({ selectedCategories, onCategoryChange }: CategoryL
       try {
         setLoading(true);
         setError(null);
-        const response = await axiosInstance.get('/api/wp-json/wc/store/v1/products/categories?order=asc&orderby=name');
+        const response = await axiosInstance.get('/api/wp-json/wc/store/v1/products/categories?_fields=id,name,slug,count&order=asc&orderby=name');
 
-        const data: WooCommerceCategory[] = response.data;
+        const data: Category[] = response.data;
 
-        const transformedCategories: Category[] = data.map((category: WooCommerceCategory) => ({
+        const transformedCategories: Category[] = data.map((category: Category) => ({
           id: category.id,
           name: category.name,
-          count: category.count,
           slug: category.slug,
-          parent: category.parent,
+          count: category.count || 0,
         }));
 
         setCategories(transformedCategories);
