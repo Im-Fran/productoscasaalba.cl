@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Trash2, Minus, Plus } from 'lucide-react';
 import toast from "react-hot-toast";
 import {LoadingCart} from "@/pages/cart/loading-cart.tsx";
 import {EmptyCart} from "@/pages/cart/empty-cart.tsx";
 import {useCart} from "@/hooks/useCart";
+import {CouponForm} from "@/pages/cart/components/coupon-form.tsx";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -137,7 +137,7 @@ export default function CartPage() {
           <div className="space-y-6">
             {/* Cupones */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-3">
+              <h3 className="text-lg text-gray-900 mb-4 border-b border-gray-200 pb-3">
                 Código de descuento
               </h3>
 
@@ -164,14 +164,12 @@ export default function CartPage() {
                     );
                   })}
                 </div>
-              ) : (
-                <CouponForm onApply={handleApplyCoupon} loading={loading} />
-              )}
+              ) : <CouponForm onApply={handleApplyCoupon} loading={loading} />}
             </div>
 
             {/* Totales del carrito */}
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+              <h3 className="text-lg text-gray-900 mb-6 border-b border-gray-200 pb-3">
                 Resumen del Pedido
               </h3>
 
@@ -225,7 +223,7 @@ export default function CartPage() {
                 <button
                   onClick={() => navigate('/pagar')}
                   disabled={loading}
-                  className="w-full bg-mint-950 hover:bg-mint-900 text-white py-4 px-6 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+                  className="w-full bg-mint-950 hover:bg-mint-900 text-white py-4 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
                 >
                   {loading ? 'Procesando...' : 'Proceder al Checkout'}
                 </button>
@@ -250,43 +248,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-// Componente separado para el formulario de cupón
-interface CouponFormProps {
-  onApply: (code: string) => void;
-  loading: boolean;
-}
-
-const CouponForm: React.FC<CouponFormProps> = ({ onApply, loading }) => {
-  const [couponCode, setCouponCode] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (couponCode.trim()) {
-      onApply(couponCode.trim());
-      setCouponCode('');
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="text"
-          value={couponCode}
-          onChange={(e) => setCouponCode(e.target.value)}
-          placeholder="Ingrese código de cupón"
-          disabled={loading}
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={loading || !couponCode.trim()}
-          className="w-full sm:w-auto bg-mint-600 hover:bg-mint-700 text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? 'Aplicando...' : 'Aplicar'}
-        </button>
-      </div>
-    </form>
-  );
-};

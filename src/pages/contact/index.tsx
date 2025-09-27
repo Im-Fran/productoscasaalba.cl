@@ -1,19 +1,27 @@
 import { useState } from 'react';
+import { submitContactForm, type ContactFormData, type ContactFormResponse } from '@/services/contact-form.ts';
+import {Turnstile} from "@marsidev/react-turnstile";
 
 interface ContactForm {
-  name: string;
-  email: string;
-  message: string;
+  'your-name': string;
+  'your-email': string;
+  'your-subject': string;
+  'your-message': string;
+  '_wpcf7_turnstile_response': string,
 }
 
 export default function ContactPage() {
   const [formData, setFormData] = useState<ContactForm>({
-    name: '',
-    email: '',
-    message: ''
+    'your-name': '',
+    'your-email': '',
+    'your-subject': '',
+    'your-message': '',
+    '_wpcf7_turnstile_response': '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState<string>('');
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -21,25 +29,63 @@ export default function ContactPage() {
       ...prev,
       [name]: value
     }));
+
+    // Limpiar errores de validación cuando el usuario empieza a escribir
+    if (validationErrors[name]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
+
+  const handleTurnstile = (token: string) => setFormData((prev) => ({
+    ...prev,
+    '_wpcf7_turnstile_response': token
+  }))
+
+  const handleTurnstileExpiration = () => setFormData((prev) => ({
+    ...prev,
+    '_wpcf7_turnstile_response': '',
+  }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setSubmitMessage('');
+    setValidationErrors({});
 
     try {
-      // Simular envío del formulario
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response: ContactFormResponse = await submitContactForm(formData as ContactFormData);
 
-      // Aquí iría la lógica real de envío
-      console.log('Formulario enviado:', formData);
-
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
+      if (response.status === 'mail_sent') {
+        setSubmitStatus('success');
+        setSubmitMessage(response.message || '¡Mensaje enviado con éxito! Te responderemos pronto.');
+        setFormData({
+          'your-name': '',
+          'your-email': '',
+          'your-subject': '',
+          'your-message': '',
+          '_wpcf7_turnstile_response': ''
+        });
+      } else if (response.status === 'validation_failed' && response.invalid_fields) {
+        setSubmitStatus('error');
+        const errors: Record<string, string> = {};
+        response.invalid_fields.forEach(field => {
+          errors[field.field] = field.message;
+        });
+        setValidationErrors(errors);
+        setSubmitMessage('Por favor, corrige los errores en el formulario.');
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(response.message || 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.');
+      }
+    } catch (error: unknown) {
       console.error('Error al enviar formulario:', error);
       setSubmitStatus('error');
+      const errorMessage = error instanceof Error ? error.message : 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.';
+      setSubmitMessage(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -63,77 +109,120 @@ export default function ContactPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre completo *
+                <label htmlFor="your-name" className="block text-sm font-medium text-gray-700 mb-2">
+                  Tu nombre *
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="your-name"
+                  name="your-name"
+                  value={formData['your-name']}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent"
+                  autoComplete="name"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent ${
+                    validationErrors['your-name'] ? 'border-red-300' : 'border-gray-300'
+                  }`}
                   placeholder="Tu nombre completo"
                 />
+                {validationErrors['your-name'] && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors['your-name']}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Correo electrónico *
+                <label htmlFor="your-email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Tu correo electrónico *
                 </label>
                 <input
                   type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                  id="your-email"
+                  name="your-email"
+                  value={formData['your-email']}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent"
+                  autoComplete="email"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent ${
+                    validationErrors['your-email'] ? 'border-red-300' : 'border-gray-300'
+                  }`}
                   placeholder="tu@email.com"
                 />
+                {validationErrors['your-email'] && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors['your-email']}</p>
+                )}
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Mensaje *
+                <label htmlFor="your-subject" className="block text-sm font-medium text-gray-700 mb-2">
+                  Asunto *
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  value={formData.message}
+                <input
+                  type="text"
+                  id="your-subject"
+                  name="your-subject"
+                  value={formData['your-subject']}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent ${
+                    validationErrors['your-subject'] ? 'border-red-300' : 'border-gray-300'
+                  }`}
+                  placeholder="¿De qué se trata tu mensaje?"
+                />
+                {validationErrors['your-subject'] && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors['your-subject']}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="your-message" className="block text-sm font-medium text-gray-700 mb-2">
+                  Tu mensaje (opcional)
+                </label>
+                <textarea
+                  id="your-message"
+                  name="your-message"
+                  rows={6}
+                  value={formData['your-message']}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent ${
+                    validationErrors['your-message'] ? 'border-red-300' : 'border-gray-300'
+                  }`}
                   placeholder="Escribe tu mensaje aquí..."
                 />
+                {validationErrors['your-message'] && (
+                  <p className="mt-1 text-sm text-red-600">{validationErrors['your-message']}</p>
+                )}
               </div>
 
               {submitStatus === 'success' && (
                 <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-green-800">¡Mensaje enviado con éxito! Te responderemos pronto.</p>
+                  <p className="text-green-800">{submitMessage}</p>
                 </div>
               )}
 
               {submitStatus === 'error' && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-800">Error al enviar el mensaje. Por favor, inténtalo de nuevo.</p>
+                  <p className="text-red-800">{submitMessage}</p>
                 </div>
               )}
+
+              <Turnstile
+                siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'}
+                onSuccess={handleTurnstile}
+                options={{ refreshExpired: 'auto', refreshTimeout: 'auto' }}
+                onExpire={handleTurnstileExpiration}
+              />
 
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full bg-mint-600 text-mint-950 py-3 px-6 rounded-lg font-semibold hover:bg-mint-700 focus:ring-2 focus:ring-mint-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+                {isSubmitting ? 'Enviando...' : 'Enviar'}
               </button>
             </form>
           </div>
 
           {/* Información de contacto */}
-          {/* Scroll de logos casa alba o animacion de bidones */}
           <div className="space-y-8">
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">¡Comunícate!</h2>
@@ -178,15 +267,16 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* TODO: Centrar botón */}
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">¿Necesitas ayuda inmediata?</h2>
-              <p className="text-gray-600 mb-10">
+              <p className="text-gray-600 mb-6">
                 Para consultas urgentes, puedes contactarnos directamente por WhatsApp, y haremos lo posible por responder rápidamente.
               </p>
-              <a href={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} target={"_blank"} className="bg-mint-950 text-mint-50 py-2 px-4 rounded-lg hover:bg-mint-900 transition-colors">
-                Contactar por WhatsApp
-              </a>
+              <div className="text-center">
+                <a href={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} target={"_blank"} className="inline-block bg-mint-950 text-mint-50 py-2 px-4 rounded-lg hover:bg-mint-900 transition-colors">
+                  Contactar por WhatsApp
+                </a>
+              </div>
             </div>
           </div>
         </div>
