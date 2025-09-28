@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from "react-hot-toast";
 import {useCart} from "@/hooks/useCart";
+import { useCustomer } from "@/hooks/useCustomer";
+import { useShipping } from "@/hooks/useShipping";
 
 interface CheckoutForm {
   // Información de contacto
@@ -14,7 +16,6 @@ interface CheckoutForm {
   city: string;
   state: string;
   zipCode: string;
-  country: string;
 
   // Dirección de facturación
   billingAddress: string;
@@ -32,6 +33,8 @@ interface CheckoutForm {
 
 export default function CheckoutPage() {
   const { cart, loading: cartLoading, applyCoupon, removeCoupon, formatPrice } = useCart();
+  const { customer, loading: customerLoading } = useCustomer();
+  const { shippingOptions, loading: shippingLoading, selectedShippingId, selectShippingOption } = useShipping();
 
   const [formData, setFormData] = useState<CheckoutForm>({
     firstName: '',
@@ -42,7 +45,6 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     zipCode: '',
-    country: 'Chile',
     billingAddress: '',
     billingCity: '',
     billingState: '',
@@ -55,6 +57,50 @@ export default function CheckoutPage() {
   });
 
   const [couponCode, setCouponCode] = useState('');
+
+  useEffect(() => {
+    // Pre-llenar formulario con datos del usuario autenticado
+    if (customer && !customerLoading) {
+      // Función para mapear códigos de país a nombres
+      const getCountryName = (countryCode: string) => {
+        const countryMap: { [key: string]: string } = {
+          'CL': 'Chile',
+          'AR': 'Argentina',
+          'PE': 'Perú',
+          'CO': 'Colombia',
+          'EC': 'Ecuador',
+          'UY': 'Uruguay',
+          'PY': 'Paraguay',
+          'BO': 'Bolivia',
+          'VE': 'Venezuela',
+          'BR': 'Brasil'
+        };
+        return countryMap[countryCode] || countryCode;
+      };
+
+      setFormData(prev => ({
+        ...prev,
+        // Información de contacto desde datos básicos o billing
+        firstName: customer.first_name || customer.billing?.first_name || '',
+        lastName: customer.last_name || customer.billing?.last_name || '',
+        email: customer.email || customer.billing?.email || '',
+        phone: customer.billing?.phone || '',
+
+        // Dirección de envío desde shipping o billing como fallback
+        address: customer.shipping?.address_1 || customer.billing?.address_1 || '',
+        city: customer.shipping?.city || customer.billing?.city || '',
+        state: customer.shipping?.state || customer.billing?.state || '',
+        zipCode: customer.shipping?.postcode || customer.billing?.postcode || '',
+
+        // Dirección de facturación
+        billingAddress: customer.billing?.address_1 || '',
+        billingCity: customer.billing?.city || '',
+        billingState: customer.billing?.state || '',
+        billingZipCode: customer.billing?.postcode || '',
+        billingCountry: getCountryName(customer.billing?.country || 'CL'),
+      }));
+    }
+  }, [customer, customerLoading]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -151,9 +197,25 @@ export default function CheckoutPage() {
             <div className="lg:col-span-2 space-y-8">
               {/* Información de contacto */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
-                  Información de Contacto
-                </h2>
+                <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Información de Contacto
+                  </h2>
+                  {customerLoading && (
+                    <div className="flex items-center text-sm text-mint-600">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-mint-600 mr-2"></div>
+                      Cargando datos...
+                    </div>
+                  )}
+                  {customer && !customerLoading && (
+                    <div className="flex items-center text-sm text-green-600">
+                      <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      Datos pre-llenados
+                    </div>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -251,17 +313,33 @@ export default function CheckoutPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Provincia *
+                        Región *
                       </label>
-                      <input
-                        type="text"
+                      <select
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
-                        placeholder="Macul"
-                      />
+                      >
+                        <option value="">Elige una opción…</option>
+                        <option value="CL-AI">Aysén del General Carlos Ibañez del Campo</option>
+                        <option value="CL-AN">Antofagasta</option>
+                        <option value="CL-AP">Arica y Parinacota</option>
+                        <option value="CL-AR">La Araucanía</option>
+                        <option value="CL-AT">Atacama</option>
+                        <option value="CL-BI">Biobío</option>
+                        <option value="CL-CO">Coquimbo</option>
+                        <option value="CL-LI">Libertador General Bernardo O'Higgins</option>
+                        <option value="CL-LL">Los Lagos</option>
+                        <option value="CL-LR">Los Ríos</option>
+                        <option value="CL-MA">Magallanes</option>
+                        <option value="CL-ML">Maule</option>
+                        <option value="CL-NB">Ñuble</option>
+                        <option value="CL-RM">Región Metropolitana de Santiago</option>
+                        <option value="CL-TA">Tarapacá</option>
+                        <option value="CL-VS">Valparaíso</option>
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -275,22 +353,6 @@ export default function CheckoutPage() {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
                         placeholder="7810000"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        País *
-                      </label>
-                      <select
-                        name="country"
-                        value={formData.country}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
-                      >
-                        <option value="Ecuador">Ecuador</option>
-                        <option value="Colombia">Colombia</option>
-                        <option value="Perú">Perú</option>
-                      </select>
                     </div>
                   </div>
 
@@ -317,37 +379,44 @@ export default function CheckoutPage() {
                   Opciones de Envío
                 </h2>
                 <div className="space-y-4">
-                  <label className="flex items-center space-x-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-mint-50 hover:border-mint-300 transition-all duration-200 has-[:checked]:border-mint-500 has-[:checked]:bg-mint-50">
-                    <input
-                      type="radio"
-                      name="shippingMethod"
-                      value="standard"
-                      checked={formData.shippingMethod === 'standard'}
-                      onChange={handleInputChange}
-                      className="text-mint-600 focus:ring-mint-500"
-                    />
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">Envío Estándar</div>
-                      <div className="text-sm text-gray-600">5-7 días hábiles</div>
+                  {shippingLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mint-600"></div>
                     </div>
-                    <div className="font-bold text-mint-700">$5.00</div>
-                  </label>
-
-                  <label className="flex items-center space-x-4 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-mint-50 hover:border-mint-300 transition-all duration-200 has-[:checked]:border-mint-500 has-[:checked]:bg-mint-50">
-                    <input
-                      type="radio"
-                      name="shippingMethod"
-                      value="express"
-                      checked={formData.shippingMethod === 'express'}
-                      onChange={handleInputChange}
-                      className="text-mint-600 focus:ring-mint-500"
-                    />
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">Envío Express</div>
-                      <div className="text-sm text-gray-600">2-3 días hábiles</div>
-                    </div>
-                    <div className="font-bold text-mint-700">$15.00</div>
-                  </label>
+                  ) : (
+                    shippingOptions.map((option) => (
+                      <label
+                        key={option.id}
+                        className={`flex items-center space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                          selectedShippingId === option.id
+                            ? 'border-mint-500 bg-mint-50'
+                            : 'border-gray-200 hover:bg-mint-50 hover:border-mint-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="shippingMethod"
+                          value={option.id}
+                          checked={selectedShippingId === option.id}
+                          onChange={async (e) => {
+                            const rateId = e.target.value;
+                            setFormData(prev => ({ ...prev, shippingMethod: rateId }));
+                            await selectShippingOption(rateId);
+                          }}
+                          className="text-mint-600 focus:ring-mint-500"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-gray-900">{option.name}</div>
+                          <div className="text-sm text-gray-600">
+                            {option.delivery_time || option.description}
+                          </div>
+                        </div>
+                        <div className="font-bold text-mint-700">
+                          {option.currency_prefix}{parseInt(option.price).toLocaleString('es-CL')}
+                        </div>
+                      </label>
+                    ))
+                  )}
                 </div>
               </div>
 
@@ -491,17 +560,17 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {parseInt(cart.totals.total_shipping) > 0 && (
-                    <div className="flex justify-between text-gray-600">
-                      <span>Envío:</span>
-                      <span>{formatPrice(cart.totals.total_shipping, cart.totals)}</span>
-                    </div>
-                  )}
-
                   {parseInt(cart.totals.total_tax) > 0 && (
                     <div className="flex justify-between text-gray-600">
                       <span>Impuestos:</span>
                       <span>{formatPrice(cart.totals.total_tax, cart.totals)}</span>
+                    </div>
+                  )}
+
+                  {parseInt(cart.totals.total_shipping) > 0 && (
+                    <div className="flex justify-between text-gray-600">
+                      <span>Envío:</span>
+                      <span>{formatPrice(cart.totals.total_shipping, cart.totals)}</span>
                     </div>
                   )}
 

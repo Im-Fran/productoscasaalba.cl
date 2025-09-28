@@ -31,7 +31,7 @@ interface FormatPriceOptions {
 }
 
 // Constants for localStorage
-const CART_TOKEN_KEY = 'woo_cart_token';
+export const CART_TOKEN_KEY = 'woo_cart_token';
 
 // Helper functions for cart token management
 const getCartToken = (): string | null => {
