@@ -55,15 +55,15 @@ export default function OrderCancelledPage() {
             Pedido Cancelado
           </h1>
           <p className="text-lg text-gray-600 mb-4">
-            {order 
-              ? `Tu pedido #${order.number} ha sido cancelado.`
+            {orderId 
+              ? `Tu pedido #${order?.number || orderId} ha sido cancelado.`
               : 'Tu pedido ha sido cancelado.'
             }
           </p>
-          {order && (
+          {orderId && (
             <div className="inline-block px-4 py-2 rounded-lg bg-orange-50">
               <span className="font-semibold text-orange-700">
-                Número de Pedido: #{order.number}
+                Número de Pedido: #{order?.number || orderId}
               </span>
             </div>
           )}
