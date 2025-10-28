@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import {useCart} from "@/hooks/useCart";
 import { useCustomer } from "@/hooks/useCustomer";
 import { useShipping } from "@/hooks/useShipping";
+import { usePayment } from "@/hooks/usePayment";
+import { useNavigate } from "react-router";
 
 interface CheckoutForm {
   // Información de contacto
@@ -35,6 +37,8 @@ export default function CheckoutPage() {
   const { cart, loading: cartLoading, applyCoupon, removeCoupon, formatPrice } = useCart();
   const { customer, loading: customerLoading } = useCustomer();
   const { shippingOptions, loading: shippingLoading, selectedShippingId, selectShippingOption } = useShipping();
+  const { paymentMethods, loading: paymentLoading, selectedPaymentMethod, selectPaymentMethod, processOrder } = usePayment();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<CheckoutForm>({
     firstName: '',
@@ -133,11 +137,74 @@ export default function CheckoutPage() {
     await removeCoupon(couponCodeToRemove);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Datos del pedido:', formData);
-    console.log('Carrito:', cart);
-    alert('Pedido procesado exitosamente!');
+
+    // Validación de método de pago
+    if (!selectedPaymentMethod) {
+      toast.error('Por favor, selecciona un método de pago');
+      return;
+    }
+
+    // Validación de método de envío
+    if (!selectedShippingId) {
+      toast.error('Por favor, selecciona un método de envío');
+      return;
+    }
+
+    const loadingToast = toast.loading('Procesando tu pedido...');
+
+    try {
+      // Preparar datos del pedido
+      const orderData = {
+        billing_address: {
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address_1: formData.useSameAddress ? formData.address : formData.billingAddress,
+          city: formData.useSameAddress ? formData.city : formData.billingCity,
+          state: formData.useSameAddress ? formData.state : formData.billingState,
+          postcode: formData.useSameAddress ? formData.zipCode : formData.billingZipCode,
+          country: 'CL',
+        },
+        shipping_address: {
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          address_1: formData.address,
+          city: formData.city,
+          state: formData.state,
+          postcode: formData.zipCode,
+          country: 'CL',
+          phone: formData.phone,
+        },
+        payment_method: selectedPaymentMethod,
+        customer_note: formData.orderNotes,
+      };
+
+      const result = await processOrder(orderData);
+
+      toast.dismiss(loadingToast);
+
+      if (result.success && result.data) {
+        toast.success('¡Pedido realizado exitosamente!');
+
+        // Si hay un payment_result con una URL de redirección, redirigir
+        if (result.data.payment_result?.redirect_url) {
+          window.location.href = result.data.payment_result.redirect_url;
+        } else {
+          // Redirigir a la página de confirmación o cuenta
+          navigate(`/account?order=${result.data.order_id}`);
+        }
+      } else if (!result.success) {
+        toast.error(result.error || 'Error al procesar el pedido');
+      }
+    } catch (error: unknown) {
+      toast.dismiss(loadingToast);
+      const err = error as Error;
+      toast.error(err.message || 'Error inesperado al procesar el pedido');
+      console.error('Error processing order:', error);
+    }
   };
 
   // Mostrar estado de carga si el carrito aún no está disponible
@@ -425,18 +492,62 @@ export default function CheckoutPage() {
                 <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Opciones de Pago
                 </h2>
-                <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                  <div className="text-gray-500 mb-2">
-                    <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 font-medium">
-                    Próximamente - Métodos de pago en desarrollo
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Estamos trabajando para ofrecerte las mejores opciones de pago
-                  </p>
+                <div className="space-y-4">
+                  {paymentLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mint-600"></div>
+                      <span className="ml-3 text-gray-600">Cargando métodos de pago...</span>
+                    </div>
+                  ) : paymentMethods.length > 0 ? (
+                    paymentMethods.map((method) => (
+                      <label
+                        key={method.id}
+                        className={`flex items-start space-x-4 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                          selectedPaymentMethod === method.id
+                            ? 'border-mint-500 bg-mint-50'
+                            : 'border-gray-200 hover:bg-mint-50 hover:border-mint-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value={method.id}
+                          checked={selectedPaymentMethod === method.id}
+                          onChange={(e) => {
+                            const methodId = e.target.value;
+                            setFormData(prev => ({ ...prev, paymentMethod: methodId }));
+                            selectPaymentMethod(methodId);
+                          }}
+                          className="mt-1 text-mint-600 focus:ring-mint-500"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-2xl">{method.icon}</span>
+                            <span className="font-semibold text-gray-900">{method.title}</span>
+                          </div>
+                          {method.description && (
+                            <p className="text-sm text-gray-600 mt-1">
+                              {method.description}
+                            </p>
+                          )}
+                        </div>
+                      </label>
+                    ))
+                  ) : (
+                    <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                      <div className="text-gray-500 mb-2">
+                        <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <p className="text-gray-600 font-medium">
+                        No hay métodos de pago disponibles
+                      </p>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Por favor, contacte con soporte
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
