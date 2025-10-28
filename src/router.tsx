@@ -13,6 +13,8 @@ import { ResetPasswordPage } from "@/pages/auth/reset-password";
 import CheckoutPage from "@/pages/checkout";
 import ErrorPage from "@/pages/error";
 import AccountPage from "@/pages/account";
+import OrderReceivedPage from "@/pages/order-received";
+import OrderCancelledPage from "@/pages/order-cancelled";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,8 @@ export const router = createBrowserRouter([
       { path: "/productos/:slug", Component: ProductPage },
       { path: "/carrito", Component: CartPage },
       { path: "/pagar", Component: CheckoutPage },
+      { path: "/pedido-recibido", Component: OrderReceivedPage },
+      { path: "/pedido-cancelado", Component: OrderCancelledPage },
       { path: "/cuenta", Component: AccountPage },
       { path: "/reviews", Component: ReviewsPage },
       { path: "/contacto", Component: ContactPage },
