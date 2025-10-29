@@ -251,19 +251,6 @@ export default function ContactPage() {
                     <p className="text-gray-600">contacto@productoscasaalba.cl</p>
                   </div>
                 </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <svg className="h-6 w-6 text-mint-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-gray-900">Horarios de atención</h3>
-                    <p className="text-gray-600">Lunes a Viernes: 9:00 AM - 7:00 PM</p>
-                    <p className="text-gray-600">Sábados: 9:00 AM - 1:00 PM</p>
-                  </div>
-                </div>
               </div>
             </div>
 
