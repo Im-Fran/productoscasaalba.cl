@@ -49,10 +49,6 @@ export const ProductsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Todos los Productos</h1>
-        </div>
-
         <div className="grid grid-cols-12 gap-8">
           {/* Sidebar izquierdo - Filtros */}
           <div className="col-span-4 space-y-6">
@@ -115,15 +111,6 @@ export const ProductsPage = () => {
           {/* Contenido principal - Grid de productos */}
           <div className="col-span-8">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="mb-6">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-900">Productos</h2>
-                  <div className="text-sm text-gray-500">
-                    {selectedCategories.length > 0 || searchQuery ? 'Resultados filtrados' : 'Todos los productos'}
-                  </div>
-                </div>
-              </div>
-
               <ProductGrid
                 products={products}
                 refetchProducts={fetchProducts}
