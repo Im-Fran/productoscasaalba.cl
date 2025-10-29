@@ -152,7 +152,7 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
         {/* Add to Cart Button */}
         <button
           className={`
-            w-full py-3 px-6 rounded-lg font-medium text-white transition-colors
+            w-full py-3 px-6 rounded-lg font-medium text-black text-lg transition-colors
             ${canAddToCart
               ? 'bg-mint-600 hover:bg-mint-700 focus:ring-2 focus:ring-mint-500 focus:ring-offset-2'
               : 'bg-gray-400 cursor-not-allowed'
