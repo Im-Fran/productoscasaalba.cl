@@ -39,8 +39,8 @@ export const Header = ({ onCartClick }: HeaderProps) => {
               backgroundSize: '86px auto',
               backgroundPosition: 'center',
               backgroundOrigin: 'content-box',
-              paddingLeft: '43px',
-              paddingRight: '43px',
+              paddingLeft: '86px',
+              paddingRight: '86px',
             }}
           />
 
