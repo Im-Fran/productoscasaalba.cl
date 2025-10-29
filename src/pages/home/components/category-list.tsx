@@ -104,13 +104,6 @@ export const CategoryList = ({ selectedCategories, onCategoryChange }: CategoryL
           </label>
         ))}
       </div>
-      {selectedCategories.length > 0 && (
-        <div className="mt-4 p-2 bg-mint-50 rounded">
-          <p className="text-sm text-mint-700 font-medium">
-            Categorías seleccionadas: {selectedCategories.length}
-          </p>
-        </div>
-      )}
     </div>
   );
 };
