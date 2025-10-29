@@ -29,18 +29,19 @@ export const Header = ({ onCartClick }: HeaderProps) => {
     <header className={"bg-white shadow-sm border-b border-gray-200"}>
       <div className="container mx-auto">
         {/* Top section with logo and icons */}
-        <div className="flex items-center justify-center gap-2.5 py-4">
+        <div className="flex items-center justify-between py-4 px-4">
           <Link
             to={"/"}
-            className="w-full h-24"
+            className="flex-1 h-24 min-w-0"
             style={{
               backgroundImage: `url(${CasaAlbaLogo})`,
               backgroundRepeat: 'repeat-x',
               backgroundSize: '86px auto',
+              backgroundPosition: 'left center',
             }}
           />
 
-          <div className={"ml-auto flex items-center mx-4 gap-4"}>
+          <div className={"flex items-center gap-4 flex-shrink-0"}>
             <button onClick={onCartClick} className="relative">
               <ShoppingBag
                 size={24}
