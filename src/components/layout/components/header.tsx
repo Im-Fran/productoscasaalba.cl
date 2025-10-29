@@ -38,6 +38,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
               backgroundRepeat: 'repeat-x',
               backgroundSize: '86px auto',
               backgroundPosition: 'center',
+              backgroundOrigin: 'content-box',
               paddingLeft: '43px',
               paddingRight: '43px',
             }}
