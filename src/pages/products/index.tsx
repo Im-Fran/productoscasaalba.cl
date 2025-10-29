@@ -93,7 +93,7 @@ export const ProductsPage = () => {
 
             {/* Contenedor flotante para búsqueda */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Buscar Productos</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Buscar</h3>
               <SearchBox
                 onSearch={handleSearch}
               />
