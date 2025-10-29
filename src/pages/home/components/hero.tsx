@@ -22,7 +22,7 @@ export const Slides = () => {
         disableOnInteraction: false,
       }}
       loop={true}
-      className="h-screen"
+      className="h-[600px] md:h-[700px] lg:h-[800px]"
     >
       <SwiperSlide>
         <CallToActionComprar />
@@ -46,10 +46,10 @@ export const CallToActionComprar = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-[600px] md:h-[700px] lg:h-[800px] w-full overflow-hidden">
       {/* Imagen de fondo */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat"
         style={{ backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` }}
       />
 
