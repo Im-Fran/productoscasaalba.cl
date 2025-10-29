@@ -1,6 +1,7 @@
 import {Txtrvl} from "txtrvl";
 import {Link} from "react-router";
 import {useEffect, useState} from "react";
+import {Instagram, MessageCircle} from "lucide-react";
 
 const rollingTxt = [
   "Contáctanos",
@@ -39,18 +40,23 @@ export const Footer = () => {
         <section id={"footer-social"}>
           <ul className={"flex items-center gap-4"}>
             <li>
-              <Link to={"https://instagram.com/productoscasaalba"} className={"text-gray-600 hover:text-gray-900"}>
-                Instagram
+              <Link to={"https://instagram.com/productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+                <Instagram size={20} />
+                <span>Instagram</span>
               </Link>
             </li>
             <li>
-              <Link to={"https://tiktok.com/@productoscasaalba"} className={"text-gray-600 hover:text-gray-900"}>
-                TikTok
+              <Link to={"https://tiktok.com/@productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                </svg>
+                <span>TikTok</span>
               </Link>
             </li>
             <li>
-              <Link to={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} className={"text-gray-600 hover:text-gray-900"}>
-                WhatsApp
+              <Link to={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+                <MessageCircle size={20} />
+                <span>WhatsApp</span>
               </Link>
             </li>
           </ul>
