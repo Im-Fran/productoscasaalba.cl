@@ -27,6 +27,6 @@ export const ProductPrice = ({product}: ProductPriceProps) => {
         </> : <span className="text-3xl font-bold text-mint-900">{product.prices.currency_symbol}{formatPrice(product.prices.price)}</span>
       }
     </div>
-    <p className="text-sm text-gray-600">IVA. Incl</p>
+    <p className="text-sm text-gray-600">IVA Incluído</p>
   </div>
 }
