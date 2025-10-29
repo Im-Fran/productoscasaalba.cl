@@ -37,6 +37,9 @@ export const Header = ({ onCartClick }: HeaderProps) => {
               backgroundImage: `url(${CasaAlbaLogo})`,
               backgroundRepeat: 'repeat-x',
               backgroundSize: '86px auto',
+              backgroundPosition: 'center',
+              paddingLeft: '43px',
+              paddingRight: '43px',
             }}
           />
 
