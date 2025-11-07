@@ -28,7 +28,17 @@ export const CategoryList = ({ selectedCategories, onCategoryChange }: CategoryL
           count: category.count || 0,
         }));
 
-        setCategories(transformedCategories);
+        // Sort categories to ensure "Otros" always appears at the end
+        const sortedCategories = transformedCategories.sort((a, b) => {
+          // If "a" is "Otros", it should come after "b"
+          if (a.name.toLowerCase() === 'otros') return 1;
+          // If "b" is "Otros", it should come after "a"
+          if (b.name.toLowerCase() === 'otros') return -1;
+          // Otherwise, maintain the original order (already sorted alphabetically by API)
+          return 0;
+        });
+
+        setCategories(sortedCategories);
       } catch (error) {
         console.error('Error fetching categories:', error);
         setError('Error al cargar las categorías');
