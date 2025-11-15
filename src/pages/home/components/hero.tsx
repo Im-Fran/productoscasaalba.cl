@@ -50,7 +50,10 @@ export const CallToActionComprar = () => {
       {/* Imagen de fondo */}
       <div
         className="absolute inset-0 bg-contain bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` }}
+        style={{ 
+          backgroundColor: '#2596be',
+          backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` 
+        }}
       />
 
       {/* Overlay para mejorar legibilidad */}
