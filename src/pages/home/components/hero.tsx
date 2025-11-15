@@ -49,7 +49,7 @@ export const CallToActionComprar = () => {
     <div className="relative h-screen w-full overflow-hidden">
       {/* Imagen de fondo */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat"
         style={{ backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` }}
       />
 
