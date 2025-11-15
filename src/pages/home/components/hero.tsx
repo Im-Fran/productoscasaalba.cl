@@ -47,10 +47,20 @@ export const CallToActionComprar = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      {/* Fondo con gradiente conico */}
+      <div
+        className="absolute inset-0 blur-[30px]"
+        style={{ 
+          background: 'conic-gradient(from 180deg, #b7f2bc, #c2f5c1, #bcf1bf, #b7f2bc)'
+        }}
+      />
+      
       {/* Imagen de fondo */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` }}
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` 
+        }}
       />
 
       {/* Overlay para mejorar legibilidad */}
