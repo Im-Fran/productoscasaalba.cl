@@ -18,31 +18,40 @@ export const FloatingProductsAnimation = () => {
     const container = containerRef.current;
     const images = container.querySelectorAll('.floating-product');
 
+    // Calculate center content area (max-w-4xl = 1024px + padding)
+    const centerContentWidth = 1024 + 64; // 1024px + 2rem padding on each side
+    const centerStart = (window.innerWidth - centerContentWidth) / 2;
+    const centerEnd = centerStart + centerContentWidth;
+    
+    // Margin areas where products can appear
+    const leftMarginEnd = Math.max(centerStart - 50, 50);
+    const rightMarginStart = Math.min(centerEnd + 50, window.innerWidth - 150);
+
     images.forEach((img, index) => {
       const element = img as HTMLElement;
       
-      // Determine starting position (bottom, left, or right)
-      const positions = ['bottom', 'left', 'right'];
-      const position = positions[index % positions.length];
+      // All products start from bottom of screen
+      const startY = window.innerHeight + 100;
       
-      // Set initial position off-screen
+      // Determine if this product goes to left or right margin
+      const isLeftSide = index % 2 === 0;
+      
+      // Random X position in the appropriate margin
       let startX: number;
-      let startY: number;
+      let endX: number;
       
-      if (position === 'bottom') {
-        startX = Math.random() * (window.innerWidth - 150);
-        startY = window.innerHeight + 100;
-      } else if (position === 'left') {
-        startX = -150;
-        startY = Math.random() * (window.innerHeight - 300) + 100;
-      } else { // right
-        startX = window.innerWidth + 150;
-        startY = Math.random() * (window.innerHeight - 300) + 100;
+      if (isLeftSide) {
+        // Left margin: from left edge to before center content
+        startX = Math.random() * Math.max(leftMarginEnd - 150, 100) + 25;
+        endX = Math.random() * Math.max(leftMarginEnd - 150, 100) + 25;
+      } else {
+        // Right margin: from after center content to right edge
+        startX = rightMarginStart + Math.random() * (window.innerWidth - rightMarginStart - 150);
+        endX = rightMarginStart + Math.random() * (window.innerWidth - rightMarginStart - 150);
       }
       
-      // Random end position in the viewport
-      const endX = Math.random() * (window.innerWidth - 200) + 50;
-      const endY = Math.random() * (window.innerHeight - 300) + 50;
+      // Random end Y position (higher up on screen)
+      const endY = Math.random() * (window.innerHeight * 0.5) + 100;
       
       // Set initial position
       gsap.set(element, {
@@ -54,12 +63,12 @@ export const FloatingProductsAnimation = () => {
       
       // Create animation timeline with delay
       const tl = gsap.timeline({
-        delay: index * 0.3, // Stagger the animations
+        delay: index * 0.4, // Stagger the animations
         repeat: -1, // Infinite loop
         repeatDelay: 2,
       });
       
-      // Animate in
+      // Animate in - jump upward from bottom
       tl.to(element, {
         x: endX,
         y: endY,
