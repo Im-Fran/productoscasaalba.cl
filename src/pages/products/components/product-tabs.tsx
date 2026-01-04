@@ -70,9 +70,9 @@ export const ProductTabs = ({ description, attributes, ratingCount, averageRatin
       {/* Tab content */}
       <div className="p-6">
         {activeTab === 'description' && (
-          <div className="prose max-w-none">
+          <div className="prose prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 max-w-none">
             {description ? (
-              <div dangerouslySetInnerHTML={{ __html: description }} />
+              <div className="html-content space-y-4" dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
               <p className="text-gray-600">No hay descripción disponible para este producto.</p>
             )}
