@@ -2,6 +2,7 @@ import {Txtrvl} from "txtrvl";
 import {Link} from "react-router";
 import {useEffect, useState} from "react";
 import {Instagram} from "lucide-react";
+import {cdnEndpoint} from "@/utils/constants.ts";
 
 const rollingTxt = [
   "Contáctanos",
@@ -76,14 +77,14 @@ export const Footer = () => {
       </div>
       <div className={"col-span-1 flex flex-col items-center gap-5"}>
         <img
-          src={"https://cdn.productoscasaalba.cl/casaalba.webp"}
+          src={`${cdnEndpoint}/casaalba.webp`}
           alt={"Casa Alba Logo"}
           className={"h-24 lg:h-32 xl:h-40 object-contain"}
         />
       </div>
       <div className={"col-span-1 flex flex-col items-end gap-5"}>
         <img
-          src={"https://cdn.productoscasaalba.cl/images/burbujas.webp"}
+          src={`${cdnEndpoint}/images/burbujas.webp`}
           alt={"Burbujas decorativas"}
           className={"h-24 lg:h-32 xl:h-40 object-contain"}
         />

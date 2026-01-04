@@ -1,0 +1,1 @@
+export const cdnEndpoint = import.meta.env.VITE_CDN_ENDPOINT || 'https://cdn.productoscasaalba.cl'
