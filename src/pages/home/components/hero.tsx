@@ -4,6 +4,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import {cdnEndpoint} from "@/utils/constants.ts";
 
 export const Hero = () => <>
   <Slides/>
@@ -59,7 +60,7 @@ export const CallToActionComprar = () => {
       <div
         className="absolute inset-0 bg-contain bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: `url(https://cdn.productoscasaalba.cl/images/we-can-clean-it.webp)` 
+          backgroundImage: `url(${cdnEndpoint}/images/we-can-clean-it.webp)`
         }}
       />
 

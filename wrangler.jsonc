@@ -16,14 +16,16 @@
       "vars": {
         "VITE_ENV": "development",
         "VITE_CMS_URL": "https://dev-cms.productoscasaalba.cl",
-        "VITE_FRONTEND_URL": "https://dev-productoscasaalba.franciscosolis.workers.dev"
+        "VITE_FRONTEND_URL": "https://dev-productoscasaalba.franciscosolis.workers.dev",
+        "VITE_CDN_ENDPOINT": "https://dev-cdn.productoscasaalba.cl"
       }
     },
     "production": {
       "vars": {
         "VITE_ENV": "production",
         "VITE_CMS_URL": "https://cms.productoscasaalba.cl",
-        "VITE_FRONTEND_URL": "https://productoscasaalba.cl"
+        "VITE_FRONTEND_URL": "https://productoscasaalba.cl",
+        "VITE_CDN_ENDPOINT": "https://cdn.productoscasaalba.cl"
       }
     }
   }
