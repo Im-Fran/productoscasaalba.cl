@@ -70,9 +70,9 @@ export const ProductTabs = ({ description, attributes, ratingCount, averageRatin
       {/* Tab content */}
       <div className="p-6">
         {activeTab === 'description' && (
-          <div className="prose max-w-none">
+          <div className="prose prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 max-w-none">
             {description ? (
-              <div dangerouslySetInnerHTML={{ __html: description }} />
+              <div className="html-content space-y-4" dangerouslySetInnerHTML={{ __html: description }} />
             ) : (
               <p className="text-gray-600">No hay descripción disponible para este producto.</p>
             )}
@@ -159,7 +159,7 @@ export const ProductTabs = ({ description, attributes, ratingCount, averageRatin
                 <p className="text-gray-600 mb-4">
                   Este producto aún no tiene valoraciones
                 </p>
-                <button className="bg-mint-600 text-white px-6 py-3 rounded-lg hover:bg-mint-700 transition-colors font-medium">
+                <button className="bg-mint-600 text-black px-6 py-3 rounded-lg hover:bg-mint-700 transition-colors font-medium">
                   Sé el Primero en Valorar
                 </button>
               </div>
