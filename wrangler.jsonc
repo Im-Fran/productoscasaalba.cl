@@ -11,6 +11,12 @@
       "enabled": true
     }
   },
+  "vars": {
+    "VITE_ENV": "development",
+    "VITE_CMS_URL": "https://dev-cms.productoscasaalba.cl",
+    "VITE_FRONTEND_URL": "https://dev-productoscasaalba.franciscosolis.workers.dev",
+    "VITE_CDN_ENDPOINT": "https://dev-cdn.productoscasaalba.cl"
+  },
   "env": {
     "development": {
       "vars": {
