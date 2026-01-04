@@ -10,5 +10,21 @@
     "logs": {
       "enabled": true
     }
+  },
+  "env": {
+    "development": {
+      "vars": {
+        "VITE_ENV": "development",
+        "VITE_CMS_URL": "https://cms.productoscasaalba.cl",
+        "VITE_FRONTEND_URL": "https://dev-productoscasaalba.franciscosolis.workers.dev"
+      }
+    },
+    "production": {
+      "vars": {
+        "VITE_ENV": "production",
+        "VITE_CMS_URL": "https://cms.productoscasaalba.cl",
+        "VITE_FRONTEND_URL": "https://productoscasaalba.cl"
+      }
+    }
   }
 }
