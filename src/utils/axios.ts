@@ -30,7 +30,7 @@ axiosInstance.interceptors.request.use((config) => {
   // Asegurar que withCredentials esté siempre habilitado
   config.withCredentials = true;
 
-  if (config.url && config.url.startsWith('/api/') && ['production', 'prod'].includes(import.meta.env.VITE_ENV || 'local')) {
+  if (config.url && config.url.startsWith('/api/') && ['production', 'prod', 'dev', 'development'].includes(import.meta.env.VITE_ENV || 'local')) {
     const baseURL = import.meta.env.VITE_CMS_URL || '';
     config.url = baseURL + config.url.replace('/api', '');
   }
