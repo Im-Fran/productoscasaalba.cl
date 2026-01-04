@@ -159,7 +159,7 @@ export const ProductTabs = ({ description, attributes, ratingCount, averageRatin
                 <p className="text-gray-600 mb-4">
                   Este producto aún no tiene valoraciones
                 </p>
-                <button className="bg-mint-600 text-white px-6 py-3 rounded-lg hover:bg-mint-700 transition-colors font-medium">
+                <button className="bg-mint-600 text-black px-6 py-3 rounded-lg hover:bg-mint-700 transition-colors font-medium">
                   Sé el Primero en Valorar
                 </button>
               </div>
