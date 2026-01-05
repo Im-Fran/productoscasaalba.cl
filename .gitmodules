@@ -3,4 +3,4 @@
 	url = git@github.com:Im-Fran/productoscasaalba-headless-authentication.git
 [submodule "wordpress-plugins/headless-checkout"]
 	path = wordpress-plugins/headless-checkout
-	url = git@github.com:Im-Fran/Im-Fran-productoscasaalba-headless-checkout.git
+	url = git@github.com:Im-Fran/productoscasaalba-headless-checkout.git
