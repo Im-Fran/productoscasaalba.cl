@@ -160,7 +160,7 @@ interface ApiError {
 }
 
 export class OrderService {
-  private static readonly BASE_URL = '/wp-json/wc/v1/orders';
+  private static readonly BASE_URL = '/api/wp-json/wc/v1/orders';
 
   /**
    * Obtener órdenes con filtros opcionales
