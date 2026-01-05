@@ -239,43 +239,6 @@ export class OrderService {
       orderby: 'date'
     });
   }
-
-  /**
-   * Método de prueba para verificar la conectividad con la API
-   */
-  static async testOrdersAPI(): Promise<any> {
-    try {
-      console.log('🧪 Testing orders API connectivity...');
-
-      // Primero intentar obtener todas las órdenes sin filtros
-      const allOrders = await this.getOrders({
-        per_page: 10,
-        status: 'any'
-      });
-
-      console.log('🧪 All orders test result:', allOrders);
-
-      // Intentar obtener órdenes específicas que sabemos que existen
-      try {
-        const order333 = await this.getOrder(333);
-        console.log('🧪 Order 333 found:', order333);
-      } catch (error) {
-        console.log('🧪 Order 333 not accessible:', error);
-      }
-
-      try {
-        const order334 = await this.getOrder(334);
-        console.log('🧪 Order 334 found:', order334);
-      } catch (error) {
-        console.log('🧪 Order 334 not accessible:', error);
-      }
-
-      return allOrders;
-    } catch (error) {
-      console.error('🧪 API test failed:', error);
-      throw error;
-    }
-  }
 }
 
 // Función helper para convertir WooCommerceOrder a Order (formato del componente)
