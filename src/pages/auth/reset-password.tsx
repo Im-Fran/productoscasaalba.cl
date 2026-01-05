@@ -35,12 +35,13 @@ export const ResetPasswordPage = () => {
         // Simular verificación
         await new Promise(resolve => setTimeout(resolve, 500));
         setTokenValid(true);
-      } catch (_) {
+      } catch (e) {
+        console.error(e)
         setTokenValid(false);
       }
     };
 
-    verifyToken();
+    verifyToken().then();
   }, [token, email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
