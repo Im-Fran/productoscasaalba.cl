@@ -4,6 +4,7 @@ import {useCart} from "@/hooks/useCart";
 import { useCustomer } from "@/hooks/useCustomer";
 import { useShipping } from "@/hooks/useShipping";
 import { usePayment } from "@/hooks/usePayment";
+import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router";
 
 interface CheckoutForm {
@@ -38,7 +39,11 @@ export default function CheckoutPage() {
   const { customer, loading: customerLoading } = useCustomer();
   const { shippingOptions, loading: shippingLoading, selectedShippingId, selectShippingOption } = useShipping();
   const { paymentMethods, loading: paymentLoading, selectedPaymentMethod, selectPaymentMethod, processOrder } = usePayment();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  const LOCALSTORAGE_KEY = 'checkoutFormData';
+  const LOCALSTORAGE_PREFERENCE_KEY = 'saveCheckoutDataPreference';
 
   const [formData, setFormData] = useState<CheckoutForm>({
     firstName: '',
@@ -61,10 +66,47 @@ export default function CheckoutPage() {
   });
 
   const [couponCode, setCouponCode] = useState('');
+  const [saveCheckoutData, setSaveCheckoutData] = useState(() => {
+    if (isAuthenticated) return false;
+    try {
+      return JSON.parse(localStorage.getItem(LOCALSTORAGE_PREFERENCE_KEY) || 'false');
+    } catch {
+      return false;
+    }
+  });
+
+  // Cargar datos guardados en localStorage cuando no hay sesión
+  useEffect(() => {
+    if (!isAuthenticated) {
+      try {
+        const savedData = localStorage.getItem(LOCALSTORAGE_KEY);
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setFormData(prev => ({
+            ...prev,
+            firstName: parsedData.firstName || '',
+            lastName: parsedData.lastName || '',
+            email: parsedData.email || '',
+            phone: parsedData.phone || '',
+            address: parsedData.address || '',
+            city: parsedData.city || '',
+            state: parsedData.state || '',
+            zipCode: parsedData.zipCode || '',
+            billingAddress: parsedData.billingAddress || '',
+            billingCity: parsedData.billingCity || '',
+            billingState: parsedData.billingState || '',
+            billingZipCode: parsedData.billingZipCode || '',
+          }));
+        }
+      } catch (error) {
+        console.error('Error loading form data from localStorage:', error);
+      }
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     // Pre-llenar formulario con datos del usuario autenticado
-    if (customer && !customerLoading) {
+    if (isAuthenticated && customer && !customerLoading) {
       // Función para mapear códigos de país a nombres
       const getCountryName = (countryCode: string) => {
         const countryMap: { [key: string]: string } = {
@@ -104,13 +146,21 @@ export default function CheckoutPage() {
         billingCountry: getCountryName(customer.billing?.country || 'CL'),
       }));
     }
-  }, [customer, customerLoading]);
+  }, [isAuthenticated, customer, customerLoading]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
 
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
+
+      // Si es el checkbox de saveCheckoutData, guardar la preferencia
+      if (name === 'saveCheckoutData') {
+        setSaveCheckoutData(checked);
+        localStorage.setItem(LOCALSTORAGE_PREFERENCE_KEY, JSON.stringify(checked));
+        return;
+      }
+
       setFormData(prev => ({
         ...prev,
         [name]: checked
@@ -120,6 +170,37 @@ export default function CheckoutPage() {
         ...prev,
         [name]: value
       }));
+    }
+
+    // Guardar datos en localStorage si está habilitado y no hay sesión
+    if (!isAuthenticated && saveCheckoutData && type !== 'checkbox') {
+      const fieldsToSave = [
+        'firstName', 'lastName', 'email', 'phone',
+        'address', 'city', 'state', 'zipCode',
+        'billingAddress', 'billingCity', 'billingState', 'billingZipCode'
+      ];
+
+      if (fieldsToSave.includes(name)) {
+        setFormData(prev => {
+          const dataToSave = {
+            firstName: prev.firstName,
+            lastName: prev.lastName,
+            email: prev.email,
+            phone: prev.phone,
+            address: prev.address,
+            city: prev.city,
+            state: prev.state,
+            zipCode: prev.zipCode,
+            billingAddress: prev.billingAddress,
+            billingCity: prev.billingCity,
+            billingState: prev.billingState,
+            billingZipCode: prev.billingZipCode,
+          };
+          dataToSave[name as keyof typeof dataToSave] = value;
+          localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(dataToSave));
+          return prev;
+        });
+      }
     }
   };
 
@@ -296,6 +377,7 @@ export default function CheckoutPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
                       placeholder="Ingrese su nombre"
+                      autoComplete={"name"}
                     />
                   </div>
                   <div>
@@ -310,6 +392,7 @@ export default function CheckoutPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
                       placeholder="Ingrese su apellido"
+                      autoComplete={"family-name"}
                     />
                   </div>
                   <div>
@@ -324,6 +407,7 @@ export default function CheckoutPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
                       placeholder="ejemplo@correo.com"
+                      autoComplete={"email"}
                     />
                   </div>
                   <div>
@@ -337,10 +421,32 @@ export default function CheckoutPage() {
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-mint-500 transition-colors"
-                      placeholder="+593 123456789"
+                      placeholder="+56 9 1234 5678"
+                      autoComplete={"tel"}
                     />
                   </div>
                 </div>
+
+                {/* Checkbox para guardar datos - Solo visible si no hay sesión */}
+                {!isAuthenticated && (
+                  <div className="mt-6 border-t border-gray-200 pt-4">
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="saveCheckoutData"
+                        checked={saveCheckoutData}
+                        onChange={handleInputChange}
+                        className="rounded border-gray-300 text-mint-600 focus:ring-mint-500"
+                      />
+                      <span className="text-sm text-gray-700 font-medium">
+                        Guardar mis datos de contacto y dirección en este dispositivo para futuras compras
+                      </span>
+                    </label>
+                    <p className="text-xs text-gray-500 mt-2 ml-7">
+                      Tus datos se guardarán localmente en tu navegador y podrán ser recuperados en futuras compras.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Dirección de envío */}
