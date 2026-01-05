@@ -1,6 +1,7 @@
-import { createContext, useState, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { AuthService } from '@/services/auth';
 import type {AuthenticatedUser} from "@/types/user";
+import { AuthContext } from "@/hooks/useAuth";
 
 export type AuthContextType = {
   user: AuthenticatedUser | null;
@@ -20,9 +21,7 @@ export type RegisterData = {
   password: string;
 };
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-type AuthProviderProps = {
+export type AuthProviderProps = {
   children: ReactNode;
 };
 
