@@ -51,7 +51,7 @@ export default function OrderCancelledPage() {
           <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <XCircle className="w-12 h-12 text-orange-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 pacifico-regular">
+          <h1 className="text-3xl text-gray-900 mb-2 pacifico-regular">
             Pedido Cancelado
           </h1>
           <p className="text-lg text-gray-600 mb-4">
@@ -62,7 +62,7 @@ export default function OrderCancelledPage() {
           </p>
           {orderId && (
             <div className="inline-block px-4 py-2 rounded-lg bg-orange-50">
-              <span className="font-semibold text-orange-700">
+              <span className="text-orange-700">
                 Número de Pedido: #{order?.number || orderId}
               </span>
             </div>
@@ -74,7 +74,7 @@ export default function OrderCancelledPage() {
           <div className="flex items-start">
             <HelpCircle className="w-6 h-6 text-blue-600 mr-3 flex-shrink-0 mt-1" />
             <div>
-              <h2 className="text-lg font-semibold text-blue-900 mb-2">
+              <h2 className="text-lg text-blue-900 mb-2">
                 ¿Qué sucedió?
               </h2>
               <p className="text-blue-800 mb-2">
@@ -92,16 +92,16 @@ export default function OrderCancelledPage() {
 
         {/* What to do next */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <h2 className="text-xl text-gray-900 mb-4">
             ¿Qué puedes hacer ahora?
           </h2>
           <div className="space-y-4">
             <div className="flex items-start">
               <div className="w-8 h-8 bg-mint-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                <span className="text-mint-700 font-bold">1</span>
+                <span className="text-mint-700 font-semibold">1</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h3 className="text-gray-900 mb-1">
                   Intenta nuevamente
                 </h3>
                 <p className="text-gray-600">
@@ -112,10 +112,10 @@ export default function OrderCancelledPage() {
 
             <div className="flex items-start">
               <div className="w-8 h-8 bg-mint-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                <span className="text-mint-700 font-bold">2</span>
+                <span className="text-mint-700 font-semibold">2</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h3 className="text-gray-900 mb-1">
                   Revisa tu método de pago
                 </h3>
                 <p className="text-gray-600">
@@ -126,10 +126,10 @@ export default function OrderCancelledPage() {
 
             <div className="flex items-start">
               <div className="w-8 h-8 bg-mint-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                <span className="text-mint-700 font-bold">3</span>
+                <span className="text-mint-700 font-semibold">3</span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h3 className="text-gray-900 mb-1">
                   Explora otros productos
                 </h3>
                 <p className="text-gray-600">
@@ -143,8 +143,7 @@ export default function OrderCancelledPage() {
         {/* No charges message */}
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6 text-center">
           <p className="text-green-800">
-            <strong>Importante:</strong> No se ha realizado ningún cargo a tu método de pago. 
-            Tu dinero está seguro.
+            Importante: No se ha realizado ningún cargo a tu método de pago.
           </p>
         </div>
 
@@ -152,7 +151,7 @@ export default function OrderCancelledPage() {
         <div className="space-y-4">
           <Link
             to="/carrito"
-            className="w-full flex items-center justify-center bg-mint-950 hover:bg-mint-900 text-white px-6 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="w-full flex items-center justify-center bg-mint-950 hover:bg-mint-900 text-white px-6 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <ShoppingCart className="w-5 h-5 mr-2" />
             Volver al Carrito
@@ -161,13 +160,13 @@ export default function OrderCancelledPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link
               to="/productos"
-              className="flex items-center justify-center bg-white hover:bg-gray-50 text-mint-950 border-2 border-mint-950 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center bg-white hover:bg-gray-50 text-mint-950 border-2 border-mint-950 px-6 py-3 rounded-lg transition-colors"
             >
               Continuar Comprando
             </Link>
             <Link
               to="/contacto"
-              className="flex items-center justify-center bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-300 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="flex items-center justify-center bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-300 px-6 py-3 rounded-lg transition-colors"
             >
               <MessageCircle className="w-5 h-5 mr-2" />
               Contáctanos
@@ -180,7 +179,7 @@ export default function OrderCancelledPage() {
           <p className="mb-2">¿Necesitas ayuda?</p>
           <p className="text-sm">
             Si tienes alguna duda o problema, no dudes en{' '}
-            <Link to="/contacto" className="text-mint-700 hover:text-mint-800 font-semibold underline">
+            <Link to="/contacto" className="text-mint-700 hover:text-mint-800 underline">
               contactarnos
             </Link>
             . Estamos aquí para ayudarte.
