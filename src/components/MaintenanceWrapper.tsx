@@ -1,5 +1,5 @@
-import React, { useEffect, type ReactNode } from 'react';
-import { useMaintenanceContext } from '@/contexts/MaintenanceContext';
+import {useEffect, type ReactNode, type FC} from 'react';
+import { useMaintenanceContext } from '@/hooks/useMaintenace';
 import { setMaintenanceCallback } from '@/utils/axios';
 import MaintenancePage from '@/pages/maintenance';
 
@@ -7,7 +7,7 @@ interface MaintenanceWrapperProps {
   children: ReactNode;
 }
 
-export const MaintenanceWrapper: React.FC<MaintenanceWrapperProps> = ({ children }) => {
+export const MaintenanceWrapper: FC<MaintenanceWrapperProps> = ({ children }) => {
   const { isMaintenanceMode, setMaintenanceMode } = useMaintenanceContext();
 
   useEffect(() => {

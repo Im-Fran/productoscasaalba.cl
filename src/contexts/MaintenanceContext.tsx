@@ -1,25 +1,16 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import { MaintenanceContext } from "@/hooks/useMaintenace";
+import {useState, type ReactNode, type FC} from 'react';
 
-interface MaintenanceContextType {
+export interface MaintenanceContextType {
   isMaintenanceMode: boolean;
   setMaintenanceMode: (isActive: boolean) => void;
 }
 
-const MaintenanceContext = createContext<MaintenanceContextType | undefined>(undefined);
-
-export const useMaintenanceContext = () => {
-  const context = useContext(MaintenanceContext);
-  if (context === undefined) {
-    throw new Error('useMaintenanceContext must be used within a MaintenanceProvider');
-  }
-  return context;
-};
-
-interface MaintenanceProviderProps {
+export interface MaintenanceProviderProps {
   children: ReactNode;
 }
 
-export const MaintenanceProvider: React.FC<MaintenanceProviderProps> = ({ children }) => {
+export const MaintenanceProvider: FC<MaintenanceProviderProps> = ({ children }) => {
   const [isMaintenanceMode, setIsMaintenanceMode] = useState(false);
 
   const setMaintenanceMode = (isActive: boolean) => {
