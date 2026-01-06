@@ -47,22 +47,22 @@ export const ProductsPage = () => {
   }, [selectedCategories, fetchProducts, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
           {/* Sidebar izquierdo - Filtros */}
-          <div className="col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-4 md:space-y-6">
             {/* Filtros activos */}
-            {(selectedCategories.length > 0 || searchQuery) && <div className="bg-white rounded-lg shadow-md p-6">
+            {(selectedCategories.length > 0 || searchQuery) && <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800">Filtros Activos</h3>
-                    <button onClick={clearFilters} className="text-sm text-red-600 hover:text-red-800">Limpiar todos</button>
+                    <h3 className="text-base md:text-lg font-semibold text-gray-800">Filtros Activos</h3>
+                    <button onClick={clearFilters} className="text-xs md:text-sm text-red-600 hover:text-red-800">Limpiar todos</button>
                 </div>
 
                 <div className="space-y-2">
                   {searchQuery && (
                     <div className="flex items-center justify-between bg-mint-50 border border-mint-200 rounded px-3 py-2">
-                      <span className="text-sm text-mint-800">
+                      <span className="text-xs md:text-sm text-mint-800">
                         Búsqueda: "{searchQuery}"
                       </span>
                       <button onClick={() => setSearchQuery('')} className="text-mint-600 hover:text-mint-800">
@@ -76,7 +76,7 @@ export const ProductsPage = () => {
                   {selectedCategories.length > 0 && (
                     <div className="bg-green-50 border border-green-200 rounded px-3 py-2">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-green-800 font-medium">
+                        <span className="text-xs md:text-sm text-green-800 font-medium">
                           Categorías ({selectedCategories.length})
                         </span>
 
@@ -92,15 +92,15 @@ export const ProductsPage = () => {
             </div>}
 
             {/* Contenedor flotante para búsqueda */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Buscar</h3>
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-4">Buscar</h3>
               <SearchBox
                 onSearch={handleSearch}
               />
             </div>
 
             {/* Contenedor flotante para categorías */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
               <CategoryList
                 selectedCategories={selectedCategories}
                 onCategoryChange={handleCategoryChange}
@@ -109,8 +109,8 @@ export const ProductsPage = () => {
           </div>
 
           {/* Contenido principal - Grid de productos */}
-          <div className="col-span-8">
-            <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="lg:col-span-8">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
               <ProductGrid
                 products={products}
                 refetchProducts={fetchProducts}

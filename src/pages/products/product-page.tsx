@@ -66,9 +66,9 @@ export const ProductPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-4 md:py-8">
       {/* Product main section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
         {product.images && <ProductGallery images={product.images} productName={product.name}/>}
         <ProductInfo product={product} />
       </div>

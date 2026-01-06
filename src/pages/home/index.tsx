@@ -42,20 +42,20 @@ export const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Hero />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Sección de búsqueda */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-mint-1150 mb-6">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-mint-1150 mb-4 md:mb-6">
             Encuentra el producto perfecto
           </h2>
           <SearchBox
             onSearch={fetchProducts}
           />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           {/* Sidebar con categorías */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 lg:sticky lg:top-4">
               <CategoryList
                 selectedCategories={selectedCategories}
                 onCategoryChange={handleCategoryChange}

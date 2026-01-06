@@ -23,7 +23,7 @@ export const Slides = () => {
         disableOnInteraction: false,
       }}
       loop={true}
-      className="h-screen"
+      className="h-[60vh] md:h-[80vh] lg:h-screen"
     >
       <SwiperSlide>
         <CallToActionComprar />
@@ -47,7 +47,7 @@ export const CallToActionComprar = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-[60vh] md:h-[80vh] lg:h-screen w-full overflow-hidden">
       {/* Fondo con gradiente conico */}
       <div
         className="absolute inset-0 blur-[30px]"
@@ -68,22 +68,22 @@ export const CallToActionComprar = () => {
       <div className="absolute inset-0 bg-black/20" />
 
       {/* Contenido */}
-      <div className="relative h-full flex items-center justify-end">
-        <div className="max-w-md md:max-w-xl mx-8 lg:mx-16 text-right">
+      <div className="relative h-full flex items-center justify-center md:justify-end px-4">
+        <div className="max-w-md md:max-w-xl mx-4 md:mx-8 lg:mx-16 text-center md:text-right">
           {/* Título */}
-          <h1 className="text-4xl lg:text-6xl text-mint-1450 mb-6 pacifico-regular">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl text-mint-1450 mb-4 md:mb-6 pacifico-regular">
             Productos Casa Alba
           </h1>
 
           {/* Descripción */}
-          <p className="text-lg lg:text-xl xl:text-2xl text-red-800 mb-8 leading-relaxed font-handelson">
+          <p className="text-base md:text-lg lg:text-xl xl:text-2xl text-red-800 mb-6 md:mb-8 leading-relaxed font-handelson">
             Venta online de productos para el hogar, limpieza y aseo. Somos una marca propia con artículos de excelente calidad.
           </p>
 
           {/* Botón */}
           <button
             onClick={handleComprarAhora}
-            className="bg-mint-1150 hover:bg-mint-900 text-mint-50 py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
+            className="bg-mint-1150 hover:bg-mint-900 text-mint-50 py-3 px-6 md:py-4 md:px-8 rounded-lg transition-all duration-300 text-base md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
           >
             Comprar Ahora
           </button>

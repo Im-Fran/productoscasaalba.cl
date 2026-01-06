@@ -1,6 +1,6 @@
 import {Link} from "react-router";
 import CasaAlbaLogo from "@/assets/casaalba.webp";
-import {ShoppingBag, User, LogOut, ChevronDown} from "lucide-react";
+import {ShoppingBag, User, LogOut, ChevronDown, Menu, X} from "lucide-react";
 import { useState } from "react";
 import {useCart} from "@/hooks/useCart";
 import {useAuth} from "@/hooks/useAuth";
@@ -13,6 +13,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
   const { user, isAuthenticated, logout } = useAuth();
   const { cart } = useCart();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -27,27 +28,37 @@ export const Header = ({ onCartClick }: HeaderProps) => {
 
   return (
     <header className={"bg-white shadow-sm border-b border-gray-200"}>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         {/* Top section with logo and icons */}
-        <div className="flex items-center justify-center gap-2.5 py-4">
+        <div className="flex items-center justify-between gap-2 py-3 md:py-4">
+          {/* Mobile menu button */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Logo */}
           <Link
             to={"/"}
-            className="w-full h-24"
+            className="flex-1 h-16 md:h-24 max-w-[200px] md:max-w-none"
             style={{
               backgroundImage: `url(${CasaAlbaLogo})`,
               backgroundRepeat: 'repeat-x',
-              backgroundSize: '86px auto',
+              backgroundSize: '60px auto',
+              backgroundPosition: 'left center',
             }}
           />
 
-          <div className={"ml-auto flex items-center mx-4 gap-4"}>
-            <button onClick={onCartClick} className="relative">
+          <div className={"flex items-center gap-3 md:gap-4"}>
+            <button onClick={onCartClick} className="relative p-1">
               <ShoppingBag
                 size={24}
                 className={"text-gray-600 hover:text-gray-900"}
               />
               {cart && cart.items_count > 0 && (
-                <span className="absolute -top-2 -right-2 bg-mint-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                <span className="absolute -top-1 -right-1 bg-mint-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {cart.items_count}
                 </span>
               )}
@@ -59,11 +70,11 @@ export const Header = ({ onCartClick }: HeaderProps) => {
                 <div>
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+                    className="flex items-center space-x-1 md:space-x-2 text-gray-600 hover:text-gray-900 p-1"
                   >
                     <User size={24} />
-                    <span className="text-sm font-medium">{user?.first_name}</span>
-                    <ChevronDown size={16} />
+                    <span className="hidden md:inline text-sm font-medium">{user?.first_name}</span>
+                    <ChevronDown size={16} className="hidden md:inline" />
                   </button>
 
                   {userMenuOpen && (
@@ -104,7 +115,7 @@ export const Header = ({ onCartClick }: HeaderProps) => {
                   )}
                 </div>
               ) : (
-                <Link to={"/auth/login"}>
+                <Link to={"/auth/login"} className="p-1">
                   <User
                     size={24}
                     className={"text-gray-600 hover:text-gray-900"}
@@ -115,8 +126,8 @@ export const Header = ({ onCartClick }: HeaderProps) => {
           </div>
         </div>
 
-        {/* Navigation menu */}
-        <nav className="border-t border-gray-200">
+        {/* Desktop Navigation menu */}
+        <nav className="hidden md:block border-t border-gray-200">
           <div className="flex justify-center space-x-8 py-4">
             <Link to="/" className="text-gray-700 hover:text-mint-600 font-medium transition-colors">Inicio</Link>
             <Link to="/productos" className="text-gray-700 hover:text-mint-600 font-medium transition-colors">Productos</Link>
@@ -124,6 +135,42 @@ export const Header = ({ onCartClick }: HeaderProps) => {
             <Link to="/contacto" className="text-gray-700 hover:text-mint-600 font-medium transition-colors">Contacto</Link>
           </div>
         </nav>
+
+        {/* Mobile Navigation menu */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t border-gray-200 py-3">
+            <div className="flex flex-col space-y-3">
+              <Link 
+                to="/" 
+                className="text-gray-700 hover:text-mint-600 font-medium transition-colors py-2 px-4"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Inicio
+              </Link>
+              <Link 
+                to="/productos" 
+                className="text-gray-700 hover:text-mint-600 font-medium transition-colors py-2 px-4"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Productos
+              </Link>
+              <Link 
+                to="/reviews" 
+                className="text-gray-700 hover:text-mint-600 font-medium transition-colors py-2 px-4"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Reseñas
+              </Link>
+              <Link 
+                to="/contacto" 
+                className="text-gray-700 hover:text-mint-600 font-medium transition-colors py-2 px-4"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contacto
+              </Link>
+            </div>
+          </nav>
+        )}
       </div>
 
       {/* Overlay to close user menu when clicking outside */}
