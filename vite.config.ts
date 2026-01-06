@@ -12,10 +12,10 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [
-      mkcert({
-        savePath: './.certs',
-        hosts: ['local.productoscasaalba.cl']
-      }),
+      // mkcert({
+      //   savePath: './.certs',
+      //   hosts: ['local.productoscasaalba.cl']
+      // }),
       react(),
       tailwindcss(),
       cloudflare(),
@@ -264,10 +264,10 @@ export default ({ mode }: { mode: string }) => {
     server: {
       allowedHosts: true,
       host: true,
-      https: {
-        cert: './.certs/cert.pem',
-        key: './.certs/dev.pem',
-      },
+      // https: {
+      //   cert: './.certs/cert.pem',
+      //   key: './.certs/dev.pem',
+      // },
       proxy: {
         '/api': {
           target: process.env.VITE_CMS_URL,
