@@ -40,11 +40,11 @@ export const SearchBox = ({ onSearch }: SearchBoxProps) => {
             value={searchQuery}
             onChange={onSearchChange}
             placeholder="Buscador"
-            className="w-full px-4 py-3 pl-12 pr-20 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent"
+            className="w-full px-4 py-2 md:py-3 pl-10 md:pl-12 pr-16 md:pr-20 text-base md:text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-mint-500 focus:border-transparent"
           />
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg
-              className="h-5 w-5 text-gray-400"
+              className="h-4 w-4 md:h-5 md:w-5 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -61,25 +61,25 @@ export const SearchBox = ({ onSearch }: SearchBoxProps) => {
             <button
               type="button"
               onClick={handleClear}
-              className="absolute inset-y-0 right-16 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-12 md:right-16 flex items-center pr-2 md:pr-3 text-gray-400 hover:text-gray-600"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           )}
           <button
             type="submit"
-            className="absolute inset-y-0 right-0 flex items-center px-4 text-white bg-mint-600 rounded-r-lg hover:bg-mint-700 focus:ring-2 focus:ring-mint-500"
+            className="absolute inset-y-0 right-0 flex items-center px-3 md:px-4 text-white bg-mint-600 rounded-r-lg hover:bg-mint-700 focus:ring-2 focus:ring-mint-500"
           >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4 w-4 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
         </div>
       </form>
       {searchQuery && (
-        <div className="mt-2 text-sm text-gray-600">
+        <div className="mt-2 text-xs md:text-sm text-gray-600">
           Búsqueda automática activada para: "{searchQuery}"
         </div>
       )}
