@@ -3,10 +3,11 @@ import { useAuth } from '@/hooks/useAuth';
 import ProfileSection from './components/profile-section';
 import OrdersSection from './components/orders-section';
 import AddressesSection from './components/addresses-section';
+import { SessionsSection } from './components/sessions-section';
 
 export default function AccountPage() {
   const { user, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'orders' | 'addresses'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'orders' | 'addresses' | 'sessions'>('profile');
 
   if (loading) {
     return (
@@ -45,6 +46,7 @@ export default function AccountPage() {
     { id: 'profile' as const, label: 'Perfil', icon: '👤' },
     { id: 'orders' as const, label: 'Pedidos', icon: '📦' },
     { id: 'addresses' as const, label: 'Direcciones', icon: '📍' },
+    { id: 'sessions' as const, label: 'Sesiones', icon: '🔐' },
   ];
 
   return (
@@ -99,6 +101,7 @@ export default function AccountPage() {
             {activeTab === 'profile' && <ProfileSection user={user} />}
             {activeTab === 'orders' && <OrdersSection />}
             {activeTab === 'addresses' && <AddressesSection />}
+            {activeTab === 'sessions' && <SessionsSection />}
           </div>
         </div>
       </div>

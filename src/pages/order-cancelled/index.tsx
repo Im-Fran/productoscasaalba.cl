@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { OrderService } from '@/services/orders';
-import type { WooCommerceOrder } from '@/services/orders';
+import type { OrderDetail } from '@/services/orders';
 import { XCircle, ShoppingCart, HelpCircle, MessageCircle } from 'lucide-react';
 
 export default function OrderCancelledPage() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('order_id');
   
-  const [order, setOrder] = useState<WooCommerceOrder | null>(null);
+  const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,14 +56,14 @@ export default function OrderCancelledPage() {
           </h1>
           <p className="text-lg text-gray-600 mb-4">
             {orderId 
-              ? `Tu pedido #${order?.number || orderId} ha sido cancelado.`
+              ? `Tu pedido #${order?.order_number || orderId} ha sido cancelado.`
               : 'Tu pedido ha sido cancelado.'
             }
           </p>
           {orderId && (
             <div className="inline-block px-4 py-2 rounded-lg bg-orange-50">
               <span className="text-orange-700">
-                Número de Pedido: #{order?.number || orderId}
+                Número de Pedido: #{order?.order_number || orderId}
               </span>
             </div>
           )}

@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 import { useAuth } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/AuthGuard";
+import { AuthService } from "@/services/auth";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -13,16 +15,41 @@ export const LoginPage = () => {
     password: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileConfig, setTurnstileConfig] = useState<{ enabled: boolean; site_key: string } | null>(null);
+
+  // Cargar configuración de Turnstile al montar el componente
+  useEffect(() => {
+    const loadTurnstileConfig = async () => {
+      try {
+        const config = await AuthService.getTurnstileConfig();
+        setTurnstileConfig(config);
+      } catch (error) {
+        console.error('Error al cargar configuración de Turnstile:', error);
+        setTurnstileConfig({ enabled: false, site_key: '' });
+      }
+    };
+
+    loadTurnstileConfig();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
+    // Validar que se tenga el token de Turnstile si está habilitado
+    if (turnstileConfig?.enabled && !turnstileToken) {
+      setError('Por favor completa la verificación de seguridad');
+      return;
+    }
+
     try {
-      await login(formData.email, formData.password);
+      await login(formData.email, formData.password, turnstileToken || undefined);
       navigate('/'); // Redirigir al home después del login exitoso
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Error al iniciar sesión');
+      // Resetear Turnstile en caso de error
+      setTurnstileToken(null);
     }
   };
 
@@ -116,6 +143,22 @@ export const LoginPage = () => {
                   </Link>
                 </div>
               </div>
+
+              {/* Cloudflare Turnstile */}
+              {turnstileConfig?.enabled && turnstileConfig.site_key && (
+                <div className="flex justify-center">
+                  <Turnstile
+                    siteKey={turnstileConfig.site_key}
+                    onSuccess={(token) => setTurnstileToken(token)}
+                    onError={() => setTurnstileToken(null)}
+                    onExpire={() => setTurnstileToken(null)}
+                    options={{
+                      theme: 'light',
+                      size: 'normal',
+                    }}
+                  />
+                </div>
+              )}
 
               <div>
                 <button

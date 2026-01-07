@@ -6,7 +6,7 @@ import { AuthContext } from "@/hooks/useAuth";
 export type AuthContextType = {
   user: AuthenticatedUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, turnstileToken?: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
@@ -49,13 +49,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           throw new Error('No se ha encontrado usuario autenticado');
         }
 
+        // Validar token y obtener datos actualizados del usuario
         const isValid = await AuthService.validateToken(authenticatedUser.token);
 
         if (!isValid) {
           throw new Error('Token inválido o expirado');
         }
 
-        setUser(authenticatedUser)
+        // Obtener datos completos del usuario
+        const currentUser = await AuthService.getCurrentUser();
+
+        // Actualizar localStorage con los datos completos
+        localStorage.setItem('userData', JSON.stringify(currentUser));
+        setUser(currentUser);
       } catch (error) {
         console.error('❌ Error during auth check:', error);
         localStorage.removeItem('userData');
@@ -69,10 +75,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, turnstileToken?: string) => {
     setLoading(true);
     try {
-      const userData = await AuthService.login({email, password});
+      const userData = await AuthService.login({
+        email,
+        password,
+        turnstile_token: turnstileToken
+      });
       localStorage.setItem('userData', JSON.stringify(userData));
       setUser(userData);
     } catch (error: unknown) {

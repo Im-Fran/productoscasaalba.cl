@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { OrderService } from '@/services/orders';
-import type { WooCommerceOrder } from '@/services/orders';
+import type { OrderDetail } from '@/services/orders';
 import { CheckCircle, Package, Truck, CreditCard, Mail, Phone } from 'lucide-react';
 
 export default function OrderReceivedPage() {
@@ -9,7 +9,7 @@ export default function OrderReceivedPage() {
   const orderId = searchParams.get('order_id');
   const orderKey = searchParams.get('key');
   
-  const [order, setOrder] = useState<WooCommerceOrder | null>(null);
+  const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,15 +44,6 @@ export default function OrderReceivedPage() {
 
     fetchOrder();
   }, [orderId, orderKey]);
-
-  // Format currency
-  const formatCurrency = (amount: string) => {
-    const numAmount = parseFloat(amount);
-    return new Intl.NumberFormat('es-CL', {
-      style: 'currency',
-      currency: 'CLP'
-    }).format(numAmount);
-  };
 
   // Get status color and text
   const getStatusInfo = (status: string) => {
@@ -133,7 +124,7 @@ export default function OrderReceivedPage() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <p className="text-sm text-gray-600">Número de Pedido</p>
-              <p className="font-semibold text-gray-900">#{order.number}</p>
+              <p className="font-semibold text-gray-900">#{order.order_number}</p>
             </div>
             <div>
               <p className="text-sm text-gray-600">Fecha</p>
@@ -151,7 +142,7 @@ export default function OrderReceivedPage() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Total</p>
-              <p className="font-semibold text-mint-700 text-lg">{formatCurrency(order.total)}</p>
+              <p className="font-semibold text-gray-900 text-xl">{order.total_formatted}</p>
             </div>
           </div>
         </div>
@@ -167,7 +158,7 @@ export default function OrderReceivedPage() {
                   <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-900">{formatCurrency(item.total)}</p>
+                  <p className="font-semibold text-gray-900">{item.total_formatted}</p>
                 </div>
               </div>
             ))}
@@ -177,23 +168,29 @@ export default function OrderReceivedPage() {
           <div className="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal:</span>
-              <span>{formatCurrency(order.total)}</span>
+              <span>{order.subtotal_formatted}</span>
             </div>
-            {order.shipping_total && parseFloat(order.shipping_total) > 0 && (
+            {order.shipping_total > 0 && (
               <div className="flex justify-between text-gray-600">
                 <span>Envío:</span>
-                <span>{formatCurrency(order.shipping_total)}</span>
+                <span>{order.shipping_total_formatted}</span>
               </div>
             )}
-            {order.total_tax && parseFloat(order.total_tax) > 0 && (
+            {order.discount_total > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>Descuento:</span>
+                <span>-{order.discount_total_formatted}</span>
+              </div>
+            )}
+            {order.total_tax > 0 && (
               <div className="flex justify-between text-gray-600">
                 <span>Impuestos:</span>
-                <span>{formatCurrency(order.total_tax)}</span>
+                <span>{order.total_tax_formatted}</span>
               </div>
             )}
             <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t">
               <span>Total:</span>
-              <span className="text-mint-700">{formatCurrency(order.total)}</span>
+              <span className="text-mint-700">{order.total_formatted}</span>
             </div>
           </div>
         </div>

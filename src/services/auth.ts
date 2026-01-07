@@ -1,67 +1,78 @@
 import axiosInstance from '@/utils/axios';
-import type {AuthenticatedUser} from "@/types/user";
+import type {AuthenticatedUser, UserSession} from "@/types/user";
 
 export interface LoginCredentials {
   email: string;
   password: string;
+  turnstile_token?: string;
 }
 
-export interface AuthenticateResponse {
+export interface LoginResponse {
   success: boolean;
-  data: {
-    jwt: string;
+  token: string;
+  refresh_token: string;
+  user: {
+    id: number;
+    email: string;
+    display_name: string;
+    first_name: string;
+    last_name: string;
+    roles: string[];
   }
 }
 
-export type ValidateTokenResponse = {
+export interface RefreshTokenResponse {
   success: boolean;
-  data: {
-    user: {
-      ID: string;
-      user_login: string;
-      user_email: string;
-      user_nicename: string;
-      user_url: string;
-      user_registered: string;
-      user_activation_key: string;
-      user_status: string;
-      display_name: string;
-    },
-    roles: string[],
-    jwt: [{
-      token: string;
-      header: {
-        typ: string;
-        alg: string;
-      },
-      payload: {
-        iat: number;
-        exp: number;
-        email: string;
+  token: string;
+  refresh_token: string;
+}
+
+export interface ValidateTokenResponse {
+  valid: boolean;
+  payload?: {
+    sub: number;
+    email: string;
+    data: {
+      user: {
         id: number;
-        site: string;
-        username: string;
-        iss: string;
-      },
-      expire_in: number;
-    }]
-  }
+        email: string;
+        display_name: string;
+        roles: string[];
+      }
+    }
+  };
+  error?: string;
 }
 
-export interface JWTError {
-  success: boolean;
-  data: {
-    message: string;
-    errorCode: string;
-  }
+export interface GetCurrentUserResponse {
+  id: number;
+  email: string;
+  display_name: string;
+  first_name: string;
+  last_name: string;
+  roles: string[];
 }
 
-export interface AuthenticationError {
-  error: string;
+export interface GetSessionsResponse {
+  sessions: UserSession[];
+}
+
+export interface TurnstileConfigResponse {
+  enabled: boolean;
+  site_key: string;
+}
+
+export interface AuthError {
+  code: string;
+  message: string;
+  data?: {
+    status: number;
+    retry_after?: number;
+  }
 }
 
 export class AuthService {
-  private static readonly JWT_BASE_URL = '/api/wp-json/jwt-auth/v1';
+  private static readonly API_BASE_URL = '/api/wp-json/casa-alba/v1/auth';
   private static interceptorsSetup = false;
 
   /**
@@ -72,133 +83,269 @@ export class AuthService {
   }
 
   /**
-   * Genera un token de JWT y retorna los datos del usuario autenticado
+   * Iniciar sesión con email y contraseña
    */
   static async login(credentials: LoginCredentials): Promise<AuthenticatedUser> {
-    const response = await axiosInstance.post(`${this.JWT_BASE_URL}/auth`, credentials, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    });
-
-    const data: AuthenticateResponse = response.data
-    if(!data.success) {
-      throw new Error('Error en la autenticación. Intenta más tarde.');
-    }
-
-    const token = data.data.jwt
-
-    const userResponse = await axiosInstance.get(`/api/wp-json/wp/v2/users/me?_fields=id,name,email,first_name,last_name&context=edit`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      }
-    });
-
-    if(userResponse.status != 200) {
-      throw new Error('Error al obtener datos del usuario. Intenta más tarde.');
-    }
-
-    return {
-      token,
-      ...userResponse.data,
-    };
-  }
-
-  /**
-   * Validar token JWT
-   */
-  static async validateToken(token: string): Promise<boolean> {
     try {
-      const response = await axiosInstance.post(`${this.JWT_BASE_URL}/auth/validate`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await axiosInstance.post<LoginResponse>(
+        `${this.API_BASE_URL}/login`,
+        credentials,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
         }
-      });
+      );
 
-      const data: ValidateTokenResponse = response.data;
-      if(!data.success) {
-        return false;
+      const data = response.data;
+
+      if (!data.success) {
+        throw new Error('Error en la autenticación. Intenta más tarde.');
       }
 
-      const savedUserData = localStorage.getItem('userData');
-      if(!savedUserData) {
-        return false;
+      return {
+        token: data.token,
+        refresh_token: data.refresh_token,
+        id: data.user.id,
+        email: data.user.email,
+        display_name: data.user.display_name,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        roles: data.user.roles,
+      };
+    } catch (error: any) {
+      // Manejar errores específicos de la API
+      if (error.response?.data) {
+        const authError = error.response.data as AuthError;
+        throw new Error(authError.message || 'Error al iniciar sesión');
       }
-
-      const savedUser: AuthenticatedUser = JSON.parse(savedUserData);
-      return !(`${savedUser.id}` !== data.data.user.ID || savedUser.email !== data.data.user.user_email);
-    } catch (e: unknown) {
-      console.error('Error al validar token:', e);
+      throw new Error('Error de conexión. Intenta más tarde.');
     }
-
-    return false;
   }
 
   /**
-   * Refrescar token JWT usando la refresh_token guardada
-   */
-  static async refreshToken(): Promise<boolean> {
-    try {
-      const savedUserData = localStorage.getItem('userData');
-      if(!savedUserData) {
-        return false;
-      }
-
-      const userData = JSON.parse(savedUserData) as AuthenticatedUser;
-      if(!userData.token) {
-        return false;
-      }
-
-      const response = await axiosInstance.post(`${this.JWT_BASE_URL}/auth/refresh`, {}, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${userData.token}`
-        }
-      });
-
-      const data: AuthenticateResponse = response.data;
-      if(!data.success) {
-        return false;
-      }
-
-      const newToken = data.data.jwt;
-      localStorage.setItem('userData', JSON.stringify({
-        ...userData,
-        token: newToken,
-      }));
-
-      return true;
-    } catch (e: unknown) {
-      console.error('Error al refrescar token:', e);
-    }
-
-    return false;
-  }
-
-  /**
-   * Cerrar sesión y limpiar cookies
+   * Cerrar sesión y revocar el token
    */
   static async logout(): Promise<void> {
     try {
-      await axiosInstance.post(`${this.JWT_BASE_URL}/auth/revoke`, {
-        'JWT': localStorage.getItem('authToken') || '',
-      }, {
-        withCredentials: true,
-      });
+      await axiosInstance.post(
+        `${this.API_BASE_URL}/logout`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
     } catch (error) {
-      console.warn('Endpoint de revoke no disponible:', error);
+      console.warn('Error al cerrar sesión:', error);
     } finally {
       this.clearAuthData();
     }
   }
 
   /**
-   * Configurar interceptor para agregar token automáticamente
+   * Refrescar token JWT usando el refresh token
+   */
+  static async refreshToken(): Promise<boolean> {
+    try {
+      const savedUserData = localStorage.getItem('userData');
+      if (!savedUserData) {
+        return false;
+      }
+
+      const userData = JSON.parse(savedUserData) as AuthenticatedUser;
+      if (!userData.refresh_token) {
+        return false;
+      }
+
+      const response = await axiosInstance.post<RefreshTokenResponse>(
+        `${this.API_BASE_URL}/refresh`,
+        {
+          refresh_token: userData.refresh_token,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          }
+        }
+      );
+
+      const data = response.data;
+      if (!data.success) {
+        return false;
+      }
+
+      // Actualizar tokens en localStorage
+      const updatedUser = {
+        ...userData,
+        token: data.token,
+        refresh_token: data.refresh_token,
+      };
+
+      localStorage.setItem('userData', JSON.stringify(updatedUser));
+      return true;
+    } catch (error) {
+      console.error('Error al refrescar token:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Validar si un token es válido
+   */
+  static async validateToken(token: string): Promise<boolean> {
+    try {
+      const response = await axiosInstance.post<ValidateTokenResponse>(
+        `${this.API_BASE_URL}/validate`,
+        { token },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      return response.data.valid;
+    } catch (error) {
+      console.error('Error al validar token:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Obtener información del usuario autenticado
+   */
+  static async getCurrentUser(): Promise<AuthenticatedUser> {
+    try {
+      const response = await axiosInstance.get<GetCurrentUserResponse>(
+        `${this.API_BASE_URL}/me`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      const savedUserData = localStorage.getItem('userData');
+      if (!savedUserData) {
+        throw new Error('No hay datos de autenticación guardados');
+      }
+
+      const userData = JSON.parse(savedUserData) as AuthenticatedUser;
+
+      return {
+        ...userData,
+        id: response.data.id,
+        email: response.data.email,
+        display_name: response.data.display_name,
+        first_name: response.data.first_name,
+        last_name: response.data.last_name,
+        roles: response.data.roles,
+      };
+    } catch (error: any) {
+      if (error.response?.data) {
+        const authError = error.response.data as AuthError;
+        throw new Error(authError.message || 'Error al obtener datos del usuario');
+      }
+      throw new Error('Error de conexión. Intenta más tarde.');
+    }
+  }
+
+  /**
+   * Obtener todas las sesiones activas del usuario
+   */
+  static async getSessions(): Promise<UserSession[]> {
+    try {
+      const response = await axiosInstance.get<GetSessionsResponse>(
+        `${this.API_BASE_URL}/sessions`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      return response.data.sessions;
+    } catch (error: any) {
+      if (error.response?.data) {
+        const authError = error.response.data as AuthError;
+        throw new Error(authError.message || 'Error al obtener sesiones');
+      }
+      throw new Error('Error de conexión. Intenta más tarde.');
+    }
+  }
+
+  /**
+   * Revocar una sesión específica
+   */
+  static async revokeSession(sessionId: number): Promise<void> {
+    try {
+      await axiosInstance.delete(
+        `${this.API_BASE_URL}/sessions/${sessionId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    } catch (error: any) {
+      if (error.response?.data) {
+        const authError = error.response.data as AuthError;
+        throw new Error(authError.message || 'Error al revocar sesión');
+      }
+      throw new Error('Error de conexión. Intenta más tarde.');
+    }
+  }
+
+  /**
+   * Revocar todas las sesiones del usuario
+   */
+  static async revokeAllSessions(keepCurrent: boolean = false): Promise<void> {
+    try {
+      const url = keepCurrent
+        ? `${this.API_BASE_URL}/sessions/all?keep_current=true`
+        : `${this.API_BASE_URL}/sessions/all`;
+
+      await axiosInstance.delete(url, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+    } catch (error: any) {
+      if (error.response?.data) {
+        const authError = error.response.data as AuthError;
+        throw new Error(authError.message || 'Error al revocar sesiones');
+      }
+      throw new Error('Error de conexión. Intenta más tarde.');
+    }
+  }
+
+  /**
+   * Obtener configuración de Cloudflare Turnstile
+   */
+  static async getTurnstileConfig(): Promise<TurnstileConfigResponse> {
+    try {
+      const response = await axiosInstance.get<TurnstileConfigResponse>(
+        `${this.API_BASE_URL}/turnstile-key`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.warn('Error al obtener configuración de Turnstile:', error);
+      return { enabled: false, site_key: '' };
+    }
+  }
+
+  /**
+   * Configurar interceptors de Axios para manejo automático de tokens
    */
   static setupInterceptors() {
     // Evitar configurar interceptors múltiples veces
@@ -218,7 +365,12 @@ export class AuthService {
         return config;
       }
 
-      if (authUser.token && !config.headers.Authorization) {
+      // No agregar token a requests de login, refresh o validate
+      const isAuthEndpoint = config.url?.includes('/auth/login') ||
+                           config.url?.includes('/auth/refresh') ||
+                           config.url?.includes('/auth/validate');
+
+      if (authUser.token && !config.headers.Authorization && !isAuthEndpoint) {
         config.headers.Authorization = `Bearer ${authUser.token}`;
       }
 
@@ -233,12 +385,27 @@ export class AuthService {
       // 1. Es un error 401
       // 2. No es un retry (evitar bucles)
       // 3. No es una request de auth (evitar refresh en login/refresh)
-      if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/jwt-auth/')) {
+      if (
+        error.response?.status === 401 &&
+        !originalRequest._retry &&
+        !originalRequest.url?.includes('/auth/login') &&
+        !originalRequest.url?.includes('/auth/refresh')
+      ) {
         originalRequest._retry = true;
+
         if (await this.refreshToken()) {
+          // Actualizar el token en el header del request original
+          const userData = localStorage.getItem('userData');
+          if (userData) {
+            const authUser = JSON.parse(userData) as AuthenticatedUser;
+            originalRequest.headers.Authorization = `Bearer ${authUser.token}`;
+          }
+
           return axiosInstance(originalRequest);
         }
 
+        // Si el refresh falla, limpiar datos y redirigir al login
+        this.clearAuthData();
         console.log('No se pudo refrescar el token, redirigiendo a login.');
         if (!window.location.pathname.startsWith('/auth/')) {
           window.location.href = '/auth/login';
