@@ -1,6 +1,6 @@
 [submodule "wordpress-plugins/headless-authentication"]
 	path = wordpress-plugins/headless-authentication
-	url = git@github.com:Im-Fran/productoscasaalba-headless-authentication.git
+	url = ../productoscasaalba-headless-authentication.git
 [submodule "wordpress-plugins/headless-checkout"]
 	path = wordpress-plugins/headless-checkout
-	url = git@github.com:Im-Fran/productoscasaalba-headless-checkout.git
+	url = ../productoscasaalba-headless-checkout.git
