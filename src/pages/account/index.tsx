@@ -30,7 +30,7 @@ export default function AccountPage() {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold mb-4">Acceso Denegado</h1>
+        <h1 className="text-2xl font-semibold mb-4">Acceso Denegado</h1>
         <p className="text-gray-600 mb-4">Debes iniciar sesión para acceder a tu cuenta.</p>
         <a
           href="/auth/login"
@@ -52,7 +52,7 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Mi Cuenta</h1>
+        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Mi Cuenta</h1>
         <p className="text-gray-600">
           Bienvenido/a de vuelta, {user.first_name}
         </p>
@@ -64,12 +64,12 @@ export default function AccountPage() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center mb-6">
               <div className="w-12 h-12 bg-mint-100 rounded-full flex items-center justify-center mr-3">
-                <span className="text-mint-600 font-semibold text-lg">
+                <span className="text-mint-600 text-lg">
                   {user.first_name.charAt(0)}{user.last_name.charAt(0)}
                 </span>
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="text-gray-900">
                   {`${user.first_name} ${user.last_name}`}
                 </h3>
                 <p className="text-sm text-gray-500">{user.email}</p>

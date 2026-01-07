@@ -27,7 +27,7 @@ const MaintenancePage: React.FC = () => {
             </svg>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-semibold text-gray-900 mb-4">
             Sitio en Mantenimiento
           </h1>
 
