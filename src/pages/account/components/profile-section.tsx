@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CustomerService, type CustomerData, type CustomerResponse } from '@/services/customer';
+import { CustomerService, type CustomerProfile, type CustomerAddresses } from '@/services/customer';
 import type {User} from "@/types/user";
 
 interface ProfileSectionProps {
@@ -18,11 +18,16 @@ interface ApiError {
 export default function ProfileSection({ user }: ProfileSectionProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [customerData, setCustomerData] = useState<CustomerResponse | null>(null);
+  const [profileData, setProfileData] = useState<CustomerProfile | null>(null);
+  const [addressesData, setAddressesData] = useState<CustomerAddresses | null>(null);
   const [formData, setFormData] = useState({
     first_name: user.first_name,
     last_name: user.last_name,
+    display_name: user.first_name + ' ' + user.last_name,
     email: user.email,
+    phone: '',
+  });
+  const [addressFormData, setAddressFormData] = useState({
     billing: {
       first_name: user.first_name,
       last_name: user.last_name,
@@ -50,6 +55,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
   });
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
@@ -60,37 +66,50 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
     const loadCustomerData = async () => {
       try {
         setLoading(true);
-        const customer = await CustomerService.getCustomer(user.id);
-        setCustomerData(customer);
 
-        // Actualizar formData con los datos del cliente
+        // Cargar perfil y direcciones usando los nuevos endpoints
+        const [profile, addresses] = await Promise.all([
+          CustomerService.getProfile(),
+          CustomerService.getAddresses()
+        ]);
+
+        setProfileData(profile);
+        setAddressesData(addresses);
+
+        // Actualizar formData con los datos del perfil
         setFormData({
-          first_name: customer.first_name || user.first_name,
-          last_name: customer.last_name || user.last_name,
-          email: customer.email || user.email,
+          first_name: profile.first_name || user.first_name,
+          last_name: profile.last_name || user.last_name,
+          display_name: profile.display_name || user.first_name + ' ' + user.last_name,
+          email: profile.email || user.email,
+          phone: profile.phone || '',
+        });
+
+        // Actualizar addressFormData con las direcciones
+        setAddressFormData({
           billing: {
-            first_name: customer.billing?.first_name || user.first_name,
-            last_name: customer.billing?.last_name || user.last_name,
-            email: customer.billing?.email || user.email,
-            company: customer.billing?.company || '',
-            address_1: customer.billing?.address_1 || '',
-            address_2: customer.billing?.address_2 || '',
-            city: customer.billing?.city || '',
-            state: customer.billing?.state || '',
-            postcode: customer.billing?.postcode || '',
-            country: customer.billing?.country || 'CL',
-            phone: customer.billing?.phone || '',
+            first_name: addresses.billing.first_name || user.first_name,
+            last_name: addresses.billing.last_name || user.last_name,
+            email: addresses.billing.email || user.email,
+            company: addresses.billing.company || '',
+            address_1: addresses.billing.address_1 || '',
+            address_2: addresses.billing.address_2 || '',
+            city: addresses.billing.city || '',
+            state: addresses.billing.state || '',
+            postcode: addresses.billing.postcode || '',
+            country: addresses.billing.country || 'CL',
+            phone: addresses.billing.phone || '',
           },
           shipping: {
-            first_name: customer.shipping?.first_name || user.first_name,
-            last_name: customer.shipping?.last_name || user.last_name,
-            company: customer.shipping?.company || '',
-            address_1: customer.shipping?.address_1 || '',
-            address_2: customer.shipping?.address_2 || '',
-            city: customer.shipping?.city || '',
-            state: customer.shipping?.state || '',
-            postcode: customer.shipping?.postcode || '',
-            country: customer.shipping?.country || 'CL',
+            first_name: addresses.shipping.first_name || user.first_name,
+            last_name: addresses.shipping.last_name || user.last_name,
+            company: addresses.shipping.company || '',
+            address_1: addresses.shipping.address_1 || '',
+            address_2: addresses.shipping.address_2 || '',
+            city: addresses.shipping.city || '',
+            state: addresses.shipping.state || '',
+            postcode: addresses.shipping.postcode || '',
+            country: addresses.shipping.country || 'CL',
           }
         });
       } catch (error) {
@@ -109,16 +128,20 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
       setLoading(true);
       setMessage(null);
 
-      const updateData: CustomerData = {
+      // Actualizar perfil
+      const updatedProfile = await CustomerService.updateProfile({
         first_name: formData.first_name,
         last_name: formData.last_name,
+        display_name: formData.display_name,
         email: formData.email,
-        billing: formData.billing,
-        shipping: formData.shipping,
-      };
+        phone: formData.phone,
+      });
 
-      const updatedCustomer = await CustomerService.updateCustomer(user.id, updateData);
-      setCustomerData(updatedCustomer);
+      // Actualizar direcciones
+      const updatedAddresses = await CustomerService.updateAddresses(addressFormData);
+
+      setProfileData(updatedProfile);
+      setAddressesData(updatedAddresses);
       setIsEditing(false);
       setMessage({ type: 'success', text: 'Perfil actualizado correctamente' });
     } catch (error) {
@@ -139,8 +162,13 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
-      setMessage({ type: 'error', text: 'La contraseña debe tener al menos 6 caracteres' });
+    if (passwordData.newPassword.length < 8) {
+      setMessage({ type: 'error', text: 'La contraseña debe tener al menos 8 caracteres' });
+      return;
+    }
+
+    if (!passwordData.currentPassword) {
+      setMessage({ type: 'error', text: 'Debes ingresar tu contraseña actual' });
       return;
     }
 
@@ -148,10 +176,10 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
       setLoading(true);
       setMessage(null);
 
-      await CustomerService.updatePassword(user.id, passwordData.newPassword);
+      await CustomerService.updatePassword(passwordData.currentPassword, passwordData.newPassword);
 
       setIsChangingPassword(false);
-      setPasswordData({ newPassword: '', confirmPassword: '' });
+      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setMessage({ type: 'success', text: 'Contraseña actualizada correctamente' });
     } catch (error) {
       console.error('Error changing password:', error);
@@ -165,7 +193,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
     }
   };
 
-  if (loading && !customerData) {
+  if (loading && !profileData) {
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">
@@ -216,12 +244,14 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 <input
                   type="text"
                   value={formData.first_name}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    first_name: e.target.value,
-                    billing: { ...formData.billing, first_name: e.target.value },
-                    shipping: { ...formData.shipping, first_name: e.target.value }
-                  })}
+                  onChange={(e) => {
+                    const newFirstName = e.target.value;
+                    setFormData({ ...formData, first_name: newFirstName });
+                    setAddressFormData({
+                      billing: { ...addressFormData.billing, first_name: newFirstName },
+                      shipping: { ...addressFormData.shipping, first_name: newFirstName }
+                    });
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
                   required
                 />
@@ -233,33 +263,52 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 <input
                   type="text"
                   value={formData.last_name}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    last_name: e.target.value,
-                    billing: { ...formData.billing, last_name: e.target.value },
-                    shipping: { ...formData.shipping, last_name: e.target.value }
-                  })}
+                  onChange={(e) => {
+                    const newLastName = e.target.value;
+                    setFormData({ ...formData, last_name: newLastName });
+                    setAddressFormData({
+                      billing: { ...addressFormData.billing, last_name: newLastName },
+                      shipping: { ...addressFormData.shipping, last_name: newLastName }
+                    });
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
                   required
                 />
               </div>
             </div>
 
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Correo Electrónico *
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  email: e.target.value,
-                  billing: { ...formData.billing, email: e.target.value }
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Correo Electrónico *
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => {
+                    const newEmail = e.target.value;
+                    setFormData({ ...formData, email: newEmail });
+                    setAddressFormData({
+                      ...addressFormData,
+                      billing: { ...addressFormData.billing, email: newEmail }
+                    });
+                  }}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Teléfono
+                </label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
+                  placeholder="+56912345678"
+                />
+              </div>
             </div>
           </div>
 
@@ -276,35 +325,21 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 setIsEditing(false);
                 setMessage(null);
                 // Restaurar datos originales
-                if (customerData) {
+                if (profileData && addressesData) {
                   setFormData({
-                    first_name: customerData.first_name || user.first_name,
-                    last_name: customerData.last_name || user.last_name,
-                    email: customerData.email || user.email,
+                    first_name: profileData.first_name || user.first_name,
+                    last_name: profileData.last_name || user.last_name,
+                    display_name: profileData.display_name || user.first_name + ' ' + user.last_name,
+                    email: profileData.email || user.email,
+                    phone: profileData.phone || '',
+                  });
+                  setAddressFormData({
                     billing: {
-                      first_name: customerData.billing?.first_name || user.first_name,
-                      last_name: customerData.billing?.last_name || user.last_name,
-                      email: customerData.billing?.email || user.email,
-                      company: customerData.billing?.company || '',
-                      address_1: customerData.billing?.address_1 || '',
-                      address_2: customerData.billing?.address_2 || '',
-                      city: customerData.billing?.city || '',
-                      state: customerData.billing?.state || '',
-                      postcode: customerData.billing?.postcode || '',
-                      country: customerData.billing?.country || 'CL',
-                      phone: customerData.billing?.phone || '',
+                      ...addressesData.billing,
+                      email: addressesData.billing.email || user.email,
+                      phone: addressesData.billing.phone || '',
                     },
-                    shipping: {
-                      first_name: customerData.shipping?.first_name || user.first_name,
-                      last_name: customerData.shipping?.last_name || user.last_name,
-                      company: customerData.shipping?.company || '',
-                      address_1: customerData.shipping?.address_1 || '',
-                      address_2: customerData.shipping?.address_2 || '',
-                      city: customerData.shipping?.city || '',
-                      state: customerData.shipping?.state || '',
-                      postcode: customerData.shipping?.postcode || '',
-                      country: customerData.shipping?.country || 'CL',
-                    }
+                    shipping: addressesData.shipping,
                   });
                 }
               }}
@@ -323,18 +358,37 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Nombre</label>
-                <p className="text-lg text-gray-900">{customerData?.first_name || user.first_name}</p>
+                <p className="text-lg text-gray-900">{profileData?.first_name || user.first_name}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Apellidos</label>
-                <p className="text-lg text-gray-900">{customerData?.last_name || user.last_name}</p>
+                <p className="text-lg text-gray-900">{profileData?.last_name || user.last_name}</p>
               </div>
             </div>
 
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-500 mb-1">Correo Electrónico</label>
-              <p className="text-lg text-gray-900">{customerData?.email || user.email}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Correo Electrónico</label>
+                <p className="text-lg text-gray-900">{profileData?.email || user.email}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Teléfono</label>
+                <p className="text-lg text-gray-900">{profileData?.phone || 'No especificado'}</p>
+              </div>
             </div>
+
+            {profileData && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Pedidos Totales</label>
+                  <p className="text-lg text-gray-900">{profileData.orders_count}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-500 mb-1">Total Gastado</label>
+                  <p className="text-lg text-gray-900">${profileData.total_spent.toLocaleString('es-CL')}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -361,6 +415,18 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                Contraseña Actual *
+              </label>
+              <input
+                type="password"
+                value={passwordData.currentPassword}
+                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nueva Contraseña *
               </label>
               <input
@@ -368,7 +434,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
                 value={passwordData.newPassword}
                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500"
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 required
               />
             </div>
@@ -387,7 +453,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
             <div className="flex space-x-4">
               <button
                 onClick={handleChangePassword}
-                disabled={loading || !passwordData.newPassword || !passwordData.confirmPassword}
+                disabled={loading || !passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword}
                 className="bg-mint-600 text-white px-6 py-2 rounded hover:bg-mint-700 transition-colors disabled:opacity-50"
               >
                 {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
@@ -395,7 +461,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
               <button
                 onClick={() => {
                   setIsChangingPassword(false);
-                  setPasswordData({ newPassword: '', confirmPassword: '' });
+                  setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
                   setMessage(null);
                 }}
                 disabled={loading}

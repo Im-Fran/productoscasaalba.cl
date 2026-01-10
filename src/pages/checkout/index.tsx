@@ -308,7 +308,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-neutral-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-mint-950 mb-4 pacifico-regular">
+            <h1 className="text-4xl font-semibold text-mint-950 mb-4 pacifico-regular">
               No hay productos en tu carrito
             </h1>
             <p className="text-lg text-gray-600 mb-8 font-handelson">
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
             </p>
             <a
               href="/productos"
-              className="bg-mint-950 hover:bg-mint-900 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="bg-mint-950 hover:bg-mint-900 text-white px-8 py-4 rounded-lg  transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Ver Productos
             </a>
@@ -331,7 +331,7 @@ export default function CheckoutPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header del checkout */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-mint-950 mb-4 pacifico-regular">
+          <h1 className="text-4xl font-semibold text-mint-950 mb-4 pacifico-regular">
             Finalizar Compra
           </h1>
           <p className="text-lg text-gray-600 font-handelson">
@@ -346,7 +346,7 @@ export default function CheckoutPage() {
               {/* Información de contacto */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl  text-gray-900">
                     Información de Contacto
                   </h2>
                   {customerLoading && (
@@ -451,7 +451,7 @@ export default function CheckoutPage() {
 
               {/* Dirección de envío */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                <h2 className="text-xl  text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Dirección de Envío
                 </h2>
                 <div className="space-y-6">
@@ -472,7 +472,7 @@ export default function CheckoutPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Ciudad *
+                        Comuna *
                       </label>
                       <input
                         type="text"
@@ -548,7 +548,7 @@ export default function CheckoutPage() {
 
               {/* Opciones de envío */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                <h2 className="text-xl  text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Opciones de Envío
                 </h2>
                 <div className="space-y-4">
@@ -579,12 +579,12 @@ export default function CheckoutPage() {
                           className="text-mint-600 focus:ring-mint-500"
                         />
                         <div className="flex-1">
-                          <div className="font-semibold text-gray-900">{option.name}</div>
+                          <div className=" text-gray-900">{option.name}</div>
                           <div className="text-sm text-gray-600">
                             {option.delivery_time || option.description}
                           </div>
                         </div>
-                        <div className="font-bold text-mint-700">
+                        <div className="font-semibold text-mint-700">
                           {option.currency_prefix}{parseInt(option.price).toLocaleString('es-CL')}
                         </div>
                       </label>
@@ -595,7 +595,7 @@ export default function CheckoutPage() {
 
               {/* Opciones de pago */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                <h2 className="text-xl  text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Opciones de Pago
                 </h2>
                 <div className="space-y-4">
@@ -629,7 +629,7 @@ export default function CheckoutPage() {
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
                             <span className="text-2xl">{method.icon}</span>
-                            <span className="font-semibold text-gray-900">{method.title}</span>
+                            <span className=" text-gray-900">{method.title}</span>
                           </div>
                           {method.description && (
                             <p className="text-sm text-gray-600 mt-1">
@@ -659,7 +659,7 @@ export default function CheckoutPage() {
 
               {/* Notas del pedido */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                <h2 className="text-xl  text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Notas del Pedido
                 </h2>
                 <textarea
@@ -676,7 +676,7 @@ export default function CheckoutPage() {
             {/* Resumen del pedido - 1 columna en pantallas grandes */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                <h2 className="text-xl  text-gray-900 mb-6 border-b border-gray-200 pb-3">
                   Resumen del Pedido
                 </h2>
 
@@ -705,7 +705,7 @@ export default function CheckoutPage() {
                             {itemPrice} × {item.quantity}
                           </p>
                         </div>
-                        <div className="font-semibold text-mint-700">
+                        <div className=" text-mint-700">
                           {itemTotal}
                         </div>
                       </div>
@@ -792,7 +792,7 @@ export default function CheckoutPage() {
                   )}
 
                   <div className="border-t border-gray-200 pt-3">
-                    <div className="flex justify-between text-xl font-bold text-gray-900">
+                    <div className="flex justify-between text-xl font-semibold text-gray-900">
                       <span>Total:</span>
                       <span className="text-mint-700">
                         {formatPrice(cart.totals.total_price, cart.totals)}
@@ -804,7 +804,7 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={cartLoading}
-                  className="w-full bg-mint-950 hover:bg-mint-900 text-white py-4 px-6 rounded-lg font-semibold transition-all duration-300 mt-6 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
+                  className="w-full bg-mint-950 hover:bg-mint-900 text-white py-4 px-6 rounded-lg  transition-all duration-300 mt-6 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:transform-none"
                 >
                   {cartLoading ? 'Procesando...' : 'Realizar Pedido'}
                 </button>

@@ -141,6 +141,10 @@ export class ShippingService {
       await axiosInstance.post('/api/wp-json/wc/store/v1/cart/select-shipping-rate', {
         rate_id: rateId,
         package_id: packageId,
+      }, {
+        headers: {
+          'Cart-Token': localStorage.getItem(CART_TOKEN_KEY) || '',
+        }
       });
       return true;
     } catch (error) {
