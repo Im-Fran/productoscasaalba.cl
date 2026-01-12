@@ -9,16 +9,22 @@ import axios from '@/utils/axios';
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[] | null | undefined>(undefined);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const perPage = 12;
 
   const handleCategoryChange = (categories: number[]) => {
     setSelectedCategories(categories);
+    setPage(1); // Reset to first page when categories change
   };
 
-  const fetchProducts = useCallback((search: string | undefined | null = undefined) => {
+  const fetchProducts = useCallback((search: string | undefined | null = undefined, currentPage: number = 1) => {
     setProducts(undefined)
     const params = new URLSearchParams();
 
     params.append('_fields', 'id,name,slug,images,prices,short_description,on_sale');
+    params.append('per_page', perPage.toString());
+    params.append('page', currentPage.toString());
 
     if (search !== undefined && search !== null) {
       params.append('search', search);
@@ -30,14 +36,25 @@ export const HomePage = () => {
 
     axios.get(`/api/wp-json/wc/store/v1/products?${params.toString()}`).then((response) => {
       setProducts(response.data)
+      setHasMore(response.data.length === perPage);
     }).catch(() => {
       setProducts(null)
+      setHasMore(false);
     })
   }, [selectedCategories]);
 
   useEffect(() => {
-    fetchProducts()
-  }, [selectedCategories, fetchProducts]);
+    fetchProducts(undefined, page)
+  }, [selectedCategories, page, fetchProducts]);
+
+  const handleLoadMore = () => {
+    setPage(prev => prev + 1);
+  };
+
+  const handleSearch = (search: string) => {
+    setPage(1);
+    fetchProducts(search, 1);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -49,7 +66,7 @@ export const HomePage = () => {
             Encuentra el producto perfecto
           </h2>
           <SearchBox
-            onSearch={fetchProducts}
+            onSearch={handleSearch}
           />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
@@ -66,8 +83,19 @@ export const HomePage = () => {
           <div className="lg:col-span-3">
             <ProductGrid
               products={products}
-              refetchProducts={fetchProducts}
+              refetchProducts={() => fetchProducts(undefined, page)}
             />
+            {/* Load More Button */}
+            {products && products.length > 0 && hasMore && (
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={handleLoadMore}
+                  className="bg-mint-600 hover:bg-mint-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                >
+                  Cargar más productos
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
