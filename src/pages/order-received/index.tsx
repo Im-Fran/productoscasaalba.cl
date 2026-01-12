@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { OrderService } from '@/services/orders';
 import type { OrderDetail } from '@/services/orders';
-import { CheckCircle, Package, Truck, CreditCard, Mail, Phone } from 'lucide-react';
+import { CheckCircle, Package, Truck, CreditCard, Mail, Phone, LogIn, UserPlus } from 'lucide-react';
+import CurrencyValue from "@/components/CurrencyValue.tsx";
+import { useAuth } from '@/hooks/useAuth';
 
 export default function OrderReceivedPage() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('order_id');
   const orderKey = searchParams.get('key');
-  
+  const { user, loading: authLoading } = useAuth();
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [requiresAuth, setRequiresAuth] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -20,30 +23,43 @@ export default function OrderReceivedPage() {
       return;
     }
 
+    // Esperar a que termine la verificación de autenticación
+    if (authLoading) {
+      return;
+    }
+
     const fetchOrder = async () => {
       try {
         setLoading(true);
-        const orderData = await OrderService.getOrder(parseInt(orderId));
-        
-        // Validate order key if provided
-        if (orderKey && orderData.order_key !== orderKey) {
-          setError('Clave de pedido inválida');
-          setLoading(false);
-          return;
-        }
-        
+
+        // Si hay orderKey, usar el endpoint público (no requiere autenticación)
+        // Si no hay orderKey pero el usuario está autenticado, usar el endpoint autenticado
+        const orderData = orderKey
+          ? await OrderService.getOrder(parseInt(orderId), orderKey)
+          : await OrderService.getOrder(parseInt(orderId));
+
         setOrder(orderData);
         setError(null);
+        setRequiresAuth(false);
       } catch (err) {
         console.error('Error fetching order:', err);
-        setError('No se pudo cargar la información del pedido');
+        const errorMessage = (err as Error).message || '';
+
+        // Si el error es de autenticación y no tenemos orderKey, mostrar mensaje especial
+        if (!orderKey && (errorMessage.includes('401') || errorMessage.includes('autenticación') || errorMessage.includes('autorizado'))) {
+          setRequiresAuth(true);
+          setError(null);
+        } else {
+          setError('No se pudo cargar la información del pedido');
+          setRequiresAuth(false);
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrder();
-  }, [orderId, orderKey]);
+    fetchOrder().then();
+  }, [orderId, orderKey, authLoading]);
 
   // Get status color and text
   const getStatusInfo = (status: string) => {
@@ -59,12 +75,61 @@ export default function OrderReceivedPage() {
     return statusMap[status] || { color: 'text-gray-700', text: status, bgColor: 'bg-gray-50' };
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-mint-950 mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando información del pedido...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Si requiere autenticación y el usuario no está logueado
+  if (requiresAuth && !user) {
+    return (
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+          <div className="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Package className="w-8 h-8 text-mint-600" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Pedido Registrado</h1>
+          <p className="text-gray-600 mb-6 text-center">
+            Tu pedido <strong>#{orderId}</strong> ha sido registrado exitosamente.
+          </p>
+
+          <div className="bg-mint-50 border border-mint-200 rounded-lg p-4 mb-6">
+            <p className="text-sm text-mint-800 mb-2">
+              <strong>Para ver el detalle completo de tu pedido:</strong>
+            </p>
+            <p className="text-sm text-mint-700">
+              Inicia sesión o crea una cuenta con el correo electrónico que usaste en el pedido.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <Link
+              to="/auth/login"
+              className="w-full flex items-center justify-center gap-2 bg-mint-950 hover:bg-mint-900 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <LogIn className="w-5 h-5" />
+              Iniciar Sesión
+            </Link>
+            <Link
+              to="/auth/register"
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-mint-950 border-2 border-mint-950 px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <UserPlus className="w-5 h-5" />
+              Crear Cuenta
+            </Link>
+            <Link
+              to="/"
+              className="w-full flex items-center justify-center text-mint-700 hover:text-mint-800 px-6 py-2 rounded-lg font-medium transition-colors"
+            >
+              Volver al Inicio
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -142,7 +207,7 @@ export default function OrderReceivedPage() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Total</p>
-              <p className="font-semibold text-gray-900 text-xl">{order.total_formatted}</p>
+              <p className="font-semibold text-gray-900 text-xl">{order.total}</p>
             </div>
           </div>
         </div>
@@ -158,7 +223,7 @@ export default function OrderReceivedPage() {
                   <p className="text-sm text-gray-600">Cantidad: {item.quantity}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-gray-900">{item.total_formatted}</p>
+                  <p className="font-semibold text-gray-900"><CurrencyValue value={item.total * 1.19}/></p>
                 </div>
               </div>
             ))}
@@ -167,30 +232,24 @@ export default function OrderReceivedPage() {
           {/* Totals */}
           <div className="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <div className="flex justify-between text-gray-600">
-              <span>Subtotal:</span>
-              <span>{order.subtotal_formatted}</span>
+              <span>Subtotal (IVA Incl.):</span>
+              <span><CurrencyValue>{parseFloat(`${order.subtotal}`) + parseFloat(`${order.total_tax}`)}</CurrencyValue></span>
             </div>
             {order.shipping_total > 0 && (
               <div className="flex justify-between text-gray-600">
                 <span>Envío:</span>
-                <span>{order.shipping_total_formatted}</span>
+                <CurrencyValue>{order.shipping_total}</CurrencyValue>
               </div>
             )}
             {order.discount_total > 0 && (
               <div className="flex justify-between text-green-600">
                 <span>Descuento:</span>
-                <span>-{order.discount_total_formatted}</span>
-              </div>
-            )}
-            {order.total_tax > 0 && (
-              <div className="flex justify-between text-gray-600">
-                <span>Impuestos:</span>
-                <span>{order.total_tax_formatted}</span>
+                <span>-<CurrencyValue>{order.discount_total}</CurrencyValue></span>
               </div>
             )}
             <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t">
               <span>Total:</span>
-              <span className="text-mint-700">{order.total_formatted}</span>
+              <span className="text-mint-700"><CurrencyValue>{order.total}</CurrencyValue></span>
             </div>
           </div>
         </div>
@@ -262,7 +321,7 @@ export default function OrderReceivedPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/cuenta/pedidos"
+              to="/pedidos"
               className="inline-block bg-mint-950 hover:bg-mint-900 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Ver Mis Pedidos

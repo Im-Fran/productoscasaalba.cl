@@ -1,14 +1,10 @@
 import { useAuth } from '@/hooks/useAuth';
-import { useSearchParams } from 'react-router';
-import ProfileSection from './components/profile-section';
-import AddressesSection from './components/addresses-section';
-import { SessionsSection } from './components/sessions-section';
-import AccountSidebar from './components/account-sidebar';
+import { Navigate } from 'react-router';
+import OrdersSection from '@/pages/account/components/orders-section';
+import AccountSidebar from '@/pages/account/components/account-sidebar';
 
-export default function AccountPage() {
+export default function OrdersPage() {
   const { user, loading } = useAuth();
-  const [searchParams] = useSearchParams();
-  const tab = searchParams.get('tab') || 'profile';
 
   if (loading) {
     return (
@@ -29,26 +25,15 @@ export default function AccountPage() {
   }
 
   if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-semibold mb-4">Acceso Denegado</h1>
-        <p className="text-gray-600 mb-4">Debes iniciar sesión para acceder a tu cuenta.</p>
-        <a
-          href="/auth/login"
-          className="bg-mint-600 text-white px-6 py-2 rounded hover:bg-mint-700 transition-colors"
-        >
-          Iniciar Sesión
-        </a>
-      </div>
-    );
+    return <Navigate to="/auth/login" replace />;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Mi Cuenta</h1>
+        <h1 className="text-3xl font-semibold text-gray-900 mb-2">Mis Pedidos</h1>
         <p className="text-gray-600">
-          Bienvenido/a de vuelta, {user.first_name}
+          Consulta el estado de tus pedidos actuales y pasados
         </p>
       </div>
 
@@ -61,12 +46,11 @@ export default function AccountPage() {
         {/* Contenido principal */}
         <div className="lg:col-span-3">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            {tab === 'profile' && <ProfileSection user={user} />}
-            {tab === 'addresses' && <AddressesSection />}
-            {tab === 'sessions' && <SessionsSection />}
+            <OrdersSection />
           </div>
         </div>
       </div>
     </div>
   );
 }
+
