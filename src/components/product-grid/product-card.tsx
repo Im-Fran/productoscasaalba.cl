@@ -15,13 +15,13 @@ export const ProductCard = ({product}: { product: Product }) => {
       />
       {isOnSale && (<span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">Oferta</span>)}
     </div>
-    <div className="p-3 md:p-4 flex flex-col grow">
-      <h3 className="font-semibold text-sm md:text-base text-gray-800 mb-2 line-clamp-2">{product.name}</h3>
-      <div className="text-xs md:text-sm text-gray-600 mb-3 pb-2 line-clamp-2" dangerouslySetInnerHTML={{__html: product.short_description || ''}}/>
+    <div className="p-4 flex flex-col grow">
+      <h3 className="text-gray-800 mb-2 line-clamp-2">{product.name}</h3>
+      <div className="text-sm text-gray-600 mb-3 pb-2 line-clamp-2" dangerouslySetInnerHTML={{__html: product.short_description || ''}}/>
       <div className="flex items-center justify-between mt-auto">
-        <div className="text-base md:text-lg font-semibold text-green-600">
+        <div className="text-lg font-semibold text-green-600">
           <CurrencyValue value={product.prices?.price}/>
-          {isOnSale && (<span className="text-xs md:text-sm text-gray-400 line-through ml-2"><CurrencyValue value={product.prices?.regular_price}/></span>)}
+          {isOnSale && (<span className="text-sm text-gray-400 line-through ml-2"><CurrencyValue value={product.prices?.regular_price}/></span>)}
         </div>
         <button className="bg-mint-600 text-white px-3 py-1 rounded text-sm hover:bg-mint-700">
           Ver

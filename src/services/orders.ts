@@ -296,12 +296,23 @@ export class OrderService {
 
   /**
    * Obtener detalle de un pedido específico
+   * Si se proporciona orderKey, usa el endpoint público (no requiere autenticación)
    */
-  static async getOrder(orderId: number): Promise<OrderDetail> {
+  static async getOrder(orderId: number, orderKey?: string): Promise<OrderDetail> {
     try {
-      console.log(`🔍 Fetching order detail for ID: ${orderId}`);
+      console.log(`🔍 Fetching order detail for ID: ${orderId}`, orderKey ? 'with order key' : 'authenticated');
 
-      const response = await axiosInstance.get<OrderDetail>(`${this.BASE_URL}/${orderId}`);
+      let response;
+
+      if (orderKey) {
+        // Usar endpoint público con order_key
+        response = await axiosInstance.get<OrderDetail>(`/api/wp-json/casa-alba/v1/orders/${orderId}/public`, {
+          params: { key: orderKey }
+        });
+      } else {
+        // Usar endpoint autenticado
+        response = await axiosInstance.get<OrderDetail>(`${this.BASE_URL}/${orderId}`);
+      }
 
       console.log('✅ Order detail response:', response.data);
       return response.data;
