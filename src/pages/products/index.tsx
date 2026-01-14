@@ -13,22 +13,6 @@ export const ProductsPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const perPage = 12;
 
-  const handleCategoryChange = (categories: number[]) => {
-    setSelectedCategories(categories);
-    setPage(1); // Reset to first page when categories change
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setPage(1); // Reset to first page when searching
-  };
-
-  const clearFilters = () => {
-    setSelectedCategories([]);
-    setSearchQuery(null);
-    setPage(1);
-  };
-
   const fetchProducts = useCallback((search: string | undefined | null = undefined, currentPage: number = 1) => {
     setProducts(undefined)
     const params = new URLSearchParams();
@@ -51,15 +35,31 @@ export const ProductsPage = () => {
       setProducts(null)
       setHasMore(false);
     })
-  }, [selectedCategories]);
+  }, [selectedCategories, perPage]);
+
+  const handleCategoryChange = useCallback((categories: number[]) => {
+    setSelectedCategories(categories);
+    setPage(1); // Reset to first page when categories change
+  }, []);
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    setPage(1); // Reset to first page when searching
+  }, []);
+
+  const clearFilters = useCallback(() => {
+    setSelectedCategories([]);
+    setSearchQuery(null);
+    setPage(1);
+  }, []);
+
+  const handleLoadMore = useCallback(() => {
+    setPage(prev => prev + 1);
+  }, []);
 
   useEffect(() => {
     fetchProducts(searchQuery, page)
-  }, [selectedCategories, fetchProducts, searchQuery, page]);
-
-  const handleLoadMore = () => {
-    setPage(prev => prev + 1);
-  };
+  }, [fetchProducts, searchQuery, page]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-4 md:py-8">

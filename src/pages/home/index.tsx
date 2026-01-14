@@ -13,11 +13,6 @@ export const HomePage = () => {
   const [hasMore, setHasMore] = useState(true);
   const perPage = 12;
 
-  const handleCategoryChange = (categories: number[]) => {
-    setSelectedCategories(categories);
-    setPage(1); // Reset to first page when categories change
-  };
-
   const fetchProducts = useCallback((search: string | undefined | null = undefined, currentPage: number = 1) => {
     setProducts(undefined)
     const params = new URLSearchParams();
@@ -41,20 +36,25 @@ export const HomePage = () => {
       setProducts(null)
       setHasMore(false);
     })
-  }, [selectedCategories]);
+  }, [selectedCategories, perPage]);
+
+  const handleCategoryChange = useCallback((categories: number[]) => {
+    setSelectedCategories(categories);
+    setPage(1); // Reset to first page when categories change
+  }, []);
+
+  const handleLoadMore = useCallback(() => {
+    setPage(prev => prev + 1);
+  }, []);
+
+  const handleSearch = useCallback((search: string) => {
+    setPage(1);
+    fetchProducts(search, 1);
+  }, [fetchProducts]);
 
   useEffect(() => {
     fetchProducts(undefined, page)
-  }, [selectedCategories, page, fetchProducts]);
-
-  const handleLoadMore = () => {
-    setPage(prev => prev + 1);
-  };
-
-  const handleSearch = (search: string) => {
-    setPage(1);
-    fetchProducts(search, 1);
-  };
+  }, [fetchProducts, page]);
 
   return (
     <div className="min-h-screen bg-gray-50">
