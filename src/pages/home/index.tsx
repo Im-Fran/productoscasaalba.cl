@@ -3,6 +3,7 @@ import { Hero } from '@/pages/home/components/hero.tsx';
 import { SearchBox } from '@/pages/home/components/search-box.tsx';
 import { CategoryList } from '@/pages/home/components/category-list.tsx';
 import { ProductGrid } from '@/components/product-grid/product-grid.tsx';
+import { Pagination } from '@/components/Pagination.tsx';
 import type {Product} from "@/types/product";
 import axios from '@/utils/axios';
 
@@ -10,7 +11,7 @@ export const HomePage = () => {
   const [products, setProducts] = useState<Product[] | null | undefined>(undefined);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
   const perPage = 12;
 
   const fetchProducts = useCallback((search: string | undefined | null = undefined, currentPage: number = 1) => {
@@ -31,10 +32,16 @@ export const HomePage = () => {
 
     axios.get(`/api/wp-json/wc/store/v1/products?${params.toString()}`).then((response) => {
       setProducts(response.data)
-      setHasMore(response.data.length === perPage);
+      // Extract total pages from headers
+      const totalPagesHeader = response.headers['x-wp-totalpages'];
+      if (totalPagesHeader) {
+        setTotalPages(parseInt(totalPagesHeader, 10));
+      } else {
+        setTotalPages(1);
+      }
     }).catch(() => {
       setProducts(null)
-      setHasMore(false);
+      setTotalPages(1);
     })
   }, [selectedCategories, perPage]);
 
@@ -43,8 +50,9 @@ export const HomePage = () => {
     setPage(1); // Reset to first page when categories change
   }, []);
 
-  const handleLoadMore = useCallback(() => {
-    setPage(prev => prev + 1);
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const handleSearch = useCallback((search: string) => {
@@ -85,16 +93,14 @@ export const HomePage = () => {
               products={products}
               refetchProducts={() => fetchProducts(undefined, page)}
             />
-            {/* Load More Button */}
-            {products && products.length > 0 && hasMore && (
-              <div className="mt-8 flex justify-center">
-                <button
-                  onClick={handleLoadMore}
-                  className="bg-mint-600 hover:bg-mint-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                >
-                  Cargar más productos
-                </button>
-              </div>
+            {/* Pagination */}
+            {products && products.length > 0 && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                className="mt-8"
+              />
             )}
           </div>
         </div>
