@@ -3,7 +3,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from "@tailwindcss/vite";
 import {cloudflare} from "@cloudflare/vite-plugin";
-import mkcert from 'vite-plugin-mkcert'
+// import mkcert from 'vite-plugin-mkcert'
 import sassDts from 'vite-plugin-sass-dts'
 
 // https://vite.dev/config/
@@ -12,10 +12,10 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [
-      mkcert({
-        savePath: './.certs',
-        hosts: ['local.productoscasaalba.cl']
-      }),
+      // mkcert({
+      //   savePath: './.certs',
+      //   hosts: ['local.productoscasaalba.cl']
+      // }),
       react(),
       tailwindcss(),
       cloudflare(),
@@ -264,10 +264,10 @@ export default ({ mode }: { mode: string }) => {
     server: {
       allowedHosts: true,
       host: true,
-      https: {
-        cert: './.certs/cert.pem',
-        key: './.certs/dev.pem',
-      },
+      // https: {
+      //   cert: './.certs/cert.pem',
+      //   key: './.certs/dev.pem',
+      // },
       proxy: {
         '/api': {
           target: process.env.VITE_CMS_URL,

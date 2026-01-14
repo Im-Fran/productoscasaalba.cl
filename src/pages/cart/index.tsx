@@ -39,32 +39,32 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header del carrito */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-mint-950 mb-4 pacifico-regular">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-mint-950 mb-4 pacifico-regular">
             Carrito de Compras
           </h1>
-          <p className="text-lg text-gray-600 font-handelson">
+          <p className="text-base md:text-lg text-gray-600 font-handelson">
             Revisa tus productos antes de continuar con la compra
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Lista de productos */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-md">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
-                  <h2 className="text-xl font-semibold text-gray-900">
+              <div className="p-4 md:p-6">
+                <div className="flex items-center justify-between mb-4 md:mb-6 border-b border-gray-200 pb-3">
+                  <h2 className="text-lg md:text-xl font-semibold text-gray-900">
                     Productos en tu carrito
                   </h2>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs md:text-sm text-gray-500">
                     {cart.items_count} {cart.items_count === 1 ? 'producto' : 'productos'}
                   </span>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                   {cart.items.map((item) => {
                     const itemPrice = formatPrice(item.prices.price, item.prices);
                     const itemTotal = formatPrice(item.totals.line_total, item.totals);
@@ -134,10 +134,10 @@ export default function CartPage() {
           </div>
 
           {/* Resumen del carrito */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             {/* Cupones */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg text-gray-900 mb-4 border-b border-gray-200 pb-3">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+              <h3 className="text-base md:text-lg text-gray-900 mb-4 border-b border-gray-200 pb-3">
                 Código de descuento
               </h3>
 
@@ -168,8 +168,8 @@ export default function CartPage() {
             </div>
 
             {/* Totales del carrito */}
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-              <h3 className="text-lg text-gray-900 mb-6 border-b border-gray-200 pb-3">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 lg:sticky lg:top-4">
+              <h3 className="text-base md:text-lg text-gray-900 mb-4 md:mb-6 border-b border-gray-200 pb-3">
                 Resumen del Pedido
               </h3>
 

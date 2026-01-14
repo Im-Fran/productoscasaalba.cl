@@ -93,23 +93,23 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 relative">
+    <div className="min-h-screen bg-gray-50 py-8 md:py-12 relative">
       {/* Floating Products Animation - Desktop Only */}
       <FloatingProductsAnimation />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contáctanos</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Contáctanos</h1>
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             ¿Tienes alguna pregunta o necesitas ayuda? Estamos aquí para ayudarte.
             Envíanos un mensaje y te responderemos lo antes posible.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12">
           {/* Formulario de contacto */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">¡Escríbenos!</h2>
+          <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">¡Escríbenos!</h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -227,9 +227,9 @@ export default function ContactPage() {
           </div>
 
           {/* Información de contacto */}
-          <div className="space-y-8">
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">¡Comunícate!</h2>
+          <div className="space-y-6 md:space-y-8">
+            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">¡Comunícate!</h2>
 
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -258,8 +258,8 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">¿Necesitas ayuda inmediata?</h2>
+            <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">¿Necesitas ayuda inmediata?</h2>
               <p className="text-gray-600 mb-6">
                 Para consultas urgentes, puedes contactarnos directamente por WhatsApp, y haremos lo posible por responder rápidamente.
               </p>

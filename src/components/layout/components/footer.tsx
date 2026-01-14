@@ -43,9 +43,9 @@ export const Footer = () => {
   }, []);
 
   return <footer id={"footer"} className={"mt-auto p-4 text-center bg-mint-500 text"}>
-    <div className={"grid grid-cols-3 gap-10 container mx-auto w-full"}>
-      <div className={"col-span-1 flex flex-col items-start gap-5"}>
-        <h3 className={"text-xl text-red-800"}>¿Alguien dijo limpieza?</h3>
+    <div className={"grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 container mx-auto w-full"}>
+      <div className={"col-span-1 flex flex-col items-center md:items-start gap-3 md:gap-5"}>
+        <h3 className={"text-lg md:text-xl text-red-800"}>¿Alguien dijo limpieza?</h3>
         <Txtrvl
           className={"text-gray-500"}
           text={rollingTxt[rollingTxtIdx] || 'Contáctanos'}
@@ -53,21 +53,21 @@ export const Footer = () => {
         />
 
         <section id={"footer-social"}>
-          <ul className={"flex items-center gap-4"}>
+          <ul className={"flex flex-wrap items-center justify-center md:justify-start gap-3 md:gap-4"}>
             <li>
-              <Link to={"https://instagram.com/productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+              <Link to={"https://instagram.com/productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm md:text-base"}>
                 <Instagram size={20} />
                 <span>Instagram</span>
               </Link>
             </li>
             <li>
-              <Link to={"https://tiktok.com/@productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+              <Link to={"https://tiktok.com/@productoscasaalba"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm md:text-base"}>
                 <TikTokIcon size={20} />
                 <span>TikTok</span>
               </Link>
             </li>
             <li>
-              <Link to={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900"}>
+              <Link to={"https://www.whatsapp.com/catalog/56942717395/?app_absent=0"} className={"flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm md:text-base"}>
                 <WhatsAppIcon size={20} />
                 <span>WhatsApp</span>
               </Link>
@@ -75,18 +75,18 @@ export const Footer = () => {
           </ul>
         </section>
       </div>
-      <div className={"col-span-1 flex flex-col items-center gap-5"}>
+      <div className={"col-span-1 flex flex-col items-center gap-3 md:gap-5"}>
         <img
           src={`${cdnEndpoint}/casaalba.webp`}
           alt={"Casa Alba Logo"}
-          className={"h-24 lg:h-32 xl:h-40 object-contain"}
+          className={"h-16 md:h-24 lg:h-32 xl:h-40 object-contain"}
         />
       </div>
-      <div className={"col-span-1 flex flex-col items-end gap-5"}>
+      <div className={"col-span-1 flex flex-col items-center md:items-end gap-3 md:gap-5"}>
         <img
           src={`${cdnEndpoint}/images/burbujas.webp`}
           alt={"Burbujas decorativas"}
-          className={"h-24 lg:h-32 xl:h-40 object-contain"}
+          className={"h-16 md:h-24 lg:h-32 xl:h-40 object-contain"}
         />
       </div>
     </div>

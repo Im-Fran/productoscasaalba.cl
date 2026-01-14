@@ -11,7 +11,7 @@ export const ProductCard = ({product}: { product: Product }) => {
       <img
         src={product.images?.[0]?.src || '/placeholder-product.jpg'}
         alt={product.images?.[0]?.alt || product.name}
-        className="w-full h-72 object-cover"
+        className="w-full h-48 md:h-64 lg:h-72 object-cover"
       />
       {isOnSale && (<span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">Oferta</span>)}
     </div>

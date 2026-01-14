@@ -23,7 +23,7 @@ export const Slides = () => {
         disableOnInteraction: false,
       }}
       loop={true}
-      className="h-screen"
+      className="h-[60vh] md:h-[80vh] lg:h-screen"
     >
       <SwiperSlide>
         <CallToActionComprar />
@@ -47,7 +47,7 @@ export const CallToActionComprar = () => {
   }
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-[60vh] md:h-[80vh] lg:h-screen w-full overflow-hidden">
       {/* Fondo con gradiente conico */}
       <div
         className="absolute inset-0 blur-[30px]"
@@ -56,34 +56,34 @@ export const CallToActionComprar = () => {
         }}
       />
       
-      {/* Imagen de fondo */}
+      {/* Imagen de fondo - con blur adicional en móvil */}
       <div
-        className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat blur-[2px] md:blur-0"
         style={{ 
           backgroundImage: `url(${cdnEndpoint}/images/we-can-clean-it.webp)`
         }}
       />
 
-      {/* Overlay para mejorar legibilidad */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* Overlay para mejorar legibilidad - más oscuro en móvil */}
+      <div className="absolute inset-0 bg-black/30 md:bg-black/20" />
 
       {/* Contenido */}
-      <div className="relative h-full flex items-center justify-end">
-        <div className="max-w-md md:max-w-xl mx-8 lg:mx-16 text-right">
-          {/* Título */}
-          <h1 className="text-4xl lg:text-6xl text-mint-1450 mb-6 pacifico-regular">
+      <div className="relative h-full flex items-center justify-center md:justify-end px-4">
+        <div className="max-w-md md:max-w-xl mx-4 md:mx-8 lg:mx-16 text-center md:text-right">
+          {/* Título - con fondo semitransparente en móvil */}
+          <h1 className="text-3xl md:text-4xl lg:text-6xl text-mint-1450 mb-4 md:mb-6 pacifico-regular bg-white/80 md:bg-transparent px-4 py-2 md:px-0 md:py-0 rounded-lg">
             Productos Casa Alba
           </h1>
 
-          {/* Descripción */}
-          <p className="text-lg lg:text-xl xl:text-2xl text-red-800 mb-8 leading-relaxed font-handelson">
+          {/* Descripción - con fondo semitransparente en móvil */}
+          <p className="text-base md:text-lg lg:text-xl xl:text-2xl text-red-800 mb-6 md:mb-8 leading-relaxed font-handelson bg-white/80 md:bg-transparent px-4 py-3 md:px-0 md:py-0 rounded-lg">
             Venta online de productos para el hogar, limpieza y aseo. Somos una marca propia con artículos de excelente calidad.
           </p>
 
           {/* Botón */}
           <button
             onClick={handleComprarAhora}
-            className="bg-mint-1150 hover:bg-mint-900 text-mint-50 py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
+            className="bg-mint-1150 hover:bg-mint-900 text-mint-50 py-3 px-6 md:py-4 md:px-8 rounded-lg transition-all duration-300 text-base md:text-lg shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
           >
             Comprar Ahora
           </button>
