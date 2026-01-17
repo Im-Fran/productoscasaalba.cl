@@ -74,6 +74,22 @@ export const Footer = () => {
             </li>
           </ul>
         </section>
+
+        <section id={"footer-legal"} className={"mt-2"}>
+          <ul className={"flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs md:text-sm"}>
+            <li>
+              <Link to={"/terminos-y-condiciones"} className={"text-gray-600 hover:text-gray-900"}>
+                Términos y Condiciones
+              </Link>
+            </li>
+            <li className={"text-gray-400"}>•</li>
+            <li>
+              <Link to={"/politica-de-privacidad"} className={"text-gray-600 hover:text-gray-900"}>
+                Política de Privacidad
+              </Link>
+            </li>
+          </ul>
+        </section>
       </div>
       <div className={"col-span-1 flex flex-col items-center gap-3 md:gap-5"}>
         <img

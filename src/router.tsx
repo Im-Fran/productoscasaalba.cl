@@ -16,6 +16,8 @@ import AccountPage from "@/pages/account";
 import OrdersPage from "@/pages/orders";
 import OrderReceivedPage from "@/pages/order-received";
 import OrderCancelledPage from "@/pages/order-cancelled";
+import TermsPage from "@/pages/terms";
+import PrivacyPage from "@/pages/privacy";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +36,8 @@ export const router = createBrowserRouter([
       { path: "/pedidos", Component: OrdersPage },
       { path: "/reviews", Component: ReviewsPage },
       { path: "/contacto", Component: ContactPage },
+      { path: "/terminos-y-condiciones", Component: TermsPage },
+      { path: "/politica-de-privacidad", Component: PrivacyPage },
     ]
   },
 
