@@ -6,15 +6,27 @@ export const ConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const consentAccepted = localStorage.getItem(CONSENT_BANNER.STORAGE_KEY);
-    if (!consentAccepted) {
+    try {
+      const consentAccepted = localStorage.getItem(CONSENT_BANNER.STORAGE_KEY);
+      if (!consentAccepted) {
+        setIsVisible(true);
+      }
+    } catch (error) {
+      // If localStorage is not available (e.g., private browsing), show banner
+      console.warn('localStorage not available:', error);
       setIsVisible(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem(CONSENT_BANNER.STORAGE_KEY, 'true');
-    setIsVisible(false);
+    try {
+      localStorage.setItem(CONSENT_BANNER.STORAGE_KEY, 'true');
+      setIsVisible(false);
+    } catch (error) {
+      // If localStorage is not available, just hide the banner for this session
+      console.warn('Could not save consent to localStorage:', error);
+      setIsVisible(false);
+    }
   };
 
   if (!isVisible) {
