@@ -4,6 +4,7 @@ import {Header} from "@/components/layout/components/header.tsx";
 import { CartProvider } from "@/contexts/CartContext";
 import {Toaster} from "react-hot-toast";
 import { CartSidebar } from "@/components/cart-sidebar";
+import { ConsentBanner } from "@/components/consent-banner";
 import { useState } from "react";
 import { MaintenanceWrapper } from "@/components/MaintenanceWrapper";
 
@@ -30,6 +31,8 @@ export const Layout = () => {
             isOpen={isCartSidebarOpen}
             onClose={closeCartSidebar}
           />
+
+          <ConsentBanner />
         </CartProvider>
       </div>
     </MaintenanceWrapper>
