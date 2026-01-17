@@ -10,7 +10,7 @@ export default function TermsPage() {
           <div className="prose prose-gray max-w-none space-y-6 text-gray-700">
             <section>
               <p className="text-sm text-gray-500 mb-6">
-                Última actualización: {new Date().toLocaleDateString('es-CL')}
+                Última actualización: 17 de enero de 2026
               </p>
             </section>
 

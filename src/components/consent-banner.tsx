@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-
-const CONSENT_KEY = 'casa-alba-consent-accepted';
+import { CONSENT_BANNER } from '@/constants/consent';
 
 export const ConsentBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const consentAccepted = localStorage.getItem(CONSENT_KEY);
+    const consentAccepted = localStorage.getItem(CONSENT_BANNER.STORAGE_KEY);
     if (!consentAccepted) {
       setIsVisible(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem(CONSENT_KEY, 'true');
+    localStorage.setItem(CONSENT_BANNER.STORAGE_KEY, 'true');
     setIsVisible(false);
   };
 
@@ -28,24 +27,24 @@ export const ConsentBanner = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Bienvenido a Productos Casa Alba
+              {CONSENT_BANNER.TITLE}
             </h3>
             <p className="text-sm text-gray-600">
-              Al acceder y utilizar este sitio web, usted acepta automáticamente nuestros{' '}
+              {CONSENT_BANNER.MESSAGE}{' '}
               <Link 
-                to="/terminos-y-condiciones" 
+                to={CONSENT_BANNER.TERMS_PATH}
                 className="text-mint-600 hover:text-mint-800 underline font-medium"
               >
-                Términos y Condiciones
+                {CONSENT_BANNER.TERMS_LINK_TEXT}
               </Link>
               {' '}y nuestra{' '}
               <Link 
-                to="/politica-de-privacidad" 
+                to={CONSENT_BANNER.PRIVACY_PATH}
                 className="text-mint-600 hover:text-mint-800 underline font-medium"
               >
-                Política de Privacidad
+                {CONSENT_BANNER.PRIVACY_LINK_TEXT}
               </Link>
-              . Utilizamos cookies y tecnologías de seguimiento para mejorar su experiencia de compra y personalizar nuestros servicios.
+              {CONSENT_BANNER.ADDITIONAL_MESSAGE}
             </p>
           </div>
           <div className="flex-shrink-0">
@@ -53,7 +52,7 @@ export const ConsentBanner = () => {
               onClick={handleAccept}
               className="bg-mint-600 text-mint-950 px-6 py-3 rounded-lg font-semibold hover:bg-mint-700 transition-colors whitespace-nowrap"
             >
-              Aceptar y Continuar
+              {CONSENT_BANNER.ACCEPT_BUTTON_TEXT}
             </button>
           </div>
         </div>

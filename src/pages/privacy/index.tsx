@@ -10,7 +10,7 @@ export default function PrivacyPage() {
           <div className="prose prose-gray max-w-none space-y-6 text-gray-700">
             <section>
               <p className="text-sm text-gray-500 mb-6">
-                Última actualización: {new Date().toLocaleDateString('es-CL')}
+                Última actualización: 17 de enero de 2026
               </p>
             </section>
 
@@ -231,7 +231,7 @@ export default function PrivacyPage() {
               </ul>
             </section>
 
-            <section className="mt-8 p-4 bg-mint-50 rounded-lg">
+            <section className="mt-8 p-4 bg-mint-100 rounded-lg">
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Consentimiento</h2>
               <p>
                 Al utilizar nuestro sitio web, usted acepta esta Política de Privacidad y consiente la 
