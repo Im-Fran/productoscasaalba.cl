@@ -1,0 +1,3 @@
+[submodule ".plugins/wordpress/headless-productoscasaalba"]
+	path = .plugins/wordpress/headless-productoscasaalba
+	url = git@github.com:Im-Fran/headless-productoscasaalba.git
